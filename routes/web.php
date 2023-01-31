@@ -20,3 +20,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/group', [App\Http\Controllers\Admin\MGroupController::class, 'index'])->name('group');
+
+Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], function () {
+    Route::resource('/groups', App\Http\Controllers\Admin\MGroupController::class)->except(['show']);
+
+});
