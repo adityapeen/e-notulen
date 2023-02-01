@@ -25,4 +25,5 @@ Route::get('/group', [App\Http\Controllers\Admin\MGroupController::class, 'index
 Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], function () {
     Route::resource('/groups', App\Http\Controllers\Admin\MGroupController::class)->except(['show']);
     Route::resource('/users', App\Http\Controllers\Admin\UserController::class)->except(['show']);
+    Route::resource('/agendas', App\Http\Controllers\Admin\AgendaController::class)->except(['show']);
 });

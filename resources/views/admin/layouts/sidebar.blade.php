@@ -10,7 +10,7 @@
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/dashboard.html">
+          <a class="nav-link text-white {{ Request::is('home') ? 'active bg-gradient-primary' : '' }}" href="{{ route('home') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">dashboard</i>
             </div>
@@ -25,20 +25,20 @@
             <span class="nav-link-text ms-1">Notulen</span>
           </a>
         </li>
-        {{-- <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/billing.html">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">receipt_long</i>
-            </div>
-            <span class="nav-link-text ms-1">Billing</span>
-          </a>
-        </li>
         <li class="nav-item">
           <a class="nav-link text-white " href="../pages/virtual-reality.html">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">view_in_ar</i>
             </div>
             <span class="nav-link-text ms-1">Virtual Reality</span>
+          </a>
+        </li>
+        {{-- <li class="nav-item">
+          <a class="nav-link text-white " href="../pages/billing.html">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">receipt_long</i>
+            </div>
+            <span class="nav-link-text ms-1">Billing</span>
           </a>
         </li>
         <li class="nav-item">
@@ -59,6 +59,14 @@
         </li> --}}
         <li class="nav-item mt-3">
           <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Master</h6>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white {{ Request::is('admin/agendas*') ? 'active bg-gradient-primary' : '' }}" href="{{ route('admin.agendas.index') }}">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">table_view</i>
+            </div>
+            <span class="nav-link-text ms-1">Agenda</span>
+          </a>
         </li>
         <li class="nav-item">
           <a class="nav-link text-white {{ Request::is('admin/users*') ? 'active bg-gradient-primary' : '' }}" href="{{ route('admin.users.index')}}">
