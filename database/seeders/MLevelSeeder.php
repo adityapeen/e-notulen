@@ -18,6 +18,24 @@ class MLevelSeeder extends Seeder
         MLevel::create([
             "name" => "Ka. BPSDM"
         ]);
+        MLevel::create([
+            "name" => "Timstra"
+        ]);
+        MLevel::create([
+            "name" => "Ses. BPSDM"
+        ]);
+        MLevel::create([
+            "name" => "Kepala Pusat"
+        ]);
+        MLevel::create([
+            "name" => "Kepala Bagian Umum"
+        ]);
+        MLevel::create([
+            "name" => "Koordinator"
+        ]);
+        MLevel::create([
+            "name" => "Subkoordinator"
+        ]);
 
     }
 }

@@ -16,7 +16,7 @@ class MGroupController extends Controller
      */
     public function index()
     {
-        $title = "Tambah Group";
+        $title = "Group Rapat";
         $groups = MGroup::all();
         return view('admin.group.index', compact(['groups','title']));
     }
