@@ -61,7 +61,7 @@
           <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Master</h6>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/profile.html">
+          <a class="nav-link text-white {{ Request::is('admin/users*') ? 'active bg-gradient-primary' : '' }}" href="{{ route('admin.users.index')}}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">person</i>
             </div>
@@ -69,7 +69,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white {{ Request::is('admin/groups') ? 'active bg-gradient-primary' : '' }}" href="{{ route('admin.groups.index')}}">
+          <a class="nav-link text-white {{ Request::is('admin/groups*') ? 'active bg-gradient-primary' : '' }}" href="{{ route('admin.groups.index')}}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">groups</i>
             </div>
