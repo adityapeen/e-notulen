@@ -26,4 +26,6 @@ Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], f
     Route::resource('/groups', App\Http\Controllers\Admin\MGroupController::class)->except(['show']);
     Route::resource('/users', App\Http\Controllers\Admin\UserController::class)->except(['show']);
     Route::resource('/agendas', App\Http\Controllers\Admin\AgendaController::class)->except(['show']);
+    Route::resource('/notes', App\Http\Controllers\Admin\NoteController::class)->except(['show']);
+    Route::post('/notes/lock/{id}', [App\Http\Controllers\Admin\NoteController::class, 'lock'])->name('lock');
 });

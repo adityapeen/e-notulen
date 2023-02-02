@@ -18,7 +18,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white {{ Request::is('home') ? 'active bg-gradient-primary' : '' }}" href="{{ route('home') }}">
+          <a class="nav-link text-white {{ Request::is('admin/notes*') ? 'active bg-gradient-primary' : '' }}" href="{{ route('admin.notes.index') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">table_view</i>
             </div>
@@ -94,9 +94,9 @@
         </li>
       </ul>
     </div>
-    <div class="sidenav-footer position-absolute w-100 bottom-0 ">
+    {{-- <div class="sidenav-footer position-absolute w-100 bottom-0 ">
       <div class="mx-3">
         <a class="btn bg-gradient-primary mt-4 w-100" href="https://www.creative-tim.com/product/material-dashboard-pro?ref=sidebarfree" type="button">Upgrade to pro</a>
       </div>
-    </div>
+    </div> --}}
   </aside>

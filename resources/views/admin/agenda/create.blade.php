@@ -15,6 +15,7 @@
           
           <form action={{ route('admin.agendas.store')}} method="POST">
             @csrf
+            @method('post')
             <div class="row mb-1 align-items-center">
               <div class="col-md-4">
                 Nama Agenda
