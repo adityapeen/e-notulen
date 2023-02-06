@@ -29,3 +29,7 @@ Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], f
     Route::resource('/notes', App\Http\Controllers\Admin\NoteController::class)->except(['show']);
     Route::post('/notes/lock/{id}', [App\Http\Controllers\Admin\NoteController::class, 'lock'])->name('lock');
 });
+
+Route::group(['middleware' => 'api', "prefix" => "api", "as" => "api."], function () {
+    Route::get('/attendants/{id}', [App\Http\Controllers\ApiController::class, 'attendants'])->name('attendants'); 
+});

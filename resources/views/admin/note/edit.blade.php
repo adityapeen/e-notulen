@@ -90,7 +90,33 @@
                 <button type="submit" class="btn btn-info me-2">Simpan</button>
                 <button type="button" onclick="history.back()" class="btn btn-light">Batal</button>
             </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card my-4">
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+          <div class="bg-gradient-info shadow-info border-radius-lg pt-2 pb-2 d-flex align-items-center">
+            <h6 class="text-white text-capitalize ps-3">Peserta Rapat</h6>
+          </div>
+        </div>
+        <div class="card-body pb-2">
+          <div class="row mb-1 align-items-center">
+            <div class="col-md-4">
+              Daftar Peserta Rapat
+            </div>
+            <div class="col-md-8">
+              <select id="attendants" multiple="multiple"  class="form-select border px-1 @error('attendants') is-invalid @enderror" value="{{ old('attendants') }}" name="attendants[]">
+                @foreach ($users as $item)
+                    <option value="{{ $item->id_hash() }}">{{ $item->name }}</option>
+                @endforeach
+            </select>
+            </div>
           </form>
+          </div>
         </div>
       </div>
     </div>
@@ -99,5 +125,30 @@
 @endsection
 
 @section('script')
+<script>
+  $(document).ready( function() {
+    attendants();
+    getExisting();
+  });
+  var api = '{{ route('api.attendants', $note->id) }}';
 
+  function attendants(){
+    $('#attendants').select2({
+      placeholder: 'Pilih Peserta Rapat',
+      });
+  };
+
+  function getExisting(){
+    $.ajax({
+    type: 'GET',
+    url: api
+    }).then(function (data) {
+      console.log(data);
+      var list = JSON.parse(data);
+      var idselected = [];
+      list.results.forEach(item =>idselected.push(item.id));
+      $('#attendants').val(idselected).trigger('change')
+    });
+  }
+</script>
 @endsection

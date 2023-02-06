@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Note;
 use App\Models\Agenda;
 use App\Http\Controllers\Controller;
+use App\Models\Attendant;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
 
@@ -31,8 +33,9 @@ class NoteController extends Controller
     {
         $title = "Buat Notulensi";
         $agendas = Agenda::all();
+        $users = User::all();
         $types = (object) [(object)['id'=>'public', 'name'=>'Publik'],(object)['id'=>'internal','name'=>'Internal']];
-        return view('admin.note.create', compact(['agendas','types','title']));
+        return view('admin.note.create', compact(['agendas','types','title','users']));
     }
 
     /**
@@ -49,19 +52,28 @@ class NoteController extends Controller
             'name' => ['required'],
             'date' => ['required'],
         ]);
-        if(Note::updateOrCreate([
-            'agenda_id' => Hashids::decode($request->agenda_id)[0],
-            'type' => $request->type,
-            'name' => $request->name,
-            'date' => $request->date,
-            'start_time' => $request->start_time,
-            'end_time' => $request->end_time,
-            'max_execute' => $request->max_execute,
-            'issues' => $request->issues,
-            'link_drive_notulen' => $request->link_drive_notulen,
-            'status' => 'open',
-            'created_by' => auth()->user()->id,
-        ])){
+        $notes = Note::updateOrCreate([
+                'agenda_id' => Hashids::decode($request->agenda_id)[0],
+                'type' => $request->type,
+                'name' => $request->name,
+                'date' => $request->date,
+                'start_time' => $request->start_time,
+                'end_time' => $request->end_time,
+                'max_execute' => $request->max_execute,
+                'issues' => $request->issues,
+                'link_drive_notulen' => $request->link_drive_notulen,
+                'status' => 'open',
+                'created_by' => auth()->user()->id,
+        ]);
+        if($notes){
+            if(sizeof($request->attendants)>0){
+                foreach( $request->attendants as $a){
+                    Attendant::updateOrCreate([
+                        'note_id'=>Hashids::decode($notes->id)[0],
+                        'user_id'=> Hashids::decode($a)[0]
+                    ]);
+                }
+            }
             return redirect()->route("admin.notes.index")->with('success','Data <strong>berhasil</strong> disimpan');
         }else{
             return back()->withErrors(['Data <strong>gagal</strong> ditambahkan!']);
@@ -91,9 +103,10 @@ class NoteController extends Controller
         $id = Hashids::decode($hashed_id); //decode the hashed id
         $note = Note::find($id[0]);
         $agendas = Agenda::all();
+        $users = User::all();
         $types = (object) [(object)['id'=>'public', 'name'=>'Publik'],(object)['id'=>'internal','name'=>'Internal']];
 
-        return view('admin.note.edit', compact('title','types','agendas','note'));
+        return view('admin.note.edit', compact('title','types','agendas','note','users'));
     }
 
     /**
@@ -112,7 +125,8 @@ class NoteController extends Controller
             'date' => ['required'],
         ]);
         $id = Hashids::decode($hashed_id);
-        if(Note::findOrFail($id)->first()->update([
+        $notes = Note::findOrFail($id)->first();
+        $notes->update([
             'agenda_id' => Hashids::decode($request->agenda_id)[0],
             'type' => $request->type,
             'name' => $request->name,
@@ -124,7 +138,18 @@ class NoteController extends Controller
             'link_drive_notulen' => $request->link_drive_notulen,
             'status' => 'open',
             'updated_by' => auth()->user()->id,
-        ])){
+        ]) ;
+        if($notes){
+            if(sizeof($request->attendants)>0){
+                $note_id = Hashids::decode($notes->id)[0];
+                Attendant::where('note_id', $note_id)->delete();
+                foreach( $request->attendants as $a){
+                    Attendant::updateOrCreate([
+                        'note_id'=> $note_id,
+                        'user_id'=> Hashids::decode($a)[0]
+                    ]);
+                }
+            }
             return redirect()->route("admin.notes.index")->with('success','Data <strong>berhasil</strong> disimpan');
         }else{
             return back()->withErrors(['Data <strong>gagal</strong> ditambahkan!']);
