@@ -28,6 +28,8 @@ Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], f
     Route::resource('/agendas', App\Http\Controllers\Admin\AgendaController::class)->except(['show']);
     Route::resource('/notes', App\Http\Controllers\Admin\NoteController::class)->except(['show']);
     Route::post('/notes/lock/{id}', [App\Http\Controllers\Admin\NoteController::class, 'lock'])->name('lock');
+    Route::get('/notes/send-mom/{id}', [App\Http\Controllers\MoMController::class, 'send_mom'])->name('notes.mom');
+    Route::get('/notes/view/{id}', [App\Http\Controllers\Admin\NoteController::class, 'show'])->name('notes.view');
 });
 
 Route::group(['middleware' => 'api', "prefix" => "api", "as" => "api."], function () {

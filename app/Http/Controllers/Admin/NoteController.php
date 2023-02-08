@@ -86,9 +86,16 @@ class NoteController extends Controller
      * @param  \App\Models\Note  $note
      * @return \Illuminate\Http\Response
      */
-    public function show(Note $note)
+    public function show(String $hashed_id)
     {
-        //
+        $id = Hashids::decode($hashed_id); //decode the hashed id
+        $note = Note::find($id[0]);
+        $list = Attendant::where(['note_id'=>$id])->get();
+        $attendants = array();
+        foreach($list as $l){
+            array_push($attendants,$l->user->name);
+        }
+        return compact(['note','attendants']);
     }
 
     /**

@@ -38,12 +38,25 @@
                   </td>
                   
                   <td class="align-middle">
+                    <a href="#" onclick="handleView('{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Lihat Notulensi">
+                      <button class="btn btn-sm btn-info"><i class="fa fa-eye"></i></button>
+                    </a>
+                    @if($item->status != 'lock')
                     <a href="{{ route('admin.notes.edit', [$item->id] ) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Edit Agenda">
                       <button class="btn btn-sm btn-success"><i class="fa fa-edit"></i></button>
                     </a>
-                    <a href="#" onclick="handleLock('{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Kunci Agenda">
-                      <button class="btn btn-sm btn-warning"><i class="fa fa-lock"></i></button>
+                    @endif
+                    <a href="#" onclick="handleLock('{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="{{ $item->status == 'lock'? 'Buka':'Kunci' }} Notulensi">
+                      <button class="btn btn-sm btn-{{ $item->status == 'lock'? 'primary':'warning' }}"><i class="fa fa-lock"></i></button>
                     </a>
+                    {{-- <a href="#" onclick="handleMoM('{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Kirim MoM">
+                      <button class="btn btn-sm btn-info"><i class="fa fa-file"></i></button>
+                    </a> --}}
+                    @if($item->status == 'lock')
+                    <a href="#" onclick="handleSend('{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Kirim MoM">
+                      <button class="btn btn-sm btn-info"><i class="fa fa-file"></i></button>
+                    </a>
+                    @endif
                     <a href="#" onclick="handleDestroy('{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Hapus Agenda">
                       <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
                     </a>
@@ -62,6 +75,26 @@
               @csrf
             </form>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="modal-detail" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+    <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6 class="modal-title font-weight-normal" id="modal-title"></h6>
+          <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row"><div class="col-md-4">Issues</div><div class="col-md-8 font-weight-bold" id="note-issues"></div></div>
+          <div class="row"><div class="col-md-4">Link</div><div class="col-md-8" id="note-link"></div></div>
+          <div class="row"><div class="col-md-4">Peserta</div><div class="col-md-8" id="note-attendant"></div></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-link  ml-auto" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
@@ -102,5 +135,58 @@
               $("#lock-form").submit();
           }
       });
+
+    const handleSend = id =>
+    swal({
+        title: "Apakah anda akan mengirimkan notulensi ini ?",
+        icon: "info",
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        buttons: true,
+    })
+    .then(willSend => {
+        if (willSend) {
+          var link = "{{url('/admin/notes/send-mom')}}/" + id;
+          return fetch(link);
+        }
+    }).then(results=>{
+      return results.json();
+    }).then(json=>{
+      const status = json.status;
+      if (!status) {
+        return swal({
+          title: "Gagal mengirim notulen",
+          icon: "error",
+        });
+      }
+      swal({
+          title: "Berhasil mengirim notulen",
+          icon: "success",
+      })
+    }).catch(err => {
+      if (err) {
+        swal("Oh noes!", "The AJAX request failed!", "error");
+      } else {
+        swal.close();
+      }
+    });
+
+    const handleView = id =>{
+      var link = "{{url('/admin/notes/view')}}/" + id;
+      $.ajax({
+              url: link,
+              context: document.body
+            }).done(function(res) {
+              $('#modal-title').html(res.note.name + " === "+res.note.date);
+              $('#note-issues').html(res.note.issues);
+              $('#note-link').html(res.note.link_drive_notulen);
+              $('#note-attendant').empty();
+              res.attendants.forEach(item => {
+                $('#note-attendant').append('<li>'+item+'</li>');
+              });
+              $("#modal-detail").modal('show');
+            });
+    }
+    
 </script>
 @endsection
