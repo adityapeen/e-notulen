@@ -36,6 +36,18 @@
               </select>
               </div>
             </div>
+            <div class="row mb-1 align-items-center">
+              <div class="col-md-4">
+                Peserta Rapat
+              </div>
+              <div class="col-md-8">
+                <select id="attendants" multiple="multiple"  class="form-select border px-1 @error('attendants') is-invalid @enderror" value="{{ old('attendants[]') }}" name="attendants[]">
+                  @foreach ($users as $item)
+                      <option value="{{ $item->id_hash() }}">{{ $item->name }}</option>
+                  @endforeach
+              </select>
+              </div>
+            </div>
             <div class="mt-3 d-flex" >         
                 <button type="submit" class="btn btn-info me-2">Simpan</button>
                 <button type="button" onclick="history.back()" class="btn btn-light">Batal</button>
@@ -45,9 +57,15 @@
       </div>
     </div>
   </div>
-
+  
 @endsection
 
 @section('script')
-
+<script>
+  $(document).ready(function(){
+    $('#attendants').select2({
+      placeholder: 'Pilih Peserta Rapat'
+    });
+  })
+</script>
 @endsection

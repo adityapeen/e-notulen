@@ -35,4 +35,5 @@ Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], f
 
 Route::group(['middleware' => 'api', "prefix" => "api", "as" => "api."], function () {
     Route::get('/attendants/{id}', [App\Http\Controllers\ApiController::class, 'attendants'])->name('attendants'); 
+    Route::get('/g_attendants/{id}', [App\Http\Controllers\ApiController::class, 'group_attendants'])->name('group_attendants'); 
 });

@@ -36,6 +36,18 @@
               </select>
               </div>
             </div>
+            <div class="row mb-1 align-items-center">
+              <div class="col-md-4">
+                Peserta Rapat
+              </div>
+              <div class="col-md-8">
+                <select id="attendants" multiple="multiple"  class="form-select border px-1 @error('attendants') is-invalid @enderror" value="{{ old('attendants[]') }}" name="attendants[]">
+                  @foreach ($users as $item)
+                      <option value="{{ $item->id_hash() }}">{{ $item->name }}</option>
+                  @endforeach
+              </select>
+              </div>
+            </div>
             <div class="mt-3 d-flex" >         
                 <button type="submit" class="btn btn-info me-2">Simpan</button>
                 <button type="button" onclick="history.back()" class="btn btn-light">Batal</button>
@@ -49,5 +61,27 @@
 @endsection
 
 @section('script')
+<script>
+  var api = '{{ route('api.group_attendants', $agenda->id) }}';
+  $(document).ready(function(){
+    $('#attendants').select2({
+      placeholder: 'Pilih Peserta Rapat'
+    });
+    getExisting();
+  });
 
+  function getExisting(){
+    $.ajax({
+    type: 'GET',
+    url: api
+    }).then(function (data) {
+      console.log(data);
+      var list = JSON.parse(data);
+      var idselected = [];
+      list.results.forEach(item =>idselected.push(item.id));
+      $('#attendants').val(idselected).trigger('change')
+    });
+  }
+
+</script>
 @endsection

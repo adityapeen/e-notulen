@@ -131,9 +131,11 @@
 
 @section('script')
 <script>
+  var api = '{{ url('api/g_attendants') }}/';
   $(document).ready( function() {
     autoDate();
     attendants();
+    getExisting($('#agenda_id').val());
   });
 
   function autoDate(){
@@ -163,6 +165,23 @@
   function attendants(){
     $('#attendants').select2({
       placeholder: 'Pilih Peserta Rapat'
+    });
+  }
+
+  $('#agenda_id').change(function(){
+    
+    getExisting($(this).val());
+  })
+
+  function getExisting(id){
+    $.ajax({
+    type: 'GET',
+    url: api+id
+    }).then(function (data) {
+      var list = JSON.parse(data);
+      var idselected = [];
+      list.results.forEach(item =>idselected.push(item.id));
+      $('#attendants').val(idselected).trigger('change')
     });
   }
 
