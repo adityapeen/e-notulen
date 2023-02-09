@@ -51,7 +51,20 @@ class NoteController extends Controller
             'type' => ['required'],
             'name' => ['required'],
             'date' => ['required'],
+            'file_notulen' => ['max:10000']
         ]);
+     
+        if ($request->file('file_notulen') != NULL) {            
+            $file = $request->file('file_notulen'); // menyimpan data file yang diupload ke variabel $file
+            $nama_file = time().'_'.$file->getClientOriginalName(); // add timestamp to filename
+                           
+            $tujuan_upload = 'notulensi'; // isi dengan nama folder tempat kemana file diupload
+            $file->move($tujuan_upload,$nama_file);
+        }
+        else {
+            $nama_file = NULL;
+        }
+     
         $notes = Note::updateOrCreate([
                 'agenda_id' => Hashids::decode($request->agenda_id)[0],
                 'type' => $request->type,
@@ -62,6 +75,7 @@ class NoteController extends Controller
                 'max_execute' => $request->max_execute,
                 'issues' => $request->issues,
                 'link_drive_notulen' => $request->link_drive_notulen,
+                'file_notulen' => $nama_file,
                 'status' => 'open',
                 'created_by' => auth()->user()->id,
         ]);
@@ -130,9 +144,31 @@ class NoteController extends Controller
             'type' => ['required'],
             'name' => ['required'],
             'date' => ['required'],
+            'file_notulen' => ['max:10000']
         ]);
         $id = Hashids::decode($hashed_id);
         $notes = Note::findOrFail($id)->first();
+
+        if ($request->hasFile('file_notulen')) {
+            $directory = 'notulensi'; // isi dengan nama folder tempat kemana file diupload
+            if($notes->file_notulen != NULL){
+                try {
+                    $file_path = realpath($directory . '/' . $notes->file_notulen);
+                    if (file_exists($file_path)) {
+                        unlink($file_path);
+                    }
+                } catch (Throwable $e) {
+                    $e;
+                }         
+            }
+            $file = $request->file('file_notulen'); // menyimpan data file yang diupload ke variabel $file
+            $nama_file = time().'_'.$file->getClientOriginalName();
+            $file->move($directory,$nama_file);      
+        }
+        else {
+            $nama_file = $notes->file_notulen;
+        }
+
         $notes->update([
             'agenda_id' => Hashids::decode($request->agenda_id)[0],
             'type' => $request->type,
@@ -143,6 +179,7 @@ class NoteController extends Controller
             'max_execute' => $request->max_execute,
             'issues' => $request->issues,
             'link_drive_notulen' => $request->link_drive_notulen,
+            'file_notulen' => $nama_file,
             'status' => 'open',
             'updated_by' => auth()->user()->id,
         ]) ;

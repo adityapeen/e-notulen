@@ -20,6 +20,7 @@ class Note extends Model
         'max_execute',
         'issues',
         'link_drive_notulen',
+        'file_notulen',
         'status',
         'created_by',
         'updated_by'

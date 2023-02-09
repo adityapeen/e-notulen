@@ -13,7 +13,7 @@
         </div>
         <div class="card-body pb-2">
           
-          <form action={{ route('admin.notes.store')}} method="POST">
+          <form action={{ route('admin.notes.store')}} method="POST" enctype="multipart/form-data">
             @csrf
             @method('post')
             <div class="row mb-1 align-items-center">
@@ -79,13 +79,17 @@
               </div>
             </div>  
             <div class="row mb-1 align-items-center">
-              <div class="col-md-4">
+              <div class="col-md-4 align-top">
                 Link Drive
               </div>
               <div class="col-md-8">
                 <input type="text" id="link_drive_notulen" class="form-control border px-1 @error('link_drive_notulen') is-invalid @enderror" name="link_drive_notulen" value="{{ old('link_drive_notulen') }}">
+                <div class="input-group input-group-outline my-1">
+                  <input type="file" class="form-control @error('file_notulen') is-invalid @enderror" name="file_notulen" value="{{ old('file_notulen') }}">
+                </div>
               </div>
             </div>  
+            
             <div class="mt-3 d-flex" >         
                 <button type="submit" class="btn btn-info me-2">Simpan</button>
                 <button type="button" onclick="history.back()" class="btn btn-light">Batal</button>
@@ -110,7 +114,7 @@
               Daftar Peserta Rapat
             </div>
             <div class="col-md-8">
-              <select id="attendants" multiple="multiple"  class="form-select border px-1 @error('attendants') is-invalid @enderror" value="{{ old('attendants') }}" name="attendants[]">
+              <select id="attendants" multiple="multiple"  class="form-select border px-1 @error('attendants') is-invalid @enderror" value="{{ old('attendants[]') }}" name="attendants[]">
                 @foreach ($users as $item)
                     <option value="{{ $item->id_hash() }}">{{ $item->name }}</option>
                 @endforeach

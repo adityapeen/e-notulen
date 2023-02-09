@@ -30,6 +30,7 @@ Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], f
     Route::post('/notes/lock/{id}', [App\Http\Controllers\Admin\NoteController::class, 'lock'])->name('lock');
     Route::get('/notes/send-mom/{id}', [App\Http\Controllers\MoMController::class, 'send_mom'])->name('notes.mom');
     Route::get('/notes/view/{id}', [App\Http\Controllers\Admin\NoteController::class, 'show'])->name('notes.view');
+    Route::get('/notes/test-mom/', [App\Http\Controllers\MoMController::class, 'test_file'])->name('notes.test');
 });
 
 Route::group(['middleware' => 'api', "prefix" => "api", "as" => "api."], function () {

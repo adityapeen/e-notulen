@@ -13,7 +13,7 @@
         </div>
         <div class="card-body pb-2">
           
-          <form action={{ route('admin.notes.update', $note->id )}} method="POST">
+          <form action={{ route('admin.notes.update', $note->id )}} method="POST" enctype="multipart/form-data">
             @csrf
             @method('put')
             <div class="row mb-1 align-items-center">
@@ -84,6 +84,12 @@
               </div>
               <div class="col-md-8">
                 <input type="text" id="link_drive_notulen" class="form-control border px-1 @error('link_drive_notulen') is-invalid @enderror" name="link_drive_notulen" value="{{ $note->link_drive_notulen }}">
+                <div class="input-group input-group-outline my-1">
+                  <input type="file" class="form-control @error('file_notulen') is-invalid @enderror" name="file_notulen" value="{{ $note->file_notulen }}">
+                </div>
+                @if ($note->file_notulen != NULL)
+                    {{ $note->file_notulen }}
+                @endif
               </div>
             </div>  
             <div class="mt-3 d-flex" >         
