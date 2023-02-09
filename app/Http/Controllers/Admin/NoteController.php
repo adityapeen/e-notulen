@@ -186,11 +186,32 @@ class NoteController extends Controller
         if($notes){
             if(sizeof($request->attendants)>0){
                 $note_id = Hashids::decode($notes->id)[0];
-                Attendant::where('note_id', $note_id)->delete();
+                $attendants = Attendant::where('note_id', $note_id)->get();
+
+                $existing = array();
+                foreach ($attendants as $a){
+                    $data = $a->user_id;
+                    array_push($existing, $data);
+                }
+                
+                $new = array();
                 foreach( $request->attendants as $a){
+                    $data =  Hashids::decode($a)[0];
+                    array_push($new, $data);
+                }
+
+                $to_insert = array_diff($new,$existing);
+                $to_delete = array_diff($existing, $new);
+
+                // dd($to_delete, $to_insert);
+
+                foreach($to_delete as $user_id){
+                    Attendant::where(['note_id'=> $note_id, 'user_id' => $user_id])->first()->delete();
+                }
+                foreach($to_insert as $user_id){
                     Attendant::updateOrCreate([
-                        'note_id'=> $note_id,
-                        'user_id'=> Hashids::decode($a)[0]
+                        'note_id'=>$note_id,
+                        'user_id'=> $user_id
                     ]);
                 }
             }
