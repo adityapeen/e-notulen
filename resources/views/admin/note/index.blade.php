@@ -14,7 +14,7 @@
         </div>
         <div class="card-body pb-2">
           <div class="table-responsive">
-            <table class="table align-items-center mb-0" id="myTable">
+            <table class="table align-items-center mb-0" id="tableNotulen">
               <thead>
                 <tr>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama Rapat</th>
@@ -91,6 +91,7 @@
         <div class="modal-body">
           <div class="row"><div class="col-md-4">Issues</div><div class="col-md-8 font-weight-bold" id="note-issues"></div></div>
           <div class="row"><div class="col-md-4">Link</div><div class="col-md-8" id="note-link"></div></div>
+          <div class="row"><div class="col-md-4"></div><div class="col-md-8" ><a href="#" id="note-file" class="btn btn-sm btn-info mb-1">Lihat File</a></div></div>
           <div class="row"><div class="col-md-4">Peserta</div><div class="col-md-8" id="note-attendant"></div></div>
         </div>
         <div class="modal-footer">
@@ -106,6 +107,12 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <script>
+  $(document).ready(function(){
+    $('#tableNotulensi').DataTable({
+      ordering:  false
+    });
+  });
+  
   const handleDestroy = id =>
       swal({
           title: "Apakah anda yakin menghapus data ini ?",
@@ -173,13 +180,17 @@
 
     const handleView = id =>{
       var link = "{{url('/admin/notes/view')}}/" + id;
+      var url = "{{ url('/notulensi') }}/";
       $.ajax({
               url: link,
               context: document.body
             }).done(function(res) {
+              if(res.note.file_notulen !== null ) url=url+res.note.file_notulen;
+              else url='#';
               $('#modal-title').html(res.note.name + " === "+res.note.date);
               $('#note-issues').html(res.note.issues);
               $('#note-link').html(res.note.link_drive_notulen);
+              $('#note-file').attr('href',url);
               $('#note-attendant').empty();
               res.attendants.forEach(item => {
                 $('#note-attendant').append('<li>'+item+'</li>');
