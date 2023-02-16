@@ -31,9 +31,12 @@ Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], f
     Route::get('/notes/send-mom/{id}', [App\Http\Controllers\MoMController::class, 'send_mom'])->name('notes.mom');
     Route::get('/notes/view/{id}', [App\Http\Controllers\Admin\NoteController::class, 'show'])->name('notes.view');
     Route::get('/notes/test-mom/', [App\Http\Controllers\MoMController::class, 'test_file'])->name('notes.test');
+    Route::get('/notes/action/{id}', [App\Http\Controllers\Admin\NoteController::class, 'action_item'])->name('notes.action');
 });
 
 Route::group(['middleware' => 'api', "prefix" => "api", "as" => "api."], function () {
     Route::get('/attendants/{id}', [App\Http\Controllers\ApiController::class, 'attendants'])->name('attendants'); 
     Route::get('/g_attendants/{id}', [App\Http\Controllers\ApiController::class, 'group_attendants'])->name('group_attendants'); 
+    Route::get('/act_pic/{id}', [App\Http\Controllers\ApiController::class, 'action_pic'])->name('action_pic'); 
+    Route::resource('/actions', App\Http\Controllers\ActionItemsController::class)->except(['index']);
 });

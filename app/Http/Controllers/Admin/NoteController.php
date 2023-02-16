@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Note;
 use App\Models\Agenda;
 use App\Http\Controllers\Controller;
+use App\Models\ActionItems;
 use App\Models\Attendant;
 use App\Models\User;
+use App\Models\UserGroup;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
 
@@ -247,5 +249,17 @@ class NoteController extends Controller
         }else{
             return back()->withErrors(['Data <strong>gagal</strong> diubah!']);
         }
+    }
+
+    public function action_item(String $hashed_id){
+        $title = "Action Items";
+        $note_id = Hashids::decode($hashed_id)[0];
+        $note = Note::findOrFail($note_id);
+        $actions = ActionItems::where('note_id',$note_id)->get();
+        $attendants = UserGroup::where('agenda_id',$note->agenda_id)->get();
+        if(sizeof($actions)>0)
+            return view('admin.note.action_edit', compact(['title','note','actions', 'attendants']));
+        else 
+            return view('admin.note.action', compact(['title','note','actions', 'attendants']));
     }
 }

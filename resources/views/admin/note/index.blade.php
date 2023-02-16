@@ -19,6 +19,7 @@
                 <tr>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama Rapat</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tanggal</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action Items</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
                   <th class="text-secondary opacity-7"></th>
                 </tr>
@@ -32,6 +33,9 @@
                   </td>
                   <td class="align-middle text-sm">
                     {{ $item->date }}
+                  </td>
+                  <td class="align-middle text-sm">
+                    <a href="{{ route('admin.notes.action', [$item->id] ) }}" class="btn btn-sm bg-gradient-info">Action Items</a>
                   </td>
                   <td class="align-middle text-sm">
                     <span class="badge badge-sm bg-gradient-{{ $item->status == "open" ? "success":"danger" }}">{{ $item->status }}</span>
