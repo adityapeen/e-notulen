@@ -21,9 +21,9 @@ class ActionItems extends Model
         'updated_by',
     ];
 
-    public function agenda()
+    public function note()
     {
-        return $this->belongsTo(Agenda::class);
+        return $this->belongsTo(Note::class);
     }
 
     public function creator()
