@@ -144,7 +144,6 @@
     var day = now.getDate();
     var smg = day + 7;
     var h = now.getHours();
-    var m = now.getMinutes();
     if (month < 10) 
         month = "0" + month;
     if (day < 10) {
@@ -158,7 +157,7 @@
     $('#date').val(today);
     $('#max_execute').val(seminggu);
     $('input[type="time"]').each(function(){ 
-      $(this).attr({'value': h + ':' + m});
+      $(this).attr({'value': h + ':00'});
     });
   }
 
