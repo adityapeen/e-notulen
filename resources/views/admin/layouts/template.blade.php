@@ -40,7 +40,7 @@
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 
-<body class="g-sidenav-show  bg-gray-200">
+<body class="g-sidenav-show  bg-gray-200 g-sidenav-hidden">
    <!-- Left Sidebar Start -->
    @include('admin.layouts.sidebar')
    <!-- Left Sidebar End -->
