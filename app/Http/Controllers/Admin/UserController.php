@@ -138,4 +138,31 @@ class UserController extends Controller
             return back()->withErrors(['Data <strong>gagal</strong> dihapus!']);
         }
     }
+
+    public function password()
+    {
+        $title = "Change Password";
+        $user = User::findOrFail(auth()->user()->id)->first();
+        return view('admin.user.password', compact(['user','title']));
+    }
+
+    public function change_password(Request $request){
+        $request->validate([
+            'old_password' => ['required'],
+            'new_password' => ['required'],
+        ]);
+        $user = User::findOrFail(auth()->user()->id)->first();
+ 
+        #Match The Old Password
+        if(!Hash::check($request->old_password, auth()->user()->password)){
+            return back()->withErrors(["<strong>Old Password doesn't match!</strong>"]);
+        }
+
+        #Update the new Password
+        User::whereId(auth()->user()->id)->update([
+            'password' => Hash::make($request->new_password)
+        ]);
+
+        return back()->with('success','Password <strong>berhasil</strong> diubah!');
+    }
 }

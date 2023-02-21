@@ -19,21 +19,33 @@
             </a>
             <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
               <li class="mb-2">
+                <a class="dropdown-item border-radius-md" href="{{ route('admin.users.password') }}">
+                  <div class="d-flex py-1">
+                    <div class="my-auto">
+                      <img src="{{ asset('assets/img/password.png') }}" class="avatar avatar-sm  me-3 ">
+                    </div>
+                    <div class="d-flex flex-column justify-content-center">    
+                      <h6 class="text-sm font-weight-normal mb-1">
+                        <span class="font-weight-bold">
+                        {{ __('Change Password') }}
+                        </span>                        
+                      </h6>
+                    </div>
+                  </div>
+                </a>
+              </li>
+              <li class="mb-2">
                 <a class="dropdown-item border-radius-md" href="javascript:;">
                   <div class="d-flex py-1">
                     <div class="my-auto">
-                      <img src="../assets/img/team-2.jpg" class="avatar avatar-sm  me-3 ">
+                      <img src="{{ asset('assets/img/user.png') }}" class="avatar avatar-sm  me-3 ">
                     </div>
-                    <div class="d-flex flex-column justify-content-center">
-                    
-                        
+                    <div class="d-flex flex-column justify-content-center" onclick="event.preventDefault();
+                    document.getElementById('logout-form').submit();">    
                       <h6 class="text-sm font-weight-normal mb-1">
-                        <span class="font-weight-bold" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                        <span class="font-weight-bold" href="{{ route('logout') }}"                                       >
                                         {{ __('Logout') }}
                       </span>
-
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>

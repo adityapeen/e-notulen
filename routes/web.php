@@ -36,6 +36,8 @@ Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], f
     Route::get('/notes/test-mom/', [App\Http\Controllers\MoMController::class, 'test_file'])->name('notes.test');
     Route::get('/notes/action/{id}', [App\Http\Controllers\Admin\NoteController::class, 'action_item'])->name('notes.action');
     Route::get('/reminder', [App\Http\Controllers\MoMController::class, 'send_reminder'])->name('notes.reminder');
+    Route::get('/users/password', [App\Http\Controllers\Admin\UserController::class, 'password'])->name('users.password');
+    Route::post('/users/password', [App\Http\Controllers\Admin\UserController::class, 'change_password'])->name('users.change_password');
 });
 
 Route::group(['middleware' => 'api', "prefix" => "api", "as" => "api."], function () {
