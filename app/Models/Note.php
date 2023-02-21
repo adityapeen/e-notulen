@@ -26,6 +26,10 @@ class Note extends Model
         'updated_by'
     ];
 
+    public function agenda()
+    {
+        return $this->belongsTo(Agenda::class);
+    }
     public function creator()
     {
         return $this->belongsTo(User::class);

@@ -30,6 +30,7 @@
                   <td class="text-sm">
                     <h6 class="mb-0">{{ $item->name }}</h6>
                     <span class="badge badge-sm bg-gradient-{{ $item->type == "public" ? "success":"info" }}" >{{ $item->type }}</span>
+                    <span class="badge badge-sm bg-gradient-secondary" >{{ $item->agenda->name }}</span>
                   </td>
                   <td class="align-middle text-sm">
                     {{ $item->date }}
