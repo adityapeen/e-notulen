@@ -58,7 +58,7 @@ class NoteController extends Controller
      
         if ($request->file('file_notulen') != NULL) {            
             $file = $request->file('file_notulen'); // menyimpan data file yang diupload ke variabel $file
-            $nama_file = time().'_'.$file->getClientOriginalName(); // add timestamp to filename
+            $nama_file = $file->getClientOriginalName().'_'.time(); // add timestamp to filename
                            
             $tujuan_upload = 'notulensi'; // isi dengan nama folder tempat kemana file diupload
             $file->move($tujuan_upload,$nama_file);
