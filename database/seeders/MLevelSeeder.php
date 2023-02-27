@@ -28,6 +28,9 @@ class MLevelSeeder extends Seeder
             "name" => "Kepala Pusat"
         ]);
         MLevel::create([
+            "name" => "Sekretaris Kapus"
+        ]);
+        MLevel::create([
             "name" => "Kepala Bagian Umum"
         ]);
         MLevel::create([

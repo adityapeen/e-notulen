@@ -24,6 +24,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             MSatkerSeeder::class,
             MLevelSeeder::class,
+            AgendaSeeder::class,
+            UserSeeder::class
         ]);
 
     }
