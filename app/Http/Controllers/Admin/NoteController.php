@@ -49,7 +49,7 @@ class NoteController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'agenda_id' => ['required'],
+            // 'agenda_id' => ['required'],
             'type' => ['required'],
             'name' => ['required'],
             'date' => ['required'],
@@ -68,7 +68,7 @@ class NoteController extends Controller
         }
      
         $notes = Note::updateOrCreate([
-                'agenda_id' => Hashids::decode($request->agenda_id)[0],
+                'agenda_id' => $request->agenda_id == NULL ? NULL : Hashids::decode($request->agenda_id)[0],
                 'type' => $request->type,
                 'name' => $request->name,
                 'date' => $request->date,
@@ -142,7 +142,7 @@ class NoteController extends Controller
     public function update(Request $request, String $hashed_id)
     {
         $request->validate([
-            'agenda_id' => ['required'],
+            // 'agenda_id' => ['required'],
             'type' => ['required'],
             'name' => ['required'],
             'date' => ['required'],
@@ -172,7 +172,7 @@ class NoteController extends Controller
         }
 
         $notes->update([
-            'agenda_id' => Hashids::decode($request->agenda_id)[0],
+            'agenda_id' => $request->agenda_id == NULL ? NULL : Hashids::decode($request->agenda_id)[0],
             'type' => $request->type,
             'name' => $request->name,
             'date' => $request->date,
