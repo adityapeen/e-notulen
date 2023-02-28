@@ -48,11 +48,11 @@ class AgendaController extends Controller
     {
         $request->validate([
             'name' => ['required'],
-            'group_id' => ['required'],
+            // 'group_id' => ['required'],
         ]);
         $agenda = Agenda::updateOrCreate([
             'name' => $request->name,
-            'group_id' => Hashids::decode($request->group_id)[0],
+            'group_id' => $request->group_id == NULL ? NULL : Hashids::decode($request->group_id)[0],
             'created_by' => auth()->user()->id,
         ]);
         if($agenda){
@@ -109,12 +109,12 @@ class AgendaController extends Controller
     {
         $request->validate([
             'name' => ['required'],
-            'group_id' => ['required'],
+            // 'group_id' => ['required'],
         ]);
         $id = Hashids::decode($hashed_id)[0];
         $agenda = Agenda::findOrFail($id)->first()->update([
             'name' => $request->name,
-            'group_id' => Hashids::decode($request->group_id)[0],
+            'group_id' => $request->group_id == NULL ? NULL : Hashids::decode($request->group_id)[0],
             'updated_by' => auth()->user()->id,
         ]);
         if($agenda){

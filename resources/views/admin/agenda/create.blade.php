@@ -29,7 +29,7 @@
                 Group
               </div>
               <div class="col-md-8">
-                <select id="group_id" class="form-select border px-1 @error('group_id') is-invalid @enderror" value="{{ old('group_id') }}" name="group_id" required>
+                <select id="group_id" class="form-select border px-1 @error('group_id') is-invalid @enderror" value="{{ old('group_id') }}" name="group_id">
                   @foreach ($groups as $item)
                       <option value="{{ $item->id }}">{{ $item->name }}</option>
                   @endforeach
@@ -43,7 +43,7 @@
               <div class="col-md-8">
                 <select id="attendants" multiple="multiple"  class="form-select border px-1 @error('attendants') is-invalid @enderror" value="{{ old('attendants[]') }}" name="attendants[]">
                   @foreach ($users as $item)
-                      <option value="{{ $item->id_hash() }}">{{ $item->name }}</option>
+                      <option value="{{ $item->id_hash() }}">{{ $item->name.' - '.$item->satker->code }}</option>
                   @endforeach
               </select>
               </div>

@@ -29,7 +29,7 @@
                     <h6 class="mb-0">{{ $item->name }}</h6>
                   </td>
                   <td class="align-middle text-sm">
-                    {{ $item->group->name }}
+                    {{ $item->group != NULL ? $item->group->name : ""  }}
                   </td>
                   
                   <td class="align-middle">
