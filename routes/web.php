@@ -44,5 +44,6 @@ Route::group(['middleware' => 'api', "prefix" => "api", "as" => "api."], functio
     Route::get('/attendants/{id}', [App\Http\Controllers\ApiController::class, 'attendants'])->name('attendants'); 
     Route::get('/g_attendants/{id}', [App\Http\Controllers\ApiController::class, 'group_attendants'])->name('group_attendants'); 
     Route::get('/act_pic/{id}', [App\Http\Controllers\ApiController::class, 'action_pic'])->name('action_pic'); 
+    Route::get('/all_pic/{id}', [App\Http\Controllers\ApiController::class, 'all_pic'])->name('all_pic'); 
     Route::resource('/actions', App\Http\Controllers\ActionItemsController::class)->except(['index']);
 });

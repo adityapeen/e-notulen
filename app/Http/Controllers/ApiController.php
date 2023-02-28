@@ -60,4 +60,20 @@ class ApiController extends Controller
         }
         return json_encode(["results"=>$res]);
     }
+
+    function all_pic(String $hashed_id){
+        $note_id = Hashids::decode($hashed_id)[0]; //decode the hashed id
+        $pics = Attendant::where(['note_id'=>$note_id])->get();
+
+        $res = array();
+        foreach($pics as $a)
+        {
+            $item = array(
+                'id'    =>$a->user->id_hash(),
+                'text'  => $a->user->name
+            );
+            array_push($res,$item);
+        }
+        return json_encode(["results"=>$res]);
+    }
 }

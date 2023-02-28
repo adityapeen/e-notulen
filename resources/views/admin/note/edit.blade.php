@@ -22,6 +22,7 @@
               </div>
               <div class="col-md-8">
                 <select id="agenda_id" class="form-select border px-1 @error('agenda_id') is-invalid @enderror" value="{{ $note->agenda_id }}" name="agenda_id" required>
+                  <option>Pilih Agenda Rapat</option>
                   @foreach ($agendas as $item)
                       <option value="{{ $item->id }}" {{ $item->id == $note->agenda_id ? 'selected' : ''}}>{{ $item->name }}</option>
                   @endforeach
@@ -117,7 +118,7 @@
             <div class="col-md-8">
               <select id="attendants" multiple="multiple"  class="form-select border px-1 @error('attendants') is-invalid @enderror" value="{{ old('attendants') }}" name="attendants[]">
                 @foreach ($users as $item)
-                    <option value="{{ $item->id_hash() }}">{{ $item->name }}</option>
+                    <option value="{{ $item->id_hash() }}">{{ $item->name.' - '.$item->satker->code }}</option>
                 @endforeach
             </select>
             </div>
@@ -133,6 +134,9 @@
 @section('script')
 <script>
   $(document).ready( function() {
+    $('#agenda_id').select2({
+      placeholder: 'Pilih Agenda Rapat'
+    });
     attendants();
     getExisting();
   });

@@ -30,9 +30,10 @@
     <div class="col-md-3 me-1">
       <select class="form-control selection" multiple="multiple" name="who[][]" required>
         @foreach($attendants as $a)
-        <option value="{{ $a->user->id_hash() }}">{{ $a->user->name }}</option>
+        <option value="{{ $a->user->id_hash() }}">{{ $a->user->name.' - '.$a->user->satker->code }}</option>
         @endforeach
       </select>
+      <span class="btn btn-outline-secondary btn-sm mt-1" onclick="picAll(event)">All Satker</span>
     </div>
     <div class="col-md-1 me-1">
       <input type="date" id="date" class="form-control border px-1" name="due_date[]" value="">
@@ -73,7 +74,7 @@
           <form method="post" id="item-list" action="{{ route('api.actions.store') }}">
             @csrf
             @method('post')
-            <input type="hidden" name="note_id" value="{{ $note->id }}">
+            <input type="hidden" id="note_id" name="note_id" value="{{ $note->id }}">
 		        <div class="row" id="dynamic_form">
               <div class="input-group baru-data mb-1">
                 <div class="col-md-4 me-1">
@@ -87,11 +88,12 @@
                   </div>
                 </div>
                 <div class="col-md-3 me-1">
-                  <select id="select-pic" class="form-control" name="who[0][]" multiple="multiple" required>
+                  <select id="select-pic" class="form-control selection" name="who[0][]" multiple="multiple" required>
                     @foreach($attendants as $a)
-                    <option value="{{ $a->user->id_hash() }}">{{ $a->user->name }}</option>
+                    <option value="{{ $a->user->id_hash() }}">{{ $a->user->name.' - '.$a->user->satker->code }}</option>
                     @endforeach
                   </select>
+                  <span class="btn btn-outline-secondary btn-sm mt-1" onclick="picAll(event)">All Satker</span>
                 </div>
                 <div class="col-md-1 me-1">
                   <input type="date" id="date_first" class="form-control border px-1" name="due_date[]" value="">
@@ -128,5 +130,24 @@
     });
     $('#date_first').val(getSeminggu());
   });
+
+  var api = '{{ url("api/all_pic/") }}/';
+
+  async function picAll(event){
+    var note_id = $('#note_id').val();
+    const result = await $.ajax({
+    type: 'GET',
+    url: api+note_id
+    }).then(function (data) {
+      var list = JSON.parse(data);
+      var idselected = [];
+      list.results.forEach(item =>idselected.push(item.id));
+      $(event.target.parentNode.querySelector(".selection")).val(idselected).trigger('change');
+    });
+
+    return result;
+  }
+
+  
 </script>
 @endsection
