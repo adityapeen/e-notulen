@@ -35,7 +35,7 @@ function getSeminggu(){
       day = "0" + day;
     }
     var smg = date.getFullYear()+ '-' + month + '-' + day;
-    console.log(smg);
+    // console.log(smg);
     return smg;
     
 }
