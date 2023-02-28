@@ -82,7 +82,7 @@ class NoteController extends Controller
                 'created_by' => auth()->user()->id,
         ]);
         if($notes){
-            if(sizeof($request->attendants)>0){
+            if($request->attendants != null){
                 foreach( $request->attendants as $a){
                     Attendant::updateOrCreate([
                         'note_id'=>Hashids::decode($notes->id)[0],
@@ -186,7 +186,7 @@ class NoteController extends Controller
             'updated_by' => auth()->user()->id,
         ]) ;
         if($notes){
-            if(sizeof($request->attendants)>0){
+            if($request->attendants != null){
                 $note_id = Hashids::decode($notes->id)[0];
                 $attendants = Attendant::where('note_id', $note_id)->get();
 

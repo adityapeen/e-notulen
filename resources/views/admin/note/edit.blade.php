@@ -21,8 +21,8 @@
                 Agenda Rapat
               </div>
               <div class="col-md-8">
-                <select id="agenda_id" class="form-select border px-1 @error('agenda_id') is-invalid @enderror" value="{{ $note->agenda_id }}" name="agenda_id" required>
-                  <option>Pilih Agenda Rapat</option>
+                <select id="agenda_id" class="form-select border px-1 @error('agenda_id') is-invalid @enderror" value="{{ $note->agenda_id }}" name="agenda_id">
+                  <option value=>Pilih Agenda Rapat</option>
                   @foreach ($agendas as $item)
                       <option value="{{ $item->id }}" {{ $item->id == $note->agenda_id ? 'selected' : ''}}>{{ $item->name }}</option>
                   @endforeach

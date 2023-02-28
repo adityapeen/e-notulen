@@ -56,7 +56,7 @@ class AgendaController extends Controller
             'created_by' => auth()->user()->id,
         ]);
         if($agenda){
-            if(sizeof($request->attendants)>0){
+            if($request->attendants != null){
                 foreach( $request->attendants as $a){
                     UserGroup::updateOrCreate([
                         'agenda_id'=>Hashids::decode($agenda->id)[0],
@@ -118,7 +118,7 @@ class AgendaController extends Controller
             'updated_by' => auth()->user()->id,
         ]);
         if($agenda){
-            if(sizeof($request->attendants)>0){
+            if($request->attendants != null){
                 $agenda_id = $id;
                 $user_groups = UserGroup::where('agenda_id', $agenda_id)->get();
                 $existing = array();

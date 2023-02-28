@@ -21,8 +21,8 @@
                 Agenda Rapat
               </div>
               <div class="col-md-8">
-                <select id="agenda_id" class="form-select border px-1 @error('agenda_id') is-invalid @enderror" value="{{ old('agenda_id') }}" name="agenda_id" required>
-                  <option>Pilih Agenda Rapat</option>
+                <select id="agenda_id" class="form-select border px-1 @error('agenda_id') is-invalid @enderror" value="{{ old('agenda_id') }}" name="agenda_id">
+                  <option value=>Pilih Agenda Rapat</option>
                   @foreach ($agendas as $item)
                       <option value="{{ $item->id }}">{{ $item->name }}</option>
                   @endforeach
@@ -131,6 +131,7 @@
 @endsection
 
 @section('script')
+<script src="{{asset('assets/js/dynamic-form.js')}}"></script>
 <script>
   var api = '{{ url('api/g_attendants') }}/';
   $(document).ready( function() {
@@ -146,18 +147,14 @@
     var now = new Date();
     var month = (now.getMonth() + 1);               
     var day = now.getDate();
-    var smg = day + 7;
     var h = now.getHours();
     if (month < 10) 
         month = "0" + month;
     if (day < 10) {
       day = "0" + day;
     }
-    if (smg < 10){
-      smg = "0" + smg;
-    }
     var today = now.getFullYear() + '-' + month + '-' + day;
-    var seminggu = now.getFullYear() + '-' + month + '-' + smg;
+    var seminggu = getSeminggu();
     $('#date').val(today);
     $('#max_execute').val(seminggu);
     $('input[type="time"]').each(function(){ 
