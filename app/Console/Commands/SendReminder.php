@@ -42,6 +42,7 @@ class SendReminder extends Command
 
         $report = array();
         $fail = array();
+        $sent = 0;
 
         foreach($action_items as $item){
             $datediff = strtotime($item->due_date) - time();
@@ -71,6 +72,9 @@ class SendReminder extends Command
                 if(!$res->status){
                     array_push($fail, $item->name);
                 }
+                else{
+                    $sent++;
+                }
             }
             
         }
@@ -81,7 +85,7 @@ class SendReminder extends Command
             $status = true;
         }
 
-        Log::info("Cron job Berhasil di jalankan " . date('Y-m-d H:i:s')." - ".json_encode(['status'=>$status,'fail'=>$fail]));
+        Log::info("Cron job Berhasil di jalankan " . date('Y-m-d H:i:s')." - ".json_encode(['status'=>$status, 'sent'=> $sent,'fail'=>$fail]));
 
         return Command::SUCCESS;
     }
