@@ -8,6 +8,7 @@
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
+                    <div class="row align-items-center mb-3"><div class="col text-center"><img src="{{ asset('assets/img/logo-esdm.png')}}" class="img-fluid" ></div></div>
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
 

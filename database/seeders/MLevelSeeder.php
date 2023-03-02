@@ -39,6 +39,9 @@ class MLevelSeeder extends Seeder
         MLevel::create([
             "name" => "Subkoordinator"
         ]);
+        MLevel::create([
+            "name" => "Pegawai"
+        ]);
 
     }
 }
