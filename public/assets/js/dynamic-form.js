@@ -69,6 +69,21 @@ function getSeminggu(){
   });
  });
 
+async function picAll(event){
+  var note_id = $('#note_id').val();
+  const result = await $.ajax({
+  type: 'GET',
+  url: api_all_pic+note_id
+  }).then(function (data) {
+    var list = JSON.parse(data);
+    var idselected = [];
+    list.results.forEach(item =>idselected.push(item.id));
+    $(event.target.parentNode.querySelector(".selection")).val(idselected).trigger('change');
+  });
+
+  return result;
+}
+
       
  
 //  $('.btn-simpan').on('click', function () {

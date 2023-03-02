@@ -15,38 +15,6 @@
   </div>
 </div>
 
-<div class="row-template d-none">
-  <div class="input-group baru-data mb-1">
-    <input type="hidden" name="action_id[]" value="">
-    <div class="col-md-4 me-1">
-      <div class="input-group input-group-dynamic border rounded p-1">
-        <textarea class="form-control" name="what[]" rows="3" placeholder="What" spellcheck="false"></textarea>
-      </div>
-    </div>
-    <div class="col-md-3 me-1">
-      <div class="input-group input-group-dynamic border rounded p-1">
-        <textarea class="form-control" name="how[]" rows="3" placeholder="How" spellcheck="false"></textarea>
-      </div>
-    </div>
-    <div class="col-md-3 me-1">
-      <select class="form-control selection" multiple="multiple" name="who[][]">
-        @foreach($attendants as $a)
-        <option value="{{ $a->user->id_hash() }}">{{ $a->user->name.' - '.$a->user->satker->code }}</option>
-        @endforeach
-      </select>
-      <span class="btn btn-outline-secondary btn-sm mt-1" onclick="picAll(event)">All Satker</span>
-    </div>
-    <div class="col-md-1 me-1">
-      <input type="date" id="date" class="form-control border px-1" name="due_date[]" value="">
-    </div>
-    <div class="button-group ms-auto">
-        <button type="button" class="btn btn-success btn-tambah"><i class="fa fa-plus"></i></button>
-        <button type="button" class="btn btn-danger btn-hapus" style="display:none;"><i class="fa fa-times"></i></button>
-    </div>
-  </div>
-  <hr class="border border-bottom border-secondary">
-</div>
-
 <div class="row">
   <div class="col-12">
     <div class="card my-4">
@@ -73,10 +41,6 @@
           </div>
         </div>
         <div class="action-items">
-          <form method="post" id="item-list" action="{{ route('api.actions.update', $note->id ) }}">
-            @csrf
-            @method('put')
-            <input type="hidden" id="note_id" name="note_id" value="{{ $note->id }}">
 		        <div class="row" id="dynamic_form">
               <?php $idx = 0; ?>
               @foreach ($actions as $item)
@@ -93,28 +57,21 @@
                   </div>
                 </div>
                 <div class="col-md-3 me-1">
-                  <select class="form-control existing selection" id="{{ $item->id }}" data-id="{{ $item->id }}" name="who[{{ $idx++ }}][]" multiple="multiple">
+                  <select class="form-control existing" id="{{ $item->id }}" data-id="{{ $item->id }}" name="who[{{ $idx++ }}][]" multiple="multiple">
                     @foreach($attendants as $a)
                     <option value="{{ $a->user->id_hash() }}">{{ $a->user->name.' - '.$a->user->satker->code }}</option>
                     @endforeach
                   </select>
-                  <span class="btn btn-outline-secondary btn-sm mt-1" onclick="picAll(event)">All Satker</span>
                 </div>
                 <div class="col-md-1 me-1">
                   <input type="date" id="date_first" class="form-control border px-1" name="due_date[]" value="{{ $item->due_date}}">
                 </div>
-                <div class="button-group ms-auto">
-                    <button type="button" class="btn btn-success btn-tambah" style="display:none;"><i class="fa fa-plus"></i></button>
-                    <button type="button" class="btn btn-danger btn-hapus"><i class="fa fa-times"></i></button>
-                </div>
               </div>
-              <hr class="border border-bottom border-secondary">
+              <hr class="border border-bottom border-info">
               @endforeach
 
             </div>
-            <button type="submit" class="btn btn-primary btn-simpan"><i class="fa fa-save"></i> Submit</button>
             <button type="button" onclick="history.back()" class="btn btn-light">Batal</button>
-	        </form>
         </div>
       </div>
     </div>
@@ -128,8 +85,7 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="{{asset('assets/js/dynamic-form.js')}}"></script>
 <script>
-  var api_exist = '{{ url("api/act_pic/") }}/';
-  var api_all_pic = '{{ url("api/all_pic/") }}/';
+  var api = '{{ url("api/act_pic/") }}/';
 
   $(document).ready(function(){    
     $('.existing').each(function(index){
@@ -150,7 +106,7 @@
   async function getExisting(id){
     const result = await $.ajax({
     type: 'GET',
-    url: api_exist+id
+    url: api+id
     }).then(function (data) {
       var list = JSON.parse(data);
       var idselected = [];

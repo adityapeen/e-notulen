@@ -43,6 +43,7 @@
         <button type="button" class="btn btn-danger btn-hapus" style="display:none;"><i class="fa fa-times"></i></button>
     </div>
   </div>
+  <hr class="border border-bottom border-secondary">
 </div>
 
 <div class="row">
@@ -102,7 +103,8 @@
                     <button type="button" class="btn btn-success btn-tambah"><i class="fa fa-plus"></i></button>
                     <button type="button" class="btn btn-danger btn-hapus" style="display:none;"><i class="fa fa-times"></i></button>
                 </div>
-		            </div>
+              </div>
+              <hr class="border border-bottom border-secondary">
 	            </div>
 				      <button type="submit" class="btn btn-primary btn-simpan"><i class="fa fa-save"></i> Submit</button>
               <button type="button" onclick="history.back()" class="btn btn-light">Batal</button>
@@ -131,23 +133,7 @@
     $('#date_first').val(getSeminggu());
   });
 
-  var api = '{{ url("api/all_pic/") }}/';
-
-  async function picAll(event){
-    var note_id = $('#note_id').val();
-    const result = await $.ajax({
-    type: 'GET',
-    url: api+note_id
-    }).then(function (data) {
-      var list = JSON.parse(data);
-      var idselected = [];
-      list.results.forEach(item =>idselected.push(item.id));
-      $(event.target.parentNode.querySelector(".selection")).val(idselected).trigger('change');
-    });
-
-    return result;
-  }
-
+  var api_all_pic = '{{ url("api/all_pic/") }}/';
   
 </script>
 @endsection

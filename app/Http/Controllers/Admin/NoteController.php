@@ -256,7 +256,9 @@ class NoteController extends Controller
         $note_id = Hashids::decode($hashed_id)[0];
         $note = Note::findOrFail($note_id);
         $actions = ActionItems::where('note_id',$note_id)->get();
-        $attendants = UserGroup::where('agenda_id',$note->agenda_id)->get();
+        $attendants = Attendant::where('note_id',$note_id)->get();
+        if($note->status=='lock')
+            return view('admin.note.action_view', compact(['title','note','actions', 'attendants']));
         if(sizeof($actions)>0)
             return view('admin.note.action_edit', compact(['title','note','actions', 'attendants']));
         else 
