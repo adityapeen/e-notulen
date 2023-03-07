@@ -58,6 +58,18 @@ class AgendaSeeder extends Seeder
             "name" => "Rapat Zona Integritas"
         ]);
         Agenda::create([
+            "name" => "Rapat Assessment Center"
+        ]);
+        Agenda::create([
+            "name" => "Rapat Magang"
+        ]);
+        Agenda::create([
+            "name" => "Rapat Tugas Belajar"
+        ]);
+        Agenda::create([
+            "name" => "Rapat Progress IP ASN"
+        ]);
+        Agenda::create([
             "name" => "Rapat 1-on-1 Anggaran SBP"
         ]);
         Agenda::create([
