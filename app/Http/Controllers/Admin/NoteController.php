@@ -266,4 +266,20 @@ class NoteController extends Controller
         else 
             return view('admin.note.action', compact(['title','note','actions', 'attendants']));
     }
+
+    public function byAgenda(String $hashed_id){
+        $agenda_id = Hashids::decode($hashed_id)[0];
+        $agenda = Agenda::findOrFail($agenda_id);
+        $title = "Daftar Notulensi - ".$agenda->name;
+        $notes = Note::where('agenda_id', $agenda_id)->get();
+
+        return view('admin.note.index-agenda', compact(['title','notes','agenda_id']));
+    }
+
+    public function showNote(String $hashed_id){
+        $title = "Notulensi";
+        $note_id = Hashids::decode($hashed_id)[0];
+        $note = Note::findOrFail($note_id);
+        return view('admin.note.view', compact(['title','note']));
+    }
 }

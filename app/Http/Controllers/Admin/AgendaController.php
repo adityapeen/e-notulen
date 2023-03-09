@@ -21,7 +21,7 @@ class AgendaController extends Controller
     public function index()
     {
         $title = "Daftar Rapat";
-        $agendas = Agenda::all();
+        $agendas = Agenda::withCount(['notes'])->get();
         return view('admin.agenda.index', compact(['agendas','title']));
     }
 

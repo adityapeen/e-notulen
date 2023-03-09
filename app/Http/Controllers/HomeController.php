@@ -32,6 +32,7 @@ class HomeController extends Controller
         $agendas = Agenda::all()->count();
         $notes = Note::all()->count();
         $actions = ActionItems::all()->count();
-        return view('admin.notulen', compact(['users','agendas','notes','actions']));
+        $todays = Note::where('date', date('Y-m-d'))->get();
+        return view('admin.notulen', compact(['users','agendas','notes','actions','todays']));
     }
 }
