@@ -28,7 +28,7 @@
       </div>
     </div>
     <div class="col-md-3 me-1">
-      <select class="form-control selection" multiple="multiple" name="who[][]" required>
+      <select class="form-control selection" multiple="multiple" name="who[][]">
         @foreach($attendants as $a)
         <option value="{{ $a->user->id_hash() }}">{{ $a->user->name.' - '.$a->user->satker->code }}</option>
         @endforeach
@@ -89,7 +89,7 @@
                   </div>
                 </div>
                 <div class="col-md-3 me-1">
-                  <select id="select-pic" class="form-control selection" name="who[0][]" multiple="multiple" required>
+                  <select id="select-pic" class="form-control selection" name="who[0][]" multiple="multiple">
                     @foreach($attendants as $a)
                     <option value="{{ $a->user->id_hash() }}">{{ $a->user->name.' - '.$a->user->satker->code }}</option>
                     @endforeach
