@@ -51,5 +51,9 @@ class Note extends Model
             get: fn ($value) => Hashids::encode($value)
         );
     }
+    public function agenda_hash()
+    {
+        return  Hashids::encode($this->agenda_id);
+    }
 
 }
