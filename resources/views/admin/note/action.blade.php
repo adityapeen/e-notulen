@@ -19,12 +19,12 @@
   <div class="input-group baru-data mb-1">
     <div class="col-md-4 me-1">
       <div class="input-group input-group-dynamic border rounded p-1">
-        <textarea class="form-control" name="what[]" rows="3" placeholder="What" spellcheck="false" required></textarea>
+        <textarea class="form-control" name="what[]" rows="7" placeholder="What" spellcheck="false" required></textarea>
       </div>
     </div>
     <div class="col-md-3 me-1">
       <div class="input-group input-group-dynamic border rounded p-1">
-        <textarea class="form-control" name="how[]" rows="3" placeholder="How" spellcheck="false" required></textarea>
+        <textarea class="form-control" name="how[]" rows="7" placeholder="How" spellcheck="false" required></textarea>
       </div>
     </div>
     <div class="col-md-3 me-1">
@@ -80,12 +80,12 @@
               <div class="input-group baru-data mb-1">
                 <div class="col-md-4 me-1">
                   <div class="input-group input-group-dynamic border rounded p-1">
-                    <textarea class="form-control" name="what[]" rows="3" placeholder="What" spellcheck="false" required></textarea>
+                    <textarea class="form-control" name="what[]" rows="7" placeholder="What" spellcheck="false" required></textarea>
                   </div>
                 </div>
                 <div class="col-md-3 me-1">
                   <div class="input-group input-group-dynamic border rounded p-1">
-                    <textarea class="form-control" name="how[]" rows="3" placeholder="How" spellcheck="false" required></textarea>
+                    <textarea class="form-control" name="how[]" rows="7" placeholder="How" spellcheck="false" required></textarea>
                   </div>
                 </div>
                 <div class="col-md-3 me-1">

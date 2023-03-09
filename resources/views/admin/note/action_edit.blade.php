@@ -20,12 +20,12 @@
     <input type="hidden" name="action_id[]" value="">
     <div class="col-md-4 me-1">
       <div class="input-group input-group-dynamic border rounded p-1">
-        <textarea class="form-control" name="what[]" rows="3" placeholder="What" spellcheck="false"></textarea>
+        <textarea class="form-control" name="what[]" rows="7" placeholder="What" spellcheck="false"></textarea>
       </div>
     </div>
     <div class="col-md-3 me-1">
       <div class="input-group input-group-dynamic border rounded p-1">
-        <textarea class="form-control" name="how[]" rows="3" placeholder="How" spellcheck="false"></textarea>
+        <textarea class="form-control" name="how[]" rows="7" placeholder="How" spellcheck="false"></textarea>
       </div>
     </div>
     <div class="col-md-3 me-1">
@@ -84,12 +84,12 @@
                 <input type="hidden" name="action_id[]" value="{{ $item->id }}">
                 <div class="col-md-4 me-1">
                   <div class="input-group input-group-dynamic border rounded p-1">
-                    <textarea class="form-control" name="what[]" rows="3" placeholder="What" spellcheck="false">{{ $item->what}}</textarea>
+                    <textarea class="form-control" name="what[]" rows="7" placeholder="What" spellcheck="false">{{ $item->what}}</textarea>
                   </div>
                 </div>
                 <div class="col-md-3 me-1">
                   <div class="input-group input-group-dynamic border rounded p-1">
-                    <textarea class="form-control" name="how[]" rows="3" placeholder="How" spellcheck="false">{{ $item->how}}</textarea>
+                    <textarea class="form-control" name="how[]" rows="7" placeholder="How" spellcheck="false">{{ $item->how}}</textarea>
                   </div>
                 </div>
                 <div class="col-md-3 me-1">
