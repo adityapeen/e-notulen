@@ -51,11 +51,13 @@ class ActionItemsController extends Controller
             if(!$act){
                 return back()->withErrors(['Data <strong>gagal</strong> ditambahkan!']);
             }
-            foreach($request->who[$i] as $pic){
-                Pic::updateOrCreate([
-                    'action_id' => Hashids::decode($act->id)[0],
-                    'user_id' => Hashids::decode($pic)[0]
-                ]);
+            if($request->who != null){
+                foreach($request->who[$i] as $pic){
+                    Pic::updateOrCreate([
+                        'action_id' => Hashids::decode($act->id)[0],
+                        'user_id' => Hashids::decode($pic)[0]
+                    ]);
+                }
             }
         }
         return redirect()->route("admin.notes.action", $request->note_id)->with('success','Data <strong>berhasil</strong> disimpan');
@@ -141,11 +143,13 @@ class ActionItemsController extends Controller
                 if(!$act){
                     return back()->withErrors(['Data <strong>gagal</strong> ditambahkan!']);
                 }
-                foreach($request->who[$i] as $pic){
-                    Pic::updateOrCreate([
-                        'action_id' => Hashids::decode($act->id)[0],
-                        'user_id' => Hashids::decode($pic)[0]
-                    ]);
+                if($request->who != null){
+                    foreach($request->who[$i] as $pic){
+                        Pic::updateOrCreate([
+                            'action_id' => Hashids::decode($act->id)[0],
+                            'user_id' => Hashids::decode($pic)[0]
+                        ]);
+                    }
                 }
             }
         }
