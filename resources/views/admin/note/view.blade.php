@@ -24,7 +24,7 @@
         </div>
       </div>
       <div class="card-body vh-100">
-        <iframe width="100%" height="100%" src="{{ $note->link_drive_notulen}}">
+        <iframe width="100%" height="100%" src="{{ $note->file_notulen == NULL ? $note->link_drive_notulen : asset('notulensi/'.$note->file_notulen)}}">
         </iframe>
         
       </div>
