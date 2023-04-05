@@ -6,6 +6,22 @@ function addForm(){
         placeholder: 'Pilih PIC',
     });
     $('.baru-data').last().find('input[type="date"]').val(getSeminggu());
+    $('.baru-data').last().find('.textform').each(function() {
+      ClassicEditor
+      .create( this ,{
+        height: "300px",
+        removePlugins: [ 'Heading' ],
+        toolbar: [ 'bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote' , 'link', 'undo', 'redo']
+      })
+      .then(editor => {
+      editor.model.document.on('change:data', () => {
+        this.value = editor.getData();
+      });
+    })
+      .catch( error => {
+          console.error( error );
+    })
+    });
 
 }
 

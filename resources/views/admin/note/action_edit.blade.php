@@ -19,14 +19,10 @@
   <div class="input-group baru-data mb-1">
     <input type="hidden" name="action_id[]" value="">
     <div class="col-md-4 me-1">
-      <div class="input-group input-group-dynamic border rounded p-1">
-        <textarea class="form-control" name="what[]" rows="7" placeholder="What" spellcheck="false"></textarea>
-      </div>
+      <textarea class="form-control textform" name="what[]" rows="7" placeholder="What" spellcheck="false" required></textarea>
     </div>
     <div class="col-md-3 me-1">
-      <div class="input-group input-group-dynamic border rounded p-1">
-        <textarea class="form-control" name="how[]" rows="7" placeholder="How" spellcheck="false"></textarea>
-      </div>
+      <textarea class="form-control textform" name="how[]" rows="7" placeholder="How" spellcheck="false" required></textarea>
     </div>
     <div class="col-md-3 me-1">
       <select class="form-control selection" multiple="multiple" name="who[][]">
@@ -83,14 +79,10 @@
               <div class="input-group baru-data mb-1">
                 <input type="hidden" name="action_id[]" value="{{ $item->id }}">
                 <div class="col-md-4 me-1">
-                  <div class="input-group input-group-dynamic border rounded p-1">
-                    <textarea class="form-control" name="what[]" rows="7" placeholder="What" spellcheck="false">{{ $item->what}}</textarea>
-                  </div>
+                  <textarea class="textarea" name="what[]" rows="7" placeholder="How" spellcheck="false" required></textarea>
                 </div>
                 <div class="col-md-3 me-1">
-                  <div class="input-group input-group-dynamic border rounded p-1">
-                    <textarea class="form-control" name="how[]" rows="7" placeholder="How" spellcheck="false">{{ $item->how}}</textarea>
-                  </div>
+                  <textarea class="textarea" name="how[]" rows="7" placeholder="How" spellcheck="false" required></textarea>
                 </div>
                 <div class="col-md-3 me-1">
                   <select class="form-control existing selection" id="{{ $item->id }}" data-id="{{ $item->id }}" name="who[{{ $idx++ }}][]" multiple="multiple">
@@ -127,6 +119,7 @@
 @section('script')
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="{{asset('assets/js/dynamic-form.js')}}"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
 <script>
   var api_exist = '{{ url("api/act_pic/") }}/';
   var api_all_pic = '{{ url("api/all_pic/") }}/';
@@ -162,5 +155,25 @@
     return result;
   }
     
+</script>
+
+{{-- Generate Text Editor --}}
+<script> 
+  $(".textarea").each(function(){
+    ClassicEditor
+      .create( this ,{
+        height: "300px",
+        removePlugins: [ 'Heading' ],
+        toolbar: [ 'bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote' , 'link', 'undo', 'redo']
+      })
+      .then(editor => {
+      editor.model.document.on('change:data', () => {
+        this.value = editor.getData();
+      });
+    })
+      .catch( error => {
+          console.error( error );
+    } )
+});
 </script>
 @endsection
