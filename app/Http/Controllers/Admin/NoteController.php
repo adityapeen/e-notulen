@@ -22,7 +22,7 @@ class NoteController extends Controller
     public function index()
     {
         $title = "Daftar Notulensi";
-        $notes = Note::all();
+        $notes = Note::orderBy('date', 'DESC')->paginate(15);
         return view('admin.note.index', compact(['notes','title']));
     }
 
