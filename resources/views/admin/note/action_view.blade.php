@@ -48,12 +48,12 @@
                 <input type="hidden" name="action_id[]" value="{{ $item->id }}">
                 <div class="col-md-4 me-1">
                   <div class="input-group input-group-dynamic border rounded p-1">
-                    <textarea class="form-control" name="what[]" rows="7" placeholder="What" spellcheck="false">{{ $item->what}}</textarea>
+                    {{ $item->what}}
                   </div>
                 </div>
                 <div class="col-md-3 me-1">
                   <div class="input-group input-group-dynamic border rounded p-1">
-                    <textarea class="form-control" name="how[]" rows="7" placeholder="How" spellcheck="false">{{ $item->how}}</textarea>
+                    {{ $item->how}}
                   </div>
                 </div>
                 <div class="col-md-3 me-1">
@@ -94,8 +94,6 @@
         placeholder: 'Pilih PIC',
       });
       getExisting(id);
-      
-    
     });
     
     $('#date_first').val(getSeminggu());
@@ -114,7 +112,6 @@
       var selector = '#'+id
       $(selector).val(idselected).trigger('change');
     });
-
     return result;
   }
     

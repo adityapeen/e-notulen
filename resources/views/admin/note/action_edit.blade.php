@@ -79,10 +79,10 @@
               <div class="input-group baru-data mb-1">
                 <input type="hidden" name="action_id[]" value="{{ $item->id }}">
                 <div class="col-md-4 me-1">
-                  <textarea class="textarea" name="what[]" rows="7" placeholder="How" spellcheck="false" required></textarea>
+                  <textarea class="textarea" name="what[]" rows="7" placeholder="How" spellcheck="false" required>{{ $item->what}}</textarea>
                 </div>
                 <div class="col-md-3 me-1">
-                  <textarea class="textarea" name="how[]" rows="7" placeholder="How" spellcheck="false" required></textarea>
+                  <textarea class="textarea" name="how[]" rows="7" placeholder="How" spellcheck="false" required>{{ $item->how}}</textarea>
                 </div>
                 <div class="col-md-3 me-1">
                   <select class="form-control existing selection" id="{{ $item->id }}" data-id="{{ $item->id }}" name="who[{{ $idx++ }}][]" multiple="multiple">
@@ -167,7 +167,7 @@
         toolbar: [ 'bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote' , 'link', 'undo', 'redo']
       })
       .then(editor => {
-      editor.model.document.on('change:data', () => {
+        editor.model.document.on('change:data', () => {
         this.value = editor.getData();
       });
     })
