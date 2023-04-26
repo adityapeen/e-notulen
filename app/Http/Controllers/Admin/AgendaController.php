@@ -112,7 +112,7 @@ class AgendaController extends Controller
             // 'group_id' => ['required'],
         ]);
         $id = Hashids::decode($hashed_id)[0];
-        $agenda = Agenda::findOrFail($id)->first()->update([
+        $agenda = Agenda::findOrFail($id)->update([
             'name' => $request->name,
             'group_id' => $request->group_id == NULL ? NULL : Hashids::decode($request->group_id)[0],
             'updated_by' => auth()->user()->id,
