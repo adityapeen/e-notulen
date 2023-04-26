@@ -19,6 +19,7 @@
                 <tr>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Group</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Count</th>
                   <th class="text-secondary opacity-7"></th>
                 </tr>
               </thead>
@@ -27,12 +28,13 @@
                 <tr>
                   <td class="">
                     <h6 class="mb-0">{{ $item->name }}</h6>
-                    <h6 class="mb-0">{{ $item->notes_count }}</h6>
                   </td>
                   <td class="align-middle text-sm">
                     {{ $item->group != NULL ? $item->group->name : ""  }}
                   </td>
-                  
+                  <td class="align-middle text-sm">
+                    <h6 class="mb-0">{{ $item->notes_count }}</h6>
+                  </td>
                   <td class="align-middle">
                     <a href="{{ route('admin.agendas.edit', [$item->id] ) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Edit Agenda">
                       <button class="btn btn-sm btn-success"><i class="fa fa-edit"></i></button>
