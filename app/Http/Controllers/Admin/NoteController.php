@@ -7,6 +7,8 @@ use App\Models\Agenda;
 use App\Http\Controllers\Controller;
 use App\Models\ActionItems;
 use App\Models\Attendant;
+use App\Models\Evidence;
+use App\Models\Pic;
 use App\Models\User;
 use App\Models\UserGroup;
 use Illuminate\Http\Request;
@@ -281,5 +283,15 @@ class NoteController extends Controller
         $note_id = Hashids::decode($hashed_id)[0];
         $note = Note::findOrFail($note_id);
         return view('admin.note.view', compact(['title','note']));
+    }
+
+    public function evidence(String $hashed_id){
+        $title = "Eviden Action Item";
+        $action_id = Hashids::decode($hashed_id)[0];
+        // dd($action_id);
+        $action = ActionItems::findOrFail($action_id);
+        $evidences = Evidence::where('action_id', $action_id)->get();
+        $pics = Pic::where('action_id', $action_id)->get();
+        return view('admin.evidence.index', compact(['title','action','evidences','pics']));
     }
 }

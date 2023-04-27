@@ -3,6 +3,7 @@
 /public/hot
 /public/storage
 /public/notulensi
+/public/eviden
 /storage/*.key
 /vendor
 .env

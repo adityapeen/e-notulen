@@ -26,11 +26,8 @@
       <div class="card-body">
         <div class="row">
           <div class="input-group">
-            <div class="col-md-4 me-1">
+            <div class="col-md-6 me-1">
              What
-            </div>
-            <div class="col-md-3 me-1">
-              How
             </div>
             <div class="col-md-3 me-1">
               Who
@@ -46,14 +43,17 @@
               @foreach ($actions as $item)
               <div class="input-group baru-data mb-1">
                 <input type="hidden" name="action_id[]" value="{{ $item->id }}">
-                <div class="col-md-4 me-1">
+                <div class="col-md-6 me-1">
+                  <div class="row col-12">
                   <div class="input-group input-group-dynamic border rounded p-1">
                     {{ $item->what}}
                   </div>
-                </div>
-                <div class="col-md-3 me-1">
-                  <div class="input-group input-group-dynamic border rounded p-1">
-                    {{ $item->how}}
+                  </div>
+                  <div class="row ps-3">How</div>
+                  <div class="row col-12">
+                    <div class="input-group input-group-dynamic border rounded p-1">
+                      {{ $item->how}}
+                    </div>
                   </div>
                 </div>
                 <div class="col-md-3 me-1">
@@ -65,6 +65,12 @@
                 </div>
                 <div class="col-md-1 me-1">
                   <input type="date" id="date_first" class="form-control border px-1" name="due_date[]" value="{{ $item->due_date}}">
+                </div>
+                <div class="col me-1 text-center">
+                  <span class="badge badge-sm bg-gradient-{{ $item->status == "done" ? "success" : "secondary" }}" >{{ $item->status}}</span>
+                </div>
+                <div class="col me-1">
+                  <a href="{{ route('admin.notes.evidence', [$item->id] ) }}" class="btn btn-info btn-sm" title="Evidences"><i class="fa fa-tasks"></i></a>
                 </div>
               </div>
               <hr class="border border-bottom border-info">

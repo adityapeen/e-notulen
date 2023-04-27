@@ -178,4 +178,17 @@ class ActionItemsController extends Controller
     {
         //
     }
+
+    public function change_status(Request $request, String $hashed_id)
+    {
+        $action = ActionItems::where(['id'=> Hashids::decode($hashed_id)[0]])->first();
+        if($action->status == 'todo'){
+            $status = "onprogress";
+        }
+        else{
+            $status = "done";
+        }
+        $action->update(['status' => $status]);
+        return back()->with('success','Data <strong>berhasil</strong> diubah!');
+    }
 }

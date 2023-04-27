@@ -1,0 +1,124 @@
+@extends('admin.layouts.template')
+@section('title', $title.' - '.config('app.name'))
+@section('breadcrumbs', $title.' - '.config('app.name'))
+
+@section('content')
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <div class="card-body">
+        <div class="row"><div class="col-md-4">What</div><div class="col-md-8 font-weight-bold">{{ $action->what}}</div></div>
+        <div class="row"><div class="col-md-4">How</div><div class="col-md-8 font-weight-bold">{{ $action->how}}</div></div>
+        <div class="row"><div class="col-md-4">Dateline</div><div class="col-md-8 font-weight-bold">{{ $action->due_date}}</div></div>
+        <div class="row"><div class="col-md-4">PIC</div><div class="col-md-8 font-weight-bold">
+          @foreach ($pics as $item)
+          <li>{{ $item->user->name}}</li>
+          @endforeach
+        </div></div>
+        <div class="row"><div class="col-md-4">Status</div><div class="col-md-8 font-weight-bold">
+          <span class="badge badge-sm bg-gradient-secondary" >{{ $action->status}}</span>
+          @if($action->status != "done")
+          <button class="btn badge badge-sm bg-gradient-{{ $action->status == "todo" ? "info" : "success"}}" onclick="handleStatus()">Mark as {{ $action->status == "todo" ? "on progress" : "done"}}</button>
+          @endif
+        </div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+      <div class="card my-4">
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+          <div class="bg-gradient-info shadow-info border-radius-lg pt-2 pb-2 d-flex align-items-center">
+            <h6 class="text-white text-capitalize ps-3">{{$title}}</h6>
+            <a href="{{ route('admin.notes.evidence.add', [$action->id])}}" class="btn btn-success shadow-dark mb-0 ms-auto me-3">Tambah</a>
+          </div>
+        </div>
+        <div class="card-body pb-2">
+          <div class="table-responsive">
+            <table class="table align-items-center mb-0">
+              <thead>
+                <tr>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Deskripsi</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">File</th>
+                  <th class="text-secondary opacity-7"></th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach ($evidences as $item)
+                <tr>
+                  <td class="">
+                    <h6 class="mb-0">{{ $item->description }}</h6>
+                  </td>
+                  <td class="align-middle text-sm">
+                    <a href="{{ url('/eviden', $item->file )}}" target="_blank" class="btn btn-sm btn-primary" data-file="{{ $item->file }}"> Lihat File </a>
+                    
+                  </td>
+                  
+                  <td class="align-middle">
+                    <a href="{{ route('admin.evidences.edit', [$item->id] ) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Edit Agenda">
+                      <button class="btn btn-sm btn-success"><i class="fa fa-edit"></i></button>
+                    </a>
+                    <a href="#" onclick="handleDestroy('{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Hapus Agenda">
+                      <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+                    </a>
+                  </td>
+                </tr>
+                @endforeach
+
+              </tbody>
+            </table>
+            <form id="delete-form" action="" method="post">
+              @method("DELETE")
+              @csrf
+            </form>
+            <form id="status-form" action="" method="post">
+              @method("POST")
+              @csrf
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+@endsection
+
+@section('script')
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script>
+  const handleDestroy = id =>
+      swal({
+          title: "Apakah anda yakin menghapus data ini ?",
+          // text: "Once deleted, you will not be able to recover this item!",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+      })
+      .then(willDelete => {
+          if (willDelete) {
+            var link = "{{url('/admin/evidences/')}}/" + id;
+              $("#delete-form").attr("action", link);
+              $("#delete-form").submit();
+          }
+      });
+
+  const handleStatus = () => swal({
+          title: "Apakah anda yakin mengubah status data ini ?",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+      })
+      .then(willChange => {
+          if (willChange) {
+            var link = "{{route('admin.notes.action.status', $action->id)}}";
+              $("#status-form").attr("action", link);
+              $("#status-form").submit();
+          }
+      });
+
+    
+</script>
+@endsection
