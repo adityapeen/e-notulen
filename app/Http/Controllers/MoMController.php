@@ -131,10 +131,10 @@ class MoMController extends Controller
             if($sisa == 3){
                 $message = "Berikut ini kami sampaikan pengingat terhadap Action Item *"
                     .$item->note->name."* pada tanggal *".date_format(date_create($item->note->date),"d-m-Y").".*" 
-                    ."\n\n*What*\n"
-                    .$item->what
-                    ."\n\n*How*\n" 
-                    .$item->how
+                    ."\n\n*What* "
+                    .wa_text($item->what)
+                    ."\n\n*How* " 
+                    .wa_text($item->how)
                     ."\n\n*Dateline ".date_format(date_create($item->due_date),"d-m-Y")."*"
                     // ."\nTerimakasih 🙏🙏🙏"
                     // ."\n*#".Hashids::decode($item->id)[0]."*"
