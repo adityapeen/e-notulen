@@ -7,15 +7,15 @@
   <div class="col-12">
     <div class="card my-4">
       <div class="card-body">
-        <div class="row"><div class="col-md-4">What</div><div class="col-md-8 font-weight-bold">{{ $action->what}}</div></div>
-        <div class="row"><div class="col-md-4">How</div><div class="col-md-8 font-weight-bold">{{ $action->how}}</div></div>
-        <div class="row"><div class="col-md-4">Dateline</div><div class="col-md-8 font-weight-bold">{{ $action->due_date}}</div></div>
-        <div class="row"><div class="col-md-4">PIC</div><div class="col-md-8 font-weight-bold">
+        <div class="row"><div class="col-md-4 font-weight-bold">What</div><div class="col-md-8"><?= $action->what ?></div></div>
+        <div class="row"><div class="col-md-4 font-weight-bold">How</div><div class="col-md-8"><?= $action->how ?></div></div>
+        <div class="row"><div class="col-md-4 font-weight-bold">Dateline</div><div class="col-md-8">{{ $action->due_date}}</div></div>
+        <div class="row"><div class="col-md-4 font-weight-bold">PIC</div><div class="col-md-8 font-weight-bold">
           @foreach ($pics as $item)
           <li>{{ $item->user->name}}</li>
           @endforeach
         </div></div>
-        <div class="row"><div class="col-md-4">Status</div><div class="col-md-8 font-weight-bold">
+        <div class="row"><div class="col-md-4 font-weight-bold">Status</div><div class="col-md-8 font-weight-bold">
           <span class="badge badge-sm bg-gradient-secondary" >{{ $action->status}}</span>
           @if($action->status != "done")
           <button class="btn badge badge-sm bg-gradient-{{ $action->status == "todo" ? "info" : "success"}}" onclick="handleStatus()">Mark as {{ $action->status == "todo" ? "on progress" : "done"}}</button>

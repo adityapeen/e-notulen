@@ -46,13 +46,13 @@
                 <div class="col-md-6 me-1">
                   <div class="row col-12">
                   <div class="input-group input-group-dynamic border rounded p-1">
-                    {{ $item->what}}
+                    <?= $item->what ?>
                   </div>
                   </div>
                   <div class="row ps-3">How</div>
                   <div class="row col-12">
                     <div class="input-group input-group-dynamic border rounded p-1">
-                      {{ $item->how}}
+                    <?= $item->how ?>
                     </div>
                   </div>
                 </div>
