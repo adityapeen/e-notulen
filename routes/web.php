@@ -24,6 +24,7 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/group', [App\Http\Controllers\Admin\MGroupController::class, 'index'])->name('group');
+Route::get('/docs', [App\Http\Controllers\GDocsController::class, 'createDocumentFromTemplate'])->name('tes_docs');
 
 Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], function () {
     Route::resource('/groups', App\Http\Controllers\Admin\MGroupController::class)->except(['show']);
@@ -50,6 +51,7 @@ Route::group(['middleware' => 'api', "prefix" => "api", "as" => "api."], functio
     Route::get('/attendants/{id}', [App\Http\Controllers\ApiController::class, 'attendants'])->name('attendants'); 
     Route::get('/g_attendants/{id}', [App\Http\Controllers\ApiController::class, 'group_attendants'])->name('group_attendants'); 
     Route::get('/act_pic/{id}', [App\Http\Controllers\ApiController::class, 'action_pic'])->name('action_pic'); 
-    Route::get('/all_pic/{id}', [App\Http\Controllers\ApiController::class, 'all_pic'])->name('all_pic'); 
+    Route::get('/all_pic/{id}', [App\Http\Controllers\ApiController::class, 'all_pic'])->name('all_pic');
+    Route::get('/docs/{id}', [App\Http\Controllers\GDocsController::class, 'createNoteDocs'])->name('gdocs');
     Route::resource('/actions', App\Http\Controllers\ActionItemsController::class)->except(['index']);
 });
