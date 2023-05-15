@@ -35,6 +35,7 @@ Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], f
     Route::get('/notes/send-mom/{id}', [App\Http\Controllers\MoMController::class, 'send_mom'])->name('notes.mom');
     Route::get('/notes/view/{id}', [App\Http\Controllers\Admin\NoteController::class, 'show'])->name('notes.view');
     Route::get('/notes/test-mom/', [App\Http\Controllers\MoMController::class, 'test_file'])->name('notes.test');
+    Route::get('/notes/write/{id}', [App\Http\Controllers\Admin\NoteController::class, 'note_taking'])->name('notes.taking');
     Route::get('/notes/action/{id}', [App\Http\Controllers\Admin\NoteController::class, 'action_item'])->name('notes.action');
     Route::post('/notes/action/{id}', [App\Http\Controllers\ActionItemsController::class, 'change_status'])->name('notes.action.status');
     Route::get('/notes/agenda/{id}', [App\Http\Controllers\Admin\NoteController::class, 'byAgenda'])->name('notes.agenda');

@@ -294,4 +294,12 @@ class NoteController extends Controller
         $pics = Pic::where('action_id', $action_id)->get();
         return view('admin.evidence.index', compact(['title','action','evidences','pics']));
     }
+
+    public function note_taking(String $hashed_id){
+        $title = "Edit Notulensi";
+        $id = Hashids::decode($hashed_id); //decode the hashed id
+        $note = Note::find($id[0]);
+
+        return view('admin.note.note-taking', compact(['title','note']));
+    }
 }

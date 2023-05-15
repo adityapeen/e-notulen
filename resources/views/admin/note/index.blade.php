@@ -49,8 +49,11 @@
                       <button class="btn btn-sm btn-info"><i class="fa fa-eye"></i></button>
                     </a>
                     @if($item->status != 'lock')
-                    <a href="{{ route('admin.notes.edit', [$item->id] ) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Edit Agenda">
+                    <a href="{{ route('admin.notes.edit', [$item->id] ) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Edit Notulensi">
                       <button class="btn btn-sm btn-success"><i class="fa fa-edit"></i></button>
+                    </a>
+                    <a href="{{ route('admin.notes.taking', [$item->id] ) }}" class="text-success font-weight-bold text-xs" data-toggle="tooltip" title="Tulis Notulensi">
+                      <button class="btn btn-sm btn-success"><i class="fa fa-pencil"></i></button>
                     </a>
                     @endif
                     <a href="#" onclick="handleLock('{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="{{ $item->status == 'lock'? 'Buka':'Kunci' }} Notulensi">
