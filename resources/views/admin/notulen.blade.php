@@ -96,7 +96,7 @@
               </thead> --}}
               <tbody>
                 @foreach ($todays as $item)
-                  <tr class="clickable-row" data-href="{{ route('admin.notes.show', $item->id) }}">
+                  <tr class="clickable-row" data-href="{{$item->link_drive_notulen }}">
                     <td style="cursor: pointer">
                       <div class="d-flex px-2 py-1">
                         <div class="me-3">
@@ -137,7 +137,8 @@
 @section('script')
   <script>
     $(".clickable-row").click(function() {
-        window.location = $(this).data("href");
+      var url = $(this).data("href");
+        window.open(url);
     });
     $('#checkApi').on('click', function() {
       $.ajax({
