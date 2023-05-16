@@ -25,6 +25,8 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/group', [App\Http\Controllers\Admin\MGroupController::class, 'index'])->name('group');
 Route::get('/docs', [App\Http\Controllers\GDocsController::class, 'createDocumentFromTemplate'])->name('tes_docs');
+Route::get('/check-in/{id}', [App\Http\Controllers\MeetingController::class, 'check_in'])->name('check_in');
+Route::post('/join/{id}', [App\Http\Controllers\MeetingController::class, 'join_meeting'])->name('join_meeting');
 
 Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], function () {
     Route::resource('/groups', App\Http\Controllers\Admin\MGroupController::class)->except(['show']);
@@ -49,6 +51,10 @@ Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], f
 
 Route::group(['middleware' => 'user', "prefix" => "user", "as" => "user."], function () {
     Route::resource('/notes', App\Http\Controllers\UserNoteController::class)->except(['show']);
+    Route::get('/profile', [App\Http\Controllers\Admin\UserController::class, 'profile'])->name('profile');
+    Route::put('/profile', [App\Http\Controllers\Admin\UserController::class, 'self_update'])->name('profile.update');
+    Route::get('/password', [App\Http\Controllers\Admin\UserController::class, 'password'])->name('password');
+    Route::post('/password', [App\Http\Controllers\Admin\UserController::class, 'change_password'])->name('change_password');
 });
 
 Route::group(['middleware' => 'api', "prefix" => "api", "as" => "api."], function () {

@@ -142,7 +142,7 @@ class UserController extends Controller
     public function password()
     {
         $title = "Change Password";
-        $user = User::findOrFail(auth()->user()->id)->first();
+        $user = User::findOrFail(auth()->user()->id);
         return view('admin.user.password', compact(['user','title']));
     }
 
@@ -151,7 +151,7 @@ class UserController extends Controller
             'old_password' => ['required'],
             'new_password' => ['required'],
         ]);
-        $user = User::findOrFail(auth()->user()->id)->first();
+        $user = User::findOrFail(auth()->user()->id);
  
         #Match The Old Password
         if(!Hash::check($request->old_password, auth()->user()->password)){
@@ -164,5 +164,33 @@ class UserController extends Controller
         ]);
 
         return back()->with('success','Password <strong>berhasil</strong> diubah!');
+    }
+
+    public function profile(){
+        $title = "Profile";
+        $user = User::findOrFail(auth()->user()->id);
+        $satkers = MSatker::all();
+        return view('user.profile', compact(['user','title','satkers']));
+    }
+
+    public function self_update(Request $request)
+    {
+        $request->validate([
+            'name' => ['required'],
+            'email' => ['required'],
+            'phone' => ['required'],
+            'satker_id' => ['required'],
+        ]);
+
+        if(User::findOrFail(auth()->user()->id)->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'satker_id' => $request->satker_id,
+        ])){
+            return redirect()->route("user.profile")->with('success','Data <strong>berhasil</strong> disimpan');
+        }else{
+            return back()->withErrors(['Data <strong>gagal</strong> ditambahkan!']);
+        }
     }
 }
