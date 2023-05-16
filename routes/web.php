@@ -47,11 +47,16 @@ Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], f
     Route::post('/users/password', [App\Http\Controllers\Admin\UserController::class, 'change_password'])->name('users.change_password');
 });
 
+Route::group(['middleware' => 'user', "prefix" => "user", "as" => "user."], function () {
+    Route::resource('/notes', App\Http\Controllers\UserNoteController::class)->except(['show']);
+});
+
 Route::group(['middleware' => 'api', "prefix" => "api", "as" => "api."], function () {
     Route::get('/attendants/{id}', [App\Http\Controllers\ApiController::class, 'attendants'])->name('attendants'); 
     Route::get('/g_attendants/{id}', [App\Http\Controllers\ApiController::class, 'group_attendants'])->name('group_attendants'); 
     Route::get('/act_pic/{id}', [App\Http\Controllers\ApiController::class, 'action_pic'])->name('action_pic'); 
     Route::get('/all_pic/{id}', [App\Http\Controllers\ApiController::class, 'all_pic'])->name('all_pic');
+    Route::get('/notes/{id}', [App\Http\Controllers\ApiController::class, 'note_detail'])->name('notes');
     Route::get('/docs/{id}', [App\Http\Controllers\GDocsController::class, 'createNoteDocs'])->name('gdocs');
     Route::resource('/actions', App\Http\Controllers\ActionItemsController::class)->except(['index']);
 });

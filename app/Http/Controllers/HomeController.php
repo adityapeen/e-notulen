@@ -28,11 +28,19 @@ class HomeController extends Controller
     public function index()
     {
         // return view('home');
-        $users = User::all()->count();
-        $agendas = Agenda::all()->count();
-        $notes = Note::all()->count();
-        $actions = ActionItems::all()->count();
-        $todays = Note::where('date', date('Y-m-d'))->get();
-        return view('admin.notulen', compact(['users','agendas','notes','actions','todays']));
+        if(auth()->user()->level_id == 1 || auth()->user()->level_id == 2){ // Ka & Timstra
+            $users = User::all()->count();
+            $agendas = Agenda::all()->count();
+            $notes = Note::all()->count();
+            $actions = ActionItems::all()->count();
+            $todays = Note::where('date', date('Y-m-d'))->get();
+            return view('admin.notulen', compact(['users','agendas','notes','actions','todays']));
+        }
+        else{
+            $todays = Note::join('attendants', 'notes.id', '=', 'attendants.note_id')
+            ->where('attendants.user_id',auth()->user()->id)
+            ->where('date', date('Y-m-d'))->get();
+            return view('user.notulen', compact(['todays']));
+        }
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Attendant;
+use App\Models\Note;
 use App\Models\Pic;
 use App\Models\UserGroup;
 use Illuminate\Http\Request;
@@ -75,5 +76,17 @@ class ApiController extends Controller
             array_push($res,$item);
         }
         return json_encode(["results"=>$res]);
+    }
+
+    public function note_detail(String $hashed_id)
+    {
+        $id = Hashids::decode($hashed_id)[0]; //decode the hashed id
+        $note = Note::select('issues','file_notulen','name','date')->find($id);
+        $list = Attendant::where(['note_id'=>$id])->get();
+        $attendants = array();
+        foreach($list as $l){
+            array_push($attendants,$l->user->name);
+        }
+        return compact(['note','attendants']);
     }
 }
