@@ -21,8 +21,8 @@ class MeetingController extends Controller
             return "404 - Meeting Not Found";
         }
 
-        $users = User::all();
-        return view('user.join_meeting', compact(['title','note','users']));
+        // $users = User::all();
+        return view('user.join_meeting', compact(['title','note']));
     }
 
     public function join_meeting(Request $request, String $hashed_id)

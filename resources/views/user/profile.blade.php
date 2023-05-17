@@ -45,7 +45,7 @@
                 Nomor WA
               </div>
               <div class="col-md-8">
-                <input type="text" id="phone" class="form-control border px-1 @error('phone') is-invalid @enderror" name="phone" value="{{ $user->phone }}" required>
+                <input type="text" id="phone" class="form-control border px-1 @error('phone') is-invalid @enderror" name="phone" value="{{ $user->phone }}" placeholder="(contoh : 088723455677)" required>
               </div>
             </div>
             <div class="row mb-1 align-items-center">
@@ -57,6 +57,14 @@
                   @foreach ($satkers as $item)
                       <option value="{{ $item->id }}" {{ $item->id == $user->satker_id ? 'selected' : ''}}>{{ $item->name }}</option>
                   @endforeach
+              </select>
+              </div>
+            </div>
+            <div class="row mb-1 align-items-center">
+              <div class="col-md-4">
+              </div>
+              <div class="col-md-8 small text-disabled">
+                * silahkan sesuaikan email dengan email kedinasan masing-masing
               </select>
               </div>
             </div>
