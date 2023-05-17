@@ -294,4 +294,11 @@ class NoteController extends Controller
         $pics = Pic::where('action_id', $action_id)->get();
         return view('admin.evidence.index', compact(['title','action','evidences','pics']));
     }
+
+    public function qrcode(String $hashed_id){
+        $title = "QR Checkin";
+        $note_id = Hashids::decode($hashed_id)[0];
+        $note = Note::find($note_id);
+        return view('admin.note.qrcode', compact(['title','note']));
+    }
 }

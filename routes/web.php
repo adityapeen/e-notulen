@@ -24,6 +24,9 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/group', [App\Http\Controllers\Admin\MGroupController::class, 'index'])->name('group');
+Route::get('/docs', [App\Http\Controllers\GDocsController::class, 'createDocumentFromTemplate'])->name('tes_docs');
+Route::get('/check-in/{id}', [App\Http\Controllers\MeetingController::class, 'check_in'])->name('check_in');
+Route::post('/join/{id}', [App\Http\Controllers\MeetingController::class, 'join_meeting'])->name('join_meeting');
 
 Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], function () {
     Route::resource('/groups', App\Http\Controllers\Admin\MGroupController::class)->except(['show']);
@@ -41,15 +44,26 @@ Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], f
     Route::get('/notes/show/{id}', [App\Http\Controllers\Admin\NoteController::class, 'showNote'])->name('notes.show');
     Route::get('/notes/action/{id}/evidences', [App\Http\Controllers\Admin\NoteController::class, 'evidence'])->name('notes.evidence');
     Route::get('/notes/action/{id}/evidences/add', [App\Http\Controllers\Admin\EvidenceController::class, 'add'])->name('notes.evidence.add');
+    Route::get('/notes/qr/{id}', [App\Http\Controllers\Admin\NoteController::class, 'qrcode'])->name('notes.qrcode');
     Route::get('/reminder', [App\Http\Controllers\MoMController::class, 'send_reminder'])->name('notes.reminder');
     Route::get('/users/password', [App\Http\Controllers\Admin\UserController::class, 'password'])->name('users.password');
     Route::post('/users/password', [App\Http\Controllers\Admin\UserController::class, 'change_password'])->name('users.change_password');
+});
+
+Route::group(['middleware' => 'user', "prefix" => "user", "as" => "user."], function () {
+    Route::resource('/notes', App\Http\Controllers\UserNoteController::class)->except(['show']);
+    Route::get('/profile', [App\Http\Controllers\Admin\UserController::class, 'profile'])->name('profile');
+    Route::put('/profile', [App\Http\Controllers\Admin\UserController::class, 'self_update'])->name('profile.update');
+    Route::get('/password', [App\Http\Controllers\Admin\UserController::class, 'password'])->name('password');
+    Route::post('/password', [App\Http\Controllers\Admin\UserController::class, 'change_password'])->name('change_password');
 });
 
 Route::group(['middleware' => 'api', "prefix" => "api", "as" => "api."], function () {
     Route::get('/attendants/{id}', [App\Http\Controllers\ApiController::class, 'attendants'])->name('attendants'); 
     Route::get('/g_attendants/{id}', [App\Http\Controllers\ApiController::class, 'group_attendants'])->name('group_attendants'); 
     Route::get('/act_pic/{id}', [App\Http\Controllers\ApiController::class, 'action_pic'])->name('action_pic'); 
-    Route::get('/all_pic/{id}', [App\Http\Controllers\ApiController::class, 'all_pic'])->name('all_pic'); 
+    Route::get('/all_pic/{id}', [App\Http\Controllers\ApiController::class, 'all_pic'])->name('all_pic');
+    Route::get('/notes/{id}', [App\Http\Controllers\ApiController::class, 'note_detail'])->name('notes');
+    Route::get('/docs/{id}', [App\Http\Controllers\GDocsController::class, 'createNoteDocs'])->name('gdocs');
     Route::resource('/actions', App\Http\Controllers\ActionItemsController::class)->except(['index']);
 });
