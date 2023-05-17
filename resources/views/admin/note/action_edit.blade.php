@@ -93,7 +93,7 @@
                   <span class="btn btn-outline-secondary btn-sm mt-1" onclick="picAll(event)">All Satker</span>
                 </div>
                 <div class="col-md-1 me-1">
-                  <input type="date" id="date_first" class="form-control border px-1" name="due_date[]" value="{{ $item->due_date}}">
+                  <input type="date" class="form-control border px-1" name="due_date[]" value="{{ $item->due_date}}">
                 </div>
                 <div class="button-group ms-auto">
                     <button type="button" class="btn btn-success btn-tambah" style="display:none;"><i class="fa fa-plus"></i></button>
@@ -131,11 +131,7 @@
         placeholder: 'Pilih PIC',
       });
       getExisting(id);
-      
-    
     });
-    
-    $('#date_first').val(getSeminggu());
     $('.baru-data').last().find('.btn-hapus').css("display","none");
     $('.baru-data').last().find('.btn-tambah').css("display","");
   });
