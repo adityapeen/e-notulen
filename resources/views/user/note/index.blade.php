@@ -44,7 +44,7 @@
                       <button class="btn btn-sm btn-info"><i class="fa fa-eye"></i></button>
                     </a>
                     @if($item->status == 'lock')
-                    <a href="{{ url('/notulensi').$item->file_notulen}}" target="_blank" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Lihat Notulensi">
+                    <a href="{{ url('/notulensi').'/'.$item->file_notulen}}" target="_blank" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Lihat Notulensi">
                       <button class="btn btn-sm btn-success">Lihat Notulen</button>
                     </a>
                     @endif
@@ -72,7 +72,7 @@
         </div>
         <div class="modal-body">
           <div class="row"><div class="col-md-4">Issues</div><div class="col-md-8 font-weight-bold" id="note-issues"></div></div>
-          <div class="row"><div class="col-md-4">Link</div><div class="col-md-8" ><a href="#" id="note-file" class="btn btn-sm btn-info mb-1">Lihat File</a></div></div>
+          <div class="row"><div class="col-md-4">Notulensi</div><div class="col-md-8" ><a href="#" id="note-file" class="btn btn-sm btn-info mb-1">Lihat File</a></div></div>
           <div class="row"><div class="col-md-4">Peserta</div><div class="col-md-8" id="note-attendant"></div></div>
         </div>
         <div class="modal-footer">
@@ -101,8 +101,14 @@
               url: link,
               context: document.body
             }).done(function(res) {
-              if(res.note.file_notulen !== null ) url=url+res.note.file_notulen;
-              else url='#';
+              if(res.note.file_notulen !== null ) {
+                url=url+res.note.file_notulen;
+                $('#note-file').html('Lihat File');
+              }
+              else {
+                url='#';
+                $('#note-file').html('Proses Finalisasi');
+              }
               $('#modal-title').html(res.note.name + " === "+res.note.date);
               $('#note-issues').html(res.note.issues);
               $('#note-file').attr('href',url);

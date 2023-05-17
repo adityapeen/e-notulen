@@ -81,7 +81,13 @@ class ApiController extends Controller
     public function note_detail(String $hashed_id)
     {
         $id = Hashids::decode($hashed_id)[0]; //decode the hashed id
-        $note = Note::select('issues','file_notulen','name','date')->find($id);
+        $item = Note::select('issues','file_notulen','name','date','status')->find($id);
+        $note = array(
+            'issues' => $item->issues,
+            'name' => $item->name,
+            'date' => $item->date,
+            'file_notulen' => $item->status == 'lock' ? $item->file_notulen : NULL
+        );
         $list = Attendant::where(['note_id'=>$id])->get();
         $attendants = array();
         foreach($list as $l){
