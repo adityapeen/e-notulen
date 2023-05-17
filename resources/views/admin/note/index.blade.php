@@ -56,6 +56,9 @@
                       <a href="{{ route('api.gdocs', [$item->id] ) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Generate File Notulen">
                         <button class="btn btn-sm btn-secondary"><i class="fab fa-google-drive"></i></button>
                       </a>
+                      <a href="{{ route('admin.notes.qrcode', [$item->id] ) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="QR Join Meeting">
+                        <button class="btn btn-sm btn-dark"><i class="fa fa-qrcode"></i></button>
+                      </a>
                       @endif
                     @endif
                     <a href="#" onclick="handleLock('{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="{{ $item->status == 'lock'? 'Buka':'Kunci' }} Notulensi">

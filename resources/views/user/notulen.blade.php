@@ -7,7 +7,7 @@
   <div class="row mt-3">
     <div class="col-12">
       <div class="card">
-        <div class="card-body px-2 py-2">
+        <div class="card-body font-weight-bold px-2 py-2">
           Silahkan Lengkapi Profile Anda 
           <a href="{{route('user.profile')}}" class="badge bg-gradient-info btn-info ms-3" >Update Profile</a>
         </div>

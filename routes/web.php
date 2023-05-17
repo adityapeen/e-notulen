@@ -44,6 +44,7 @@ Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], f
     Route::get('/notes/show/{id}', [App\Http\Controllers\Admin\NoteController::class, 'showNote'])->name('notes.show');
     Route::get('/notes/action/{id}/evidences', [App\Http\Controllers\Admin\NoteController::class, 'evidence'])->name('notes.evidence');
     Route::get('/notes/action/{id}/evidences/add', [App\Http\Controllers\Admin\EvidenceController::class, 'add'])->name('notes.evidence.add');
+    Route::get('/notes/qr/{id}', [App\Http\Controllers\Admin\NoteController::class, 'qrcode'])->name('notes.qrcode');
     Route::get('/reminder', [App\Http\Controllers\MoMController::class, 'send_reminder'])->name('notes.reminder');
     Route::get('/users/password', [App\Http\Controllers\Admin\UserController::class, 'password'])->name('users.password');
     Route::post('/users/password', [App\Http\Controllers\Admin\UserController::class, 'change_password'])->name('users.change_password');

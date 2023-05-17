@@ -13,6 +13,7 @@
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.2",
+        "simplesoftwareio/simple-qrcode": "^4.2",
         "vinkla/hashids": "^10.0"
     },
     "require-dev": {
