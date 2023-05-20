@@ -3,6 +3,7 @@
 if(!function_exists('wa_text')){
     function wa_text($text) {
         $text = html_entity_decode($text);
+        $text = preg_replace('/(<figure class="media"><oembed url=")|("><\/oembed><\/figure>)/', '', $text); // Google Media Embed
         $text = preg_replace('/<\/p>|<ul>|<\/ul>|<ol>|<\/ol>|<\/li>/', '', $text);
 
         $text = preg_replace('/(<p>)/', "\n\n", $text); 
