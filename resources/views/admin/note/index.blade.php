@@ -41,13 +41,10 @@
                     <a href="{{ route('admin.notes.action', [$item->id] ) }}" class="btn btn-sm bg-gradient-info">Action Items</a>
                   </td>
                   <td class="align-middle text-sm">
-                    <span class="badge badge-sm bg-gradient-{{ $item->status == "open" ? "success":"danger" }}">{{ $item->status }}</span>
+                    <span class="badge badge-sm bg-gradient-{{ $item->status == "open" ? "success":"danger" }} btn" onclick="handleView('{{$item->id}}')" data-toggle="tooltip" title="Lihat Notulensi" >{{ $item->status }} <div class="fa fa-eye"></div></span>
                   </td>
                   
                   <td class="align-middle">
-                    <a href="#" onclick="handleView('{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Lihat Notulensi">
-                      <button class="btn btn-sm btn-info"><i class="fa fa-eye"></i></button>
-                    </a>
                     @if($item->status != 'lock')
                     <a href="{{ route('admin.notes.edit', [$item->id] ) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Edit Agenda">
                       <button class="btn btn-sm btn-success"><i class="fa fa-edit"></i></button>
@@ -106,8 +103,8 @@
         </div>
         <div class="modal-body">
           <div class="row"><div class="col-md-4">Issues</div><div class="col-md-8 font-weight-bold" id="note-issues"></div></div>
-          <div class="row"><div class="col-md-4">Link</div><div class="col-md-8" id="note-link"></div></div>
-          <div class="row"><div class="col-md-4"></div><div class="col-md-8" ><a href="#" id="note-file" class="btn btn-sm btn-info mb-1">Lihat File</a></div></div>
+          <div class="row"><div class="col-md-4">Notulen</div><div class="col-md-8"><a href="#" id="note-link" class="btn btn-sm btn-info mb-1">Link Notulen</a><a href="#" id="note-file" class="btn btn-sm btn-success mb-1 ms-1">Lihat File</a></div></div>
+          <div class="row"><div class="col-md-4"></div><div class="col-md-8" ></div></div>
           <div class="row"><div class="col-md-4">Peserta</div><div class="col-md-8" id="note-attendant"></div></div>
         </div>
         <div class="modal-footer">
@@ -205,7 +202,7 @@
               else url='#';
               $('#modal-title').html(res.note.name + " === "+res.note.date);
               $('#note-issues').html(res.note.issues);
-              $('#note-link').html(res.note.link_drive_notulen);
+              $('#note-link').attr('href',res.note.link_drive_notulen);;
               $('#note-file').attr('href',url);
               $('#note-attendant').empty();
               res.attendants.forEach(item => {
