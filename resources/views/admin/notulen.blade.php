@@ -96,7 +96,7 @@
               </thead> --}}
               <tbody>
                 @foreach ($todays as $item)
-                  <tr class="clickable-row" data-href="{{$item->link_drive_notulen }}">
+                  <tr class="clickable-row" data-href="{{$item->status == 'lock'? route('admin.notes.show', $item->id) : $item->link_drive_notulen }}">
                     <td style="cursor: pointer">
                       <div class="d-flex px-2 py-1">
                         <div class="me-3">
