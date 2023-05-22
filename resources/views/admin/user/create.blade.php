@@ -25,6 +25,14 @@
             </div>
             <div class="row mb-1 align-items-center">
               <div class="col-md-4">
+                NIP
+              </div>
+              <div class="col-md-8">
+                <input type="text" id="nip" class="form-control border px-1 " name="nip" value="{{ old('nip') }}" >
+              </div>
+            </div>
+            <div class="row mb-1 align-items-center">
+              <div class="col-md-4">
                 Email
               </div>
               <div class="col-md-8">

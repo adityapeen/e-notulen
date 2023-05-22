@@ -47,6 +47,7 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => ['required'],
+            'nip' => ['required'],
             'email' => ['required', 'string', 'email', 'max:255'],
             'phone' => ['required'],
             'satker_id' => ['required'],
@@ -55,6 +56,7 @@ class UserController extends Controller
         if(User::updateOrCreate([
             'name' => $request->name,
             'password' => Hash::make('12345'),
+            'nip' => $request->nip,
             'email' => $request->email,
             'phone' => $request->phone,
             'satker_id' => $request->satker_id,
@@ -113,6 +115,8 @@ class UserController extends Controller
         $id = Hashids::decode($hashed_id);
         if(User::findOrFail($id)->first()->update([
             'name' => $request->name,
+            'email' => $request->email,
+            'nip' => $request->nip,
             'phone' => $request->phone,
             'satker_id' => $request->satker_id,
             'level_id' => $request->level_id,
@@ -143,7 +147,12 @@ class UserController extends Controller
     {
         $title = "Change Password";
         $user = User::findOrFail(auth()->user()->id);
-        return view('admin.user.password', compact(['user','title']));
+        if($user->level_id <= 2){
+            return view('admin.user.password', compact(['user','title']));
+        }
+        else {
+            return view('user.password', compact(['user','title']));
+        }
     }
 
     public function change_password(Request $request){
