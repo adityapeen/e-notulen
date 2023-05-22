@@ -46,7 +46,7 @@
                   
                   <td class="align-middle">
                     @if($item->status != 'lock')
-                    <a href="{{ route('admin.notes.edit', [$item->id] ) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Edit Agenda">
+                    <a href="{{ route('admin.notes.edit', [$item->id] ) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Edit Notulensi">
                       <button class="btn btn-sm btn-success"><i class="fa fa-edit"></i></button>
                     </a>
                       @if($item->link_drive_notulen == '-')

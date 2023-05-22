@@ -89,7 +89,7 @@ class AgendaController extends Controller
      */
     public function edit(String $hashed_id)
     {
-        $title = "Edit User";
+        $title = "Edit Agenda Rapat";
         $id = Hashids::decode($hashed_id); //decode the hashed id
         $agenda = Agenda::find($id[0]);
         $groups = MGroup::all();
