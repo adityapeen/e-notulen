@@ -17,11 +17,81 @@ class MoMController extends Controller
     {
         $this->url = env('API_URL') == NULL ? 'http://localhost:8000' : env('API_URL') ;
     }
+
+    public function mom_recipient(String $hashed_id){
+        $arr_id = Hashids::decode($hashed_id);
+        $status = true;
+        if(is_array($arr_id)){
+            $note_id = $arr_id[0];
+            $recipients = Attendant::join('users', 'attendants.user_id', '=', 'users.id')
+                        ->select('attendants.id', 'users.name')
+                        ->where(['note_id'=>$note_id])->get();
+        }
+        else{
+            $status = false;
+            $recipients = null;
+        }
+        return response()->json(['status'=>$status,'results'=>$recipients]);
+
+    }
+
+    public function send_individual_mom(String $hashed_id){
+        $arr_id = Hashids::decode($hashed_id);
+        $status = true;
+        if(is_array($arr_id)){ //Valid ID
+            $attendance_id = $arr_id[0];
+            $attendance = Attendant::find($attendance_id);
+            $notes = Note::where('id',$attendance->note_id)->first();
+            $date = date_create($notes->date);
+            $file_location = 'notulensi/'.$notes->file_notulen;
+            
+            if($notes->file_notulen == NULL){
+                $message = "Berikut ini kami sampaikan notulen *"
+                    .$notes->name."* pada tanggal *".date_format($date,"d-m-Y").".* Silahkan akses notulen pada link berikut : \n"
+                    .$notes->link_drive_notulen
+                    ."\nTerimakasih 🙏🙏🙏";
+
+                $response = Http::withBasicAuth(env('API_USER'), env('API_PASSWORD'))->post($this->url.'/send-message', [
+                    'number' => $attendance->user->phone,
+                    'message' => $message,
+                ]);
+            }
+            else {
+                $message = "Berikut ini kami sampaikan notulen *"
+                    .$notes->name."* pada tanggal *".date_format($date,"d-m-Y").".* \n"
+                    ."\nTerimakasih 🙏🙏🙏";
+
+                $response = Http::withBasicAuth(env('API_USER'), env('API_PASSWORD'))
+                                ->attach('file', file_get_contents($file_location),$notes->file_notulen)->post($this->url.'/send-message', [
+                    'number' => $attendance->user->phone,
+                    'message' => $message,
+                ]);
+                $response = Http::withBasicAuth(env('API_USER'), env('API_PASSWORD'))->post($this->url.'/send-message', [
+                    'number' => $attendance->user->phone,
+                    'message' => $message,
+                ]);
+            }
+
+            $res = json_decode($response);
+            if($res->status){
+                $results = $attendance->user->name." - OK";
+            }
+            else{
+                $results = $attendance->user->name." - FAIL";
+            }
+        }
+        else{
+            $status = false;
+            $results = null;
+        }
+        return response()->json(['status'=>$status,'results'=>$results]);
+    }
     public function send_mom(String $hashed_note_id)
     {
         $note_id = Hashids::decode($hashed_note_id)[0];
         $notes = Note::where('id',$note_id)->first();
         $date = date_create($notes->date);
+        
         $message = "Berikut ini kami sampaikan notulen *"
                     .$notes->name."* pada tanggal *".date_format($date,"d-m-Y").".* Silahkan akses notulen pada link berikut : \n"
                     .$notes->link_drive_notulen
