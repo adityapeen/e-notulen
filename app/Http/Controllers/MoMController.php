@@ -78,6 +78,7 @@ class MoMController extends Controller
             }
             else{
                 $results = $attendance->user->name." - FAIL";
+                $status = false;
             }
         }
         else{
