@@ -3,10 +3,11 @@ const handleDestroy = (id) =>
     title: "Apakah anda yakin menghapus data ini ?",
     // text: "Once deleted, you will not be able to recover this item!",
     icon: "warning",
-    buttons: true,
-    dangerMode: true,
+    showCancelButton: true,
+    confirmButtonText: "Ya",
+    allowOutsideClick: false,
   }).then((willDelete) => {
-    if (willDelete) {
+    if (willDelete.isConfirmed) {
       var link = "/admin/notes/" + id;
       $("#delete-form").attr("action", link);
       $("#delete-form").submit();
@@ -20,7 +21,7 @@ const handleLock = (id) => {
     showCancelButton: true,
     confirmButtonText: "Ya,",
   }).then((willLock) => {
-    if (willLock) {
+    if (willLock.isConfirmed) {
       var link = "/admin/notes/lock/" + id;
       $("#lock-form").attr("action", link);
       $("#lock-form").submit();
