@@ -66,6 +66,13 @@
                   </td>
                 </tr>
                 @endforeach
+                @if(sizeof($evidences) == 0)
+                <tr>
+                  <td colspan="2" class="text-center">
+                    Belum ada Eviden Action Item
+                  </td>
+                </tr>
+                @endif
 
               </tbody>
             </table>

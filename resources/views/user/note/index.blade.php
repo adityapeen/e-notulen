@@ -52,7 +52,13 @@
                   </td>
                 </tr>
                 @endforeach
-
+                @if(sizeof($notes) == 0)
+                <tr>
+                  <td colspan="4" class="text-center">
+                    Belum ada Notulensi
+                  </td>
+                </tr>
+                @endif
               </tbody>
             </table>
           </div>

@@ -44,7 +44,7 @@
                 Nomor WA
               </div>
               <div class="col-md-8">
-                <input type="text" id="phone" class="form-control border px-1 @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required>
+                <input type="text" id="phone" class="form-control border px-1 @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" placeholder="(contoh : 088723455677)" required>
               </div>
             </div>
             <div class="row mb-1 align-items-center">

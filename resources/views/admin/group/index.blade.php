@@ -46,8 +46,13 @@
                   </td>
                 </tr>
                 @endforeach
-
-                
+                @if(sizeof($groups) == 0)
+                <tr>
+                  <td colspan="2" class="text-center">
+                    Belum ada Group
+                  </td>
+                </tr>
+                @endif                                
               </tbody>
             </table>
             <form id="delete-form" action="" method="post">

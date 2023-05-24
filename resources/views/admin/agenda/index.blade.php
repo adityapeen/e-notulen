@@ -45,7 +45,13 @@
                   </td>
                 </tr>
                 @endforeach
-
+                @if(sizeof($agendas) == 0)
+                <tr>
+                  <td colspan="2" class="text-center">
+                    Belum ada Agenda
+                  </td>
+                </tr>
+                @endif
               </tbody>
             </table>
             <form id="delete-form" action="" method="post">

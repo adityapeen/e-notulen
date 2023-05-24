@@ -119,6 +119,11 @@
                     </td>
                   </tr>
                 @endforeach
+                @if(sizeof($todays) == 0)
+                <tr><td colspan="2" class="text-center">
+                  Belum ada Agenda hari ini
+                  </td></tr>
+                @endif
               </tbody>
             </table>
           </div>
