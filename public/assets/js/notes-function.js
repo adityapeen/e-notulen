@@ -95,9 +95,15 @@ const handleView = (id) => {
     url: link,
     context: document.body,
   }).done(function (res) {
-    if (res.note.file_notulen !== null) url = url + res.note.file_notulen;
-    else url = "#";
-    $("#modal-title").html(res.note.name + " === " + res.note.date);
+    if (res.note.file_notulen !== null) {
+      url = url + res.note.file_notulen;
+      $("#note-file").attr("target", "_blank");
+    }
+    else {
+      url = "#";
+      $("#note-file").removeAttr("target");
+    }
+    $("#modal-title").html("<b>"+res.note.name + "</b> :: (" + res.note.date+")");
     $("#note-issues").html(res.note.issues);
     $("#note-link").attr("href", res.note.link_drive_notulen);
     $("#note-file").attr("href", url);
