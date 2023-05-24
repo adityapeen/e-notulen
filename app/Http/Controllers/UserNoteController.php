@@ -18,6 +18,7 @@ class UserNoteController extends Controller
         $title = "Daftar Notulensi";
         $notes = Note::join('attendants', 'notes.id', '=', 'attendants.note_id')
         ->where('attendants.user_id',auth()->user()->id)
+        ->where('type','public')
         ->select('notes.*')
         ->orderBy('date', 'DESC')->paginate(15);
         return view('user.note.index', compact(['notes','title']));

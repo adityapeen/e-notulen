@@ -25,14 +25,14 @@
             <span class="nav-link-text ms-1">Notulen</span>
           </a>
         </li>
-        {{-- <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/virtual-reality.html">
+        <li class="nav-item">
+          <a class="nav-link text-white {{ Request::is('user/profile*') ? 'active bg-gradient-primary' : '' }}" href="{{ route('user.profile') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">view_in_ar</i>
+              <i class="material-icons opacity-10">account_circle</i>
             </div>
-            <span class="nav-link-text ms-1">Virtual Reality</span>
+            <span class="nav-link-text ms-1">Profile</span>
           </a>
-        </li> --}}
+        </li>
         {{-- <li class="nav-item">
           <a class="nav-link text-white " href="../pages/billing.html">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
