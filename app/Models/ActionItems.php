@@ -35,6 +35,10 @@ class ActionItems extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function evidences()
+    {
+        return $this->hasMany(Evidence::class, 'action_id');
+    }
 
     /**
      * Hash the ids

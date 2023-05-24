@@ -70,11 +70,16 @@
                   <span class="badge badge-sm bg-gradient-{{ $item->status == "done" ? "success" : "secondary" }}" >{{ $item->status}}</span>
                 </div>
                 <div class="col me-1">
-                  <a href="{{ route('admin.notes.evidence', [$item->id] ) }}" class="btn btn-info btn-sm" title="Evidences"><i class="fa fa-tasks"></i></a>
+                  <a href="{{ route('admin.notes.evidence', [$item->id] ) }}" class="btn btn-info btn-sm" title="Evidences"><i class="fa fa-tasks"></i><span class="badge text-bg-light ms-2">{{ $item->evidences_count }}</span></a>
                 </div>
               </div>
               <hr class="border border-bottom border-info">
               @endforeach
+              @if(sizeof($actions) == 0)
+                <div class="col text-center">
+                  Action Item Kosong
+                </div>
+                @endif
 
             </div>
             <button type="button" onclick="history.back()" class="btn btn-light">Batal</button>

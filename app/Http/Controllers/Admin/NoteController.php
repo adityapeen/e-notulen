@@ -259,7 +259,7 @@ class NoteController extends Controller
         $title = "Action Items";
         $note_id = Hashids::decode($hashed_id)[0];
         $note = Note::findOrFail($note_id);
-        $actions = ActionItems::where('note_id',$note_id)->get();
+        $actions = ActionItems::withCount(['evidences'])->where('note_id',$note_id)->get();
         $attendants = Attendant::where('note_id',$note_id)->get();
         if($note->status=='lock')
             return view('admin.note.action_view', compact(['title','note','actions', 'attendants']));
