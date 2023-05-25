@@ -38,6 +38,10 @@ class Agenda extends Model
         return $this->hasMany(Note::class, 'agenda_id');
     }
 
+    public function group_id_hash()
+    {
+        return   Hashids::encode($this->group_id);
+    }
 
     /**
      * Hash the ids

@@ -30,6 +30,7 @@
               </div>
               <div class="col-md-8">
                 <select id="group_id" class="form-select border px-1 @error('group_id') is-invalid @enderror" value="{{ old('group_id') }}" name="group_id">
+                  <option value="">Pilih Group</option>
                   @foreach ($groups as $item)
                       <option value="{{ $item->id }}">{{ $item->name }}</option>
                   @endforeach

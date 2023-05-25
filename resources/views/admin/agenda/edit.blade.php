@@ -30,8 +30,9 @@
               </div>
               <div class="col-md-8">
                 <select id="group_id" class="form-select border px-1 @error('group_id') is-invalid @enderror" value="{{ $agenda->group_id }}" name="group_id">
+                  <option value="">Pilih Group</option>
                   @foreach ($groups as $item)
-                      <option value="{{ $item->id }}" {{ $item->id == $agenda->group_id ? 'selected' : ''}}>{{ $item->name }}</option>
+                      <option value="{{ $item->id }}" {{ $item->id == $agenda->group_id_hash() ? 'selected' : ''}}>{{ $item->name }}</option>
                   @endforeach
               </select>
               </div>
