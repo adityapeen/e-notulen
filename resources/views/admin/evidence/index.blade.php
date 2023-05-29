@@ -20,6 +20,7 @@
           @if($action->status != "done")
           <button class="btn badge badge-sm bg-gradient-{{ $action->status == "todo" ? "info" : "success"}}" onclick="handleStatus()">Mark as {{ $action->status == "todo" ? "on progress" : "done"}}</button>
           @endif
+          <button data-url="{{route('admin.notes.action', $action->note->id)}}" class="btn badge badge-sm bg-gradient-primary"onclick="handleBack(event)" >Back to Action Items</button>
         </div></div>
       </div>
     </div>
@@ -125,6 +126,10 @@
               $("#status-form").submit();
           }
       });
+
+  const handleBack = (event) => {
+    window.location.href = event.target.dataset.url;
+  }
 
     
 </script>
