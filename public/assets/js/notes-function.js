@@ -19,7 +19,7 @@ const handleLock = (id) => {
     title: "Apakah anda yakin mengubah status notulensi ini ?",
     icon: "warning",
     showCancelButton: true,
-    confirmButtonText: "Ya,",
+    confirmButtonText: "Ya",
   }).then((willLock) => {
     if (willLock.isConfirmed) {
       var link = "/admin/notes/lock/" + id;

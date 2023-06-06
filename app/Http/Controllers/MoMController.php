@@ -85,7 +85,7 @@ class MoMController extends Controller
             $status = false;
             $results = null;
         }
-        return response()->json(['status'=>$status,'results'=>$results]);
+        return response()->json(['status'=>$status,'results'=>$results,'messages'=>$res]);
     }
     public function send_mom(String $hashed_note_id)
     {
