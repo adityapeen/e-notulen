@@ -4,15 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Note;
-use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
 use Google_Client;
-use Google_Service_Docs;
 use Google_Service_Drive;
-use Google_Service_Docs_Document;
-use Google_Service_Docs_DocumentStyle;
 use Google_Service_Drive_DriveFile;
-
 
 class GDocsController extends Controller
 {
@@ -20,19 +15,19 @@ class GDocsController extends Controller
     public function createNoteDocs(String $hashed_id)
     {
         $note_id = Hashids::decode($hashed_id)[0];
-        $notes = Note::where('id',$note_id)->first();
+        $notes = Note::where('id', $note_id)->first();
 
-        $filename = str_replace('-','.',$notes->date).' '.$notes->name;
+        $filename = str_replace('-', '.', $notes->date) . ' ' . $notes->name;
 
         $doc_id = $this->createDocumentFromTemplate($filename);
 
-        $link_drive = "https://docs.google.com/document/d/".$doc_id;
+        $link_drive = "https://docs.google.com/document/d/" . $doc_id;
         $notes->update([
             'link_drive_notulen' => $link_drive,
             'updated_by' => auth()->user()->id,
         ]);
 
-        return redirect()->route("home")->with('success','Data <strong>berhasil</strong> disimpan');
+        return redirect()->route("home")->with('success', 'Data <strong>berhasil</strong> disimpan');
     }
     public function createDocumentFromTemplate($copyTitle = "Copy Title")
     {
@@ -45,7 +40,8 @@ class GDocsController extends Controller
         $driveService = new Google_Service_Drive($client);
 
         // Get the ID of the template document
-        $template_id = '12zcCTsPB1JJ7qtcsmHYih-fULfvxaG2N';
+        // $template_id = '12zcCTsPB1JJ7qtcsmHYih-fULfvxaG2N'; // Word .docx
+        $template_id = '1m72qKLdOcQ8KsDxMcgKAIHEvwwhK_RwTUALmMZUiNhA'; // GDocs (Exportable via API) 
 
         // Create a new document from the template
         // $body = new Google_Service_Docs_Document();
@@ -80,6 +76,62 @@ class GDocsController extends Controller
                 'fields' => 'id, parents'
             ));
             return $file->parents;
+        } catch (Exception $e) {
+            echo "Error Message: " . $e;
+        }
+    }
+
+    function exportPDF(String $hashed_id)
+    {
+        $note_id = Hashids::decode($hashed_id)[0];
+        $notes = Note::where('id', $note_id)->first();
+        $url = $notes->link_drive_notulen;
+        $regex = '/^(?:https?:\/\/)?(?:docs\.google\.com\/(?:document|spreadsheets|presentation)\/d\/|drive\.google\.com\/(?:file\/d\/|open\?id=))([a-zA-Z0-9_-]+)(?:\/[a-zA-Z0-9_-]+)?$/';
+
+        if (preg_match($regex, $url, $matches)) {
+            $documentId = $matches[1];
+            $filename = str_replace('-', '.', $notes->date) . ' ' . $notes->name.'.pdf';
+            $localPath = $this->exportDocsToPDF($documentId, $filename);
+
+            $headers = [
+                'Content-Type' => 'application/pdf',
+                'Content-Description' => 'File Transfer',
+                'Content-Disposition' => "attachment; filename={$filename}",
+                'Content-Transfer-Encoding' => 'binary',
+            ];
+
+            $notes->update(['file_notulen'=>$filename]);
+
+            return response()->download($localPath, $filename, $headers);
+           
+            // redirect()->route("admin.notes.index")->with('success', 'Data <strong>berhasil</strong> disimpan');
+        } else {
+            echo "Invalid Google Docs URL";
+        }
+    }
+
+    function exportDocsToPDF($docs_id, $filename = "exported.pdf")
+    {
+        try {
+            // Create a Google API client
+            $client = new Google_Client();
+            $client->setAuthConfig(config('services.google.service_account_credentials_json'));
+            $client->addScope(Google_Service_Drive::DRIVE_READONLY);
+
+            // Create a Google Drive service
+            $service = new Google_Service_Drive($client);
+
+            // Specify the Google Docs file ID
+            $fileId = $docs_id;
+
+            // Export the document as a PDF
+            $response = $service->files->export($fileId, 'application/pdf', array('alt' => 'media'));
+
+            // Save the PDF to a local directory
+            $localPath = public_path('/notulensi/'.$filename);
+            file_put_contents($localPath, $response->getBody()->getContents());
+
+            return $localPath;
         } catch (Exception $e) {
             echo "Error Message: " . $e;
         }

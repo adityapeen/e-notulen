@@ -75,6 +75,12 @@
                       <button class="btn btn-sm btn-info"><i class="fa fa-file"></i></button>
                     </a> --}}
                       @if ($item->status == 'lock')
+                        @if($item->file_notulen == NULL)
+                          <a href="{{ route('admin.export.docs', [$item->id]) }}" target="_blank" class="text-secondary font-weight-bold text-xs"
+                            data-toggle="tooltip" title="Generate PDF">
+                            <button class="btn btn-sm btn-danger"><i class="fa fa-file-pdf"></i></button>
+                          </a>
+                        @endif
                         <a href="#" onclick="handleSend('{{ $item->id }}')"
                           class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Kirim MoM">
                           <button class="btn btn-sm btn-info"><i class="fa fa-file"></i></button>
