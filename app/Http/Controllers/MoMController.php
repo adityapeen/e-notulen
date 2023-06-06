@@ -66,10 +66,6 @@ class MoMController extends Controller
                     'number' => $attendance->user->phone,
                     'message' => $message,
                 ]);
-                $response = Http::withBasicAuth(env('API_USER'), env('API_PASSWORD'))->post($this->url.'/send-message', [
-                    'number' => $attendance->user->phone,
-                    'message' => $message,
-                ]);
             }
 
             $res = json_decode($response);
