@@ -1,6 +1,6 @@
 @extends('admin.layouts.template')
-@section('title', 'Tabel - ' . config('app.name'))
-@section('breadcrumbs', 'Tabel - ' . config('app.name'))
+@section('title', $title.' - '.config('app.name'))
+@section('breadcrumbs', $title.' - '.config('app.name'))
 
 @section('content')
   <div class="row">
