@@ -103,7 +103,9 @@ const handleView = (id) => {
       url = "#";
       $("#note-file").removeAttr("target");
     }
-    $("#modal-title").html("<b>"+res.note.name + "</b> :: (" + res.note.date+")");
+    var time = res.note.date+' || '+res.note.start_time.substring(0,5)+'-'+res.note.end_time.substring(0,5);
+    $("#modal-title").html("<b>"+res.note.name + "</b>");
+    $("#note-time").html(time);
     $("#note-issues").html(res.note.issues);
     $("#note-link").attr("href", res.note.link_drive_notulen);
     $("#note-file").attr("href", url);

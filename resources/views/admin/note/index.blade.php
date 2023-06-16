@@ -128,6 +128,10 @@
         </div>
         <div class="modal-body">
           <div class="row">
+            <div class="col-md-4">Tanggal</div>
+            <div class="col-md-8 font-weight-bold" id="note-time"></div>
+          </div>
+          <div class="row">
             <div class="col-md-4">Issues</div>
             <div class="col-md-8 font-weight-bold" id="note-issues"></div>
           </div>
