@@ -44,7 +44,7 @@
                       <button class="btn btn-sm btn-info"><i class="fa fa-eye"></i></button>
                     </a>
                     @if($item->status == 'lock')
-                    <a href="{{ url('/notulensi').'/'.$item->file_notulen}}" target="_blank" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Lihat Notulensi">
+                    <a href="{{ route('user.notes.show', $item->id) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Lihat Notulensi">
                       <button class="btn btn-sm btn-success">Lihat Notulen</button>
                     </a>
                     @endif

@@ -38,7 +38,8 @@ class HomeController extends Controller
             return view('admin.notulen', compact(['users','agendas','notes','actions','todays','title']));
         }
         else{
-            $todays = Note::join('attendants', 'notes.id', '=', 'attendants.note_id')
+            $todays = Note::select('notes.*','attendants.user_id')
+            ->join('attendants', 'notes.id', '=', 'attendants.note_id')
             ->where('attendants.user_id',auth()->user()->id)
             ->where('date', date('Y-m-d'))->get();
             return view('user.notulen', compact(['todays','title']));

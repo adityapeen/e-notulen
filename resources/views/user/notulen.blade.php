@@ -1,6 +1,6 @@
 @extends('user.layouts.template')
-@section('title', 'Tabel - ' . config('app.name'))
-@section('breadcrumbs', 'Tabel - ' . config('app.name'))
+@section('title', $title.' - '.config('app.name'))
+@section('breadcrumbs', $title.' - '.config('app.name'))
 
 @section('content')
 @if(auth()->user()->status == 0)
@@ -34,7 +34,7 @@
               </thead> --}}
               <tbody>
                 @foreach ($todays as $item)
-                  <tr class="clickable-row" data-href="{{ $item->status != "lock" ? "#" : $item->file_notulen }}">
+                  <tr class="clickable-row" data-href="{{ $item->status != "lock" ? "#" : route('user.notes.show', $item->id) }}">
                     <td style="cursor: pointer">
                       <div class="d-flex px-2 py-1">
                         <div class="me-3">

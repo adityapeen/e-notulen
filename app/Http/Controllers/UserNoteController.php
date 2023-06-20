@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Note;
 use Illuminate\Http\Request;
+use Vinkla\Hashids\Facades\Hashids;
 
 class UserNoteController extends Controller
 {
@@ -53,7 +54,10 @@ class UserNoteController extends Controller
      */
     public function show(String $hashed_id)
     {
-        //
+        $title = "Notulensi";
+        $note_id = Hashids::decode($hashed_id)[0];
+        $note = Note::findOrFail($note_id);
+        return view('user.note.view', compact(['title','note']));
     }
 
     /**
