@@ -140,6 +140,10 @@
     });
     autoDate();
     attendants();
+    let searchParams = new URLSearchParams(window.location.search);
+    if(searchParams.get('agenda') != null){
+      $('#agenda_id').val(searchParams.get('agenda')).trigger('change');
+    }
     getExisting($('#agenda_id').val());
   });
 

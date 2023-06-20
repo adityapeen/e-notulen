@@ -12,6 +12,7 @@ use App\Models\Pic;
 use App\Models\User;
 use App\Models\UserGroup;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Vinkla\Hashids\Facades\Hashids;
 
 class NoteController extends Controller
@@ -273,9 +274,9 @@ class NoteController extends Controller
         $agenda_id = Hashids::decode($hashed_id)[0];
         $agenda = Agenda::findOrFail($agenda_id);
         $title = "Daftar Notulensi - ".$agenda->name;
-        $notes = Note::where('agenda_id', $agenda_id)->get();
+        $notes = Note::where('agenda_id', $agenda_id)->orderBy('date', 'DESC')->paginate(15);
 
-        return view('admin.note.index-agenda', compact(['title','notes','agenda_id']));
+        return view('admin.note.index-agenda', compact(['title','notes','agenda_id','agenda']));
     }
 
     public function showNote(String $hashed_id){
@@ -300,5 +301,17 @@ class NoteController extends Controller
         $note_id = Hashids::decode($hashed_id)[0];
         $note = Note::find($note_id);
         return view('admin.note.qrcode', compact(['title','note']));
+    }
+
+    public function groupByAgenda(){
+        $title = "Daftar Rapat";
+        $agendas = Agenda::
+        select('agendas.*', DB::raw('(SELECT MAX(date) FROM notes WHERE notes.agenda_id = agendas.id) AS last_note_date'),
+        DB::raw('(SELECT COUNT(*) FROM notes WHERE notes.agenda_id = agendas.id) as notes_count'))
+        ->orderBy('notes_count', 'desc')
+        ->get();
+        $color = ['primary','dark','info','warning','success','light'];
+        // dd($agendas);
+        return view('admin.note.note_group', compact(['agendas','title','color']));
     }
 }

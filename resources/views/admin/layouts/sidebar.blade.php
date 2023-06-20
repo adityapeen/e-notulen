@@ -18,6 +18,14 @@
           </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link text-white {{ Request::is('admin/agenda') ? 'active bg-gradient-primary' : '' }}" href="{{ route('admin.agenda') }}">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">question_answer</i>
+            </div>
+            <span class="nav-link-text ms-1">Rapat</span>
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link text-white {{ Request::is('admin/notes*') ? 'active bg-gradient-primary' : '' }}" href="{{ route('admin.notes.index') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">table_view</i>
@@ -25,14 +33,6 @@
             <span class="nav-link-text ms-1">Notulen</span>
           </a>
         </li>
-        {{-- <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/virtual-reality.html">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">view_in_ar</i>
-            </div>
-            <span class="nav-link-text ms-1">Virtual Reality</span>
-          </a>
-        </li> --}}
         {{-- <li class="nav-item">
           <a class="nav-link text-white " href="../pages/billing.html">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">

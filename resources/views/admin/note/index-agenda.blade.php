@@ -9,7 +9,7 @@
         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
           <div class="bg-gradient-info shadow-info border-radius-lg pt-2 pb-2 d-flex align-items-center">
             <h6 class="text-white text-capitalize ps-3">{{$title}}</h6>
-            <a href="{{ route('admin.notes.create', $agenda_id)}}" class="btn btn-success shadow-dark mb-0 ms-auto me-3">Tambah</a>
+            <a href="{{ route('admin.notes.create', 'agenda='.$agenda->id)}}" class="btn btn-success shadow-dark mb-0 ms-auto me-3">Tambah</a>
           </div>
         </div>
         <div class="card-body pb-2">
@@ -86,7 +86,8 @@
       </div>
     </div>
   </div>
-  <div class="modal fade" id="modal-detail" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+  <div class="modal fade" id="modal-detail" tabindex="-1" role="dialog" aria-labelledby="modal-default"
+    aria-hidden="true">
     <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -96,13 +97,30 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="row"><div class="col-md-4">Issues</div><div class="col-md-8 font-weight-bold" id="note-issues"></div></div>
-          <div class="row"><div class="col-md-4">Link</div><div class="col-md-8" id="note-link"></div></div>
-          <div class="row"><div class="col-md-4"></div><div class="col-md-8" ><a href="#" id="note-file" class="btn btn-sm btn-info mb-1">Lihat File</a></div></div>
-          <div class="row"><div class="col-md-4">Peserta</div><div class="col-md-8" id="note-attendant"></div></div>
+          <div class="row">
+            <div class="col-md-4">Tanggal</div>
+            <div class="col-md-8 font-weight-bold" id="note-time"></div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">Issues</div>
+            <div class="col-md-8 font-weight-bold" id="note-issues"></div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">Notulen</div>
+            <div class="col-md-8"><a href="#" id="note-link" class="btn btn-sm btn-info mb-1">Link Notulen</a><a
+                href="#" id="note-file" class="btn btn-sm btn-success ms-1 mb-1">Lihat File</a></div>
+          </div>
+          <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-8"></div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">Peserta</div>
+            <div class="col-md-8" id="note-attendant"></div>
+          </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-link  ml-auto" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-link ml-auto" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
@@ -111,7 +129,10 @@
 @endsection
 
 @section('script')
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+{{-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{{asset('assets/js/notes-function.js')}}"></script>
+
 
 <script>
   $(document).ready(function(){
@@ -119,92 +140,6 @@
       ordering:  false
     });
   });
-  
-  const handleDestroy = id =>
-      swal({
-          title: "Apakah anda yakin menghapus data ini ?",
-          // text: "Once deleted, you will not be able to recover this item!",
-          icon: "warning",
-          buttons: true,
-          dangerMode: true,
-      })
-      .then(willDelete => {
-          if (willDelete) {
-            var link = "{{url('/admin/notes/')}}/" + id;
-              $("#delete-form").attr("action", link);
-              $("#delete-form").submit();
-          }
-      });
-
-  const handleLock = id =>
-      swal({
-          title: "Apakah anda yakin mengubah status notulensi ini ?",
-          icon: "warning",
-          buttons: true,
-      })
-      .then(willLock => {
-          if (willLock) {
-            var link = "{{url('/admin/notes/lock')}}/" + id;
-              $("#lock-form").attr("action", link);
-              $("#lock-form").submit();
-          }
-      });
-
-    const handleSend = id =>
-    swal({
-        title: "Apakah anda akan mengirimkan notulensi ini ?",
-        icon: "info",
-        allowEscapeKey: false,
-        allowOutsideClick: false,
-        buttons: true,
-    })
-    .then(willSend => {
-        if (willSend) {
-          var link = "{{url('/admin/notes/send-mom')}}/" + id;
-          return fetch(link);
-        }
-    }).then(results=>{
-      return results.json();
-    }).then(json=>{
-      const status = json.status;
-      if (!status) {
-        return swal({
-          title: "Gagal mengirim notulen",
-          icon: "error",
-        });
-      }
-      swal({
-          title: "Berhasil mengirim notulen",
-          icon: "success",
-      })
-    }).catch(err => {
-      if (err) {
-        swal("Oh noes!", "The AJAX request failed!", "error");
-      } else {
-        swal.close();
-      }
-    });
-
-    const handleView = id =>{
-      var link = "{{url('/admin/notes/view')}}/" + id;
-      var url = "{{ url('/notulensi') }}/";
-      $.ajax({
-              url: link,
-              context: document.body
-            }).done(function(res) {
-              if(res.note.file_notulen !== null ) url=url+res.note.file_notulen;
-              else url='#';
-              $('#modal-title').html(res.note.name + " === "+res.note.date);
-              $('#note-issues').html(res.note.issues);
-              $('#note-link').html(res.note.link_drive_notulen);
-              $('#note-file').attr('href',url);
-              $('#note-attendant').empty();
-              res.attendants.forEach(item => {
-                $('#note-attendant').append('<li>'+item+'</li>');
-              });
-              $("#modal-detail").modal('show');
-            });
-    }
     
 </script>
 @endsection

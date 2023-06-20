@@ -26,6 +26,14 @@
             </div>            
             <div class="row mb-1 align-items-center">
               <div class="col-md-4">
+                Icon
+              </div>
+              <div class="col-md-8">
+                <input type="text" id="icon_material" class="form-control border px-1 @error('icon_material') is-invalid @enderror" name="icon_material" value="{{ $agenda->icon_material }}" placeholder="card_membership" required>
+              </div>
+            </div>            
+            <div class="row mb-1 align-items-center">
+              <div class="col-md-4">
                 Group
               </div>
               <div class="col-md-8">

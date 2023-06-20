@@ -12,6 +12,7 @@ class Agenda extends Model
     use HasFactory;
     protected $fillable = [
         'name',
+        'icon_material',
         'date',
         'group_id',
         'created_by',
