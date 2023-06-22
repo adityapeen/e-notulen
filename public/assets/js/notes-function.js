@@ -60,27 +60,31 @@ const handleSend = (id) => {
             });
             var receiver = "";
             var count = 0;
-            result.results.forEach((item) => {
-              var url = "/admin/notes/send-mom/" + item.id;
-              fetch(url)
-                .then((response) => {
-                  return response.json();
-                })
-                .catch((error) => {
-                  Swal.showValidationMessage(`Request failed: ${error}`);
-                })
-                .then((res) => {
-                  count++;
-                  receiver += res.results + " <br>";
-                  head =
-                    count === result.results.length
-                      ? "Selesai mengirim notulen"
-                      : "Sedang mengirim notulen";
-                  Swal.update({
-                    title: head,
-                    html: receiver,
+            var interval = 500; // miliseconds
+            result.results.forEach( (item, index) => {
+              setTimeout(function () {
+                var url = "/admin/notes/send-mom/" + item.id;
+                fetch(url)
+                  .then((response) => {
+                    return response.json();
+                  })
+                  .catch((error) => {
+                    Swal.showValidationMessage(`Request failed: ${error}`);
+                  })
+                  .then((res) => {
+                    count++;
+                    receiver += res.results + " <br>";
+                    head =
+                      count === result.results.length
+                        ? "Selesai mengirim notulen"
+                        : "Sedang mengirim notulen";
+                    Swal.update({
+                      title: head,
+                      html: receiver,
+                    });
                   });
-                });
+              }, index * interval);
+              
             });
           }
         });
