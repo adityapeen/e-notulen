@@ -13,7 +13,8 @@ class Attendant extends Model
 
     protected $fillable = [
         'note_id',
-        'user_id'
+        'user_id',
+        'mom_sent'
     ];
 
     public function note()

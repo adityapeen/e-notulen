@@ -71,6 +71,7 @@ class MoMController extends Controller
             $res = json_decode($response);
             if($res->status){
                 $results = $attendance->user->name." - OK";
+                $attendance->update(['mom_sent'=>date('Y-m-d h:i:s')]);
             }
             else{
                 $results = $attendance->user->name." - FAIL";
