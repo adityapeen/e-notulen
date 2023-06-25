@@ -52,6 +52,7 @@ class AgendaController extends Controller
         ]);
         $agenda = Agenda::updateOrCreate([
             'name' => $request->name,
+            'icon_material' => $request->icon_material,
             'group_id' => $request->group_id == NULL ? NULL : Hashids::decode($request->group_id)[0],
             'created_by' => auth()->user()->id,
         ]);
@@ -114,6 +115,7 @@ class AgendaController extends Controller
         $id = Hashids::decode($hashed_id)[0];
         $agenda = Agenda::findOrFail($id)->update([
             'name' => $request->name,
+            'icon_material' => $request->icon_material,
             'group_id' => $request->group_id == NULL ? NULL : Hashids::decode($request->group_id)[0],
             'updated_by' => auth()->user()->id,
         ]);
