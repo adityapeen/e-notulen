@@ -115,7 +115,10 @@ const handleView = (id) => {
     $("#note-file").attr("href", url);
     $("#note-attendant").empty();
     res.attendants.forEach((item) => {
-      $("#note-attendant").append("<li>" + item + "</li>");
+      var list;
+      if(item.mom_sent !== null) list = "<li>" + item.name + "   <span class='text-success font-weight-bold' title='"+item.mom_sent+"'>&#10003;</span></li>";
+      else list = "<li>" + item.name + "</li>";
+      $("#note-attendant").append(list);
     });
     $("#modal-detail").modal("show");
   });

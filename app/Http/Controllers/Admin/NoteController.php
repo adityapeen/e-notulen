@@ -11,6 +11,8 @@ use App\Models\Evidence;
 use App\Models\Pic;
 use App\Models\User;
 use App\Models\UserGroup;
+use DateTime;
+use DateTimeZone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Vinkla\Hashids\Facades\Hashids;
@@ -113,7 +115,13 @@ class NoteController extends Controller
         $list = Attendant::where(['note_id'=>$id])->get();
         $attendants = array();
         foreach($list as $l){
-            array_push($attendants,$l->user->name);
+            $date = new DateTime($l->mom_sent, new DateTimeZone('GMT'));
+            $date->setTimezone(new DateTimeZone('Asia/Jakarta'));
+            $item = array(
+                'name' => $l->user->name,
+                'mom_sent' => $l->mom_sent == NULL? NULL : $date->format('Y-m-d H:i:s')
+            );
+            array_push($attendants,$item);
         }
         return compact(['note','attendants']);
     }
