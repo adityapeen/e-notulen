@@ -60,7 +60,7 @@ const handleSend = (id) => {
             });
             var receiver = "";
             var count = 0;
-            var interval = 500; // miliseconds
+            var interval = 1000; // miliseconds
             result.results.forEach( (item, index) => {
               setTimeout(function () {
                 var url = "/admin/notes/send-mom/" + item.id;
