@@ -61,7 +61,7 @@ class MoMController extends Controller
                     .$notes->name."* pada tanggal *".date_format($date,"d-m-Y").".* \n"
                     ."\nTerimakasih 🙏🙏🙏";
 
-                $response = Http::withBasicAuth(env('API_USER'), env('API_PASSWORD'))
+                $response = Http::timeout(180)->withBasicAuth(env('API_USER'), env('API_PASSWORD'))
                                 ->attach('file', file_get_contents($file_location),$notes->file_notulen)->post($this->url.'/send-message', [
                     'number' => $attendance->user->phone,
                     'message' => $message,
