@@ -91,6 +91,7 @@ class GDocsController extends Controller
         if (preg_match($regex, $url, $matches)) {
             $documentId = $matches[1];
             $filename = str_replace('-', '.', $notes->date) . ' ' . $notes->name.'.pdf';
+            $filename = str_replace('/', '_', $filename);
             $localPath = $this->exportDocsToPDF($documentId, $filename);
 
             $headers = [
