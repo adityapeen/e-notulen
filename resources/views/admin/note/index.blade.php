@@ -85,11 +85,16 @@
                           class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Kirim MoM">
                           <button class="btn btn-sm btn-info"><i class="fa fa-file"></i></button>
                         </a>
-                      @endif
-                      <a href="#" onclick="handleDestroy('{{ $item->id }}')"
-                        class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Hapus Agenda">
-                        <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
-                      </a>
+                        <a href="{{ route('admin.notes.absensi', $item->id)}}" target="_blank"
+                          class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Daftar Hadir">
+                          <button class="btn btn-sm btn-warning"><i class="fa fa-list"></i></button>
+                        </a>
+                        @else
+                        <a href="#" onclick="handleDestroy('{{ $item->id }}')"
+                          class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Hapus Agenda">
+                          <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+                        </a>
+                        @endif
                     </td>
                   </tr>
                 @endforeach

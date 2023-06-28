@@ -48,6 +48,7 @@ Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], f
     Route::get('/notes/action/{id}/evidences/add', [App\Http\Controllers\Admin\EvidenceController::class, 'add'])->name('notes.evidence.add');
     Route::get('/notes/qr/{id}', [App\Http\Controllers\Admin\NoteController::class, 'qrcode'])->name('notes.qrcode');
     Route::get('/notes/export/{id}', [App\Http\Controllers\GDocsController::class, 'exportPDF'])->name('export.docs');
+    Route::get('/notes/absensi/{id}', [App\Http\Controllers\PDFController::class, 'generateAttendanceList'])->name('notes.absensi');
     Route::get('/reminder', [App\Http\Controllers\MoMController::class, 'send_reminder'])->name('notes.reminder');
     Route::get('/users/password', [App\Http\Controllers\Admin\UserController::class, 'password'])->name('users.password');
     Route::post('/users/password', [App\Http\Controllers\Admin\UserController::class, 'change_password'])->name('users.change_password');
