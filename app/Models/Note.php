@@ -15,6 +15,7 @@ class Note extends Model
         'type',
         'name',
         'date',
+        'place',
         'start_time',
         'end_time',
         'max_execute',

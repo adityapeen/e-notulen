@@ -65,6 +65,14 @@
             </div>    
             <div class="row mb-1 align-items-center">
               <div class="col-md-4">
+                Tempat
+              </div>
+              <div class="col-md-8">
+                <input type="text" id="place" class="form-control border px-1 @error('place') is-invalid @enderror" name="place" value="{{ old('place') }}" required>
+              </div>
+            </div>  
+            <div class="row mb-1 align-items-center">
+              <div class="col-md-4">
                 Max Execute
               </div>
               <div class="col-md-8">
