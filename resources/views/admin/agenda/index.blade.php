@@ -19,6 +19,7 @@
                 <tr>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Group</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Prioritas</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Count</th>
                   <th class="text-secondary opacity-7"></th>
                 </tr>
@@ -31,6 +32,9 @@
                   </td>
                   <td class="align-middle text-sm">
                     {{ $item->group != NULL ? $item->group->name : ""  }}
+                  </td>
+                  <td class="align-middle text-sm">
+                    {{ $item->priority != NULL ? $item->priority->name : ""  }}
                   </td>
                   <td class="align-middle text-sm">
                     <h6 class="mb-0">{{ $item->notes_count }}</h6>

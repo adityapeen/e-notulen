@@ -15,6 +15,7 @@ class Agenda extends Model
         'icon_material',
         'date',
         'group_id',
+        'priority_id',
         'created_by',
         'updated_by',
     ];
@@ -22,6 +23,10 @@ class Agenda extends Model
     public function group()
     {
         return $this->belongsTo(MGroup::class);
+    }
+    public function priority()
+    {
+        return $this->belongsTo(MPriority::class);
     }
 
     public function creator()

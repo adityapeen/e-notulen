@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Agenda;
 use App\Http\Controllers\Controller;
 use App\Models\MGroup;
+use App\Models\MPriority;
 use App\Models\User;
 use App\Models\UserGroup;
 use Vinkla\Hashids\Facades\Hashids;
@@ -35,7 +36,8 @@ class AgendaController extends Controller
         $title = "Tambah Agenda Rapat";
         $groups = MGroup::all();
         $users = User::all();
-        return view('admin.agenda.create', compact(['title','groups','users']));
+        $priorities = MPriority::all();
+        return view('admin.agenda.create', compact(['title','groups','users','priorities']));
     }
 
     /**
@@ -54,6 +56,7 @@ class AgendaController extends Controller
             'name' => $request->name,
             'icon_material' => $request->icon_material,
             'group_id' => $request->group_id == NULL ? NULL : Hashids::decode($request->group_id)[0],
+            'priority_id' => $request->priority_id,
             'created_by' => auth()->user()->id,
         ]);
         if($agenda){
@@ -95,8 +98,9 @@ class AgendaController extends Controller
         $agenda = Agenda::find($id[0]);
         $groups = MGroup::all();
         $users = User::all();
+        $priorities = MPriority::all();
 
-        return view('admin.agenda.edit', compact('title','agenda','groups','users'));
+        return view('admin.agenda.edit', compact('title','agenda','groups','users','priorities'));
     }
 
     /**
@@ -117,6 +121,7 @@ class AgendaController extends Controller
             'name' => $request->name,
             'icon_material' => $request->icon_material,
             'group_id' => $request->group_id == NULL ? NULL : Hashids::decode($request->group_id)[0],
+            'priority_id' => $request->priority_id,
             'updated_by' => auth()->user()->id,
         ]);
         if($agenda){

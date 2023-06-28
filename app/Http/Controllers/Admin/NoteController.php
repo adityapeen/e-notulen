@@ -316,7 +316,8 @@ class NoteController extends Controller
         $agendas = Agenda::
         select('agendas.*', DB::raw('(SELECT MAX(date) FROM notes WHERE notes.agenda_id = agendas.id) AS last_note_date'),
         DB::raw('(SELECT COUNT(*) FROM notes WHERE notes.agenda_id = agendas.id) as notes_count'))
-        ->orderBy('notes_count', 'desc')
+        ->orderBy('priority_id', 'asc')
+        ->orderBy('agendas.name', 'asc')
         ->get();
         $color = ['primary','dark','info','warning','success','light'];
         // dd($agendas);

@@ -47,6 +47,18 @@
             </div>
             <div class="row mb-1 align-items-center">
               <div class="col-md-4">
+                Prioritas
+              </div>
+              <div class="col-md-8">
+                <select id="priority" class="form-select border px-1 @error('priority') is-invalid @enderror" value="{{ old('priority') }}" name="priority">
+                  @foreach ($priorities as $item)
+                      <option value="{{ $item->id }}" {{ $item->id == $agenda->priority_id ? 'selected' : ''}}>{{ $item->name }}</option>
+                  @endforeach
+              </select>
+              </div>
+            </div>
+            <div class="row mb-1 align-items-center">
+              <div class="col-md-4">
                 Peserta Rapat
               </div>
               <div class="col-md-8">
