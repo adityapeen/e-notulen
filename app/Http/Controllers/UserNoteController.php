@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActionItems;
+use App\Models\Attendant;
+use App\Models\Evidence;
 use App\Models\Note;
+use App\Models\Pic;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
 
@@ -92,5 +96,25 @@ class UserNoteController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function action_items(String $hashed_id)
+    {
+        $title = "Action Items";
+        $note_id = Hashids::decode($hashed_id)[0];
+        $note = Note::findOrFail($note_id);
+        $attendants = Attendant::where('note_id',$note_id)->get();
+        $actions = ActionItems::withCount(['evidences'])->where('note_id',$note_id)->get();
+        // $actions = User::find(auth()->user()->id)->pics;
+        return view('user.note.action_view', compact(['title','note','attendants','actions']));
+    }
+
+    public function evidence(String $hashed_id){
+        $title = "Eviden Action Item";
+        $action_id = Hashids::decode($hashed_id)[0];
+        $action = ActionItems::findOrFail($action_id);
+        $evidences = Evidence::where('action_id', $action_id)->get();
+        $pics = Pic::where('action_id', $action_id)->get();
+        return view('user.evidence.index', compact(['title','action','evidences','pics']));
     }
 }

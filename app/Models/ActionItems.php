@@ -39,6 +39,10 @@ class ActionItems extends Model
     {
         return $this->hasMany(Evidence::class, 'action_id');
     }
+    public function pics()
+    {
+        return $this->hasMany(Pic::class);
+    }
 
     /**
      * Hash the ids

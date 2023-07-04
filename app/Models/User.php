@@ -50,6 +50,11 @@ class User extends Authenticatable
         return $this->belongsTo(MLevel::class);
     }
 
+    public function pics()
+    {
+        return $this->hasMany(Pic::class);
+    }
+
     /**
      * Hash the ids
      *

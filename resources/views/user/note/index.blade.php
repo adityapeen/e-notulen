@@ -20,6 +20,7 @@
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tanggal</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
                   <th class="text-secondary opacity-7"></th>
+                  <th class="text-secondary opacity-7"></th>
                 </tr>
               </thead>
               <tbody>
@@ -38,7 +39,9 @@
                   <td class="align-middle text-sm">
                     <span class="badge badge-sm bg-gradient-{{ $item->status == "open" ? "success":"danger" }}">{{ $item->status }}</span>
                   </td>
-                  
+                  <td class="align-middle text-sm">
+                    <a href="{{ route('user.notes.action', $item->id)}}" class="btn badge badge-sm bg-gradient-info">Action Items</a>
+                  </td>                  
                   <td class="align-middle text-sm">
                     <a href="#" onclick="handleView('{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Detail Notulensi">
                       <button class="btn btn-sm btn-info"><i class="fa fa-eye"></i></button>
