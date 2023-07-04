@@ -42,7 +42,7 @@ class ActionItemsController extends Controller
         $note_id = Hashids::decode($request->note_id)[0];
         for ($i=0;$i<$loop;$i++){
             $act = ActionItems::updateOrCreate([
-                'note_id' =>$note_id,
+                'note_id' => $note_id,
                 'what' => $request->what[$i],
                 'how' => $request->how[$i],
                 'due_date' => $request->due_date[$i],
@@ -107,9 +107,10 @@ class ActionItemsController extends Controller
                 $action_id = Hashids::decode($request->action_id[$i])[0];
                 ActionItems::where('id',$action_id)
                 ->update([
-                    'what'=>$request->what[$i],
-                    'how'=>$request->how[$i],
-                    'due_date'=>$request->due_date[$i],
+                    'what' => $request->what[$i],
+                    'how' => $request->how[$i],
+                    'due_date' => $request->due_date[$i],
+                    'updated_by' => auth()->user()->id,
                 ]);
 
                 $pics = Pic::select('user_id')->where('action_id', $action_id)->get()->toArray();
