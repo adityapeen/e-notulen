@@ -73,6 +73,7 @@ class EvidenceController extends Controller
                 'uploaded_by' => auth()->user()->id,
         ]);
         if($evidence){
+            ActionItems::findOrFail(Hashids::decode($request->action_id)[0])->update(['status'=>'onprogress']);
             return redirect()->route("admin.notes.evidence",$request->action_id)->with('success','Data <strong>berhasil</strong> disimpan');
         }else{
             return back()->withErrors(['Data <strong>gagal</strong> ditambahkan!']);
@@ -163,6 +164,7 @@ class EvidenceController extends Controller
     public function destroy(String $hashed_id)
     {
         $evidence = Evidence::findOrFail(Hashids::decode($hashed_id)[0]);
+        $action_id = $evidence->action_id;
         $directory = 'eviden';
         try {
             $file_path = realpath($directory . '/' . $evidence->file);
@@ -173,6 +175,10 @@ class EvidenceController extends Controller
             $e;
         }   
         if($evidence->delete()){
+            $ev_count = Evidence::where('action_id', $action_id)->count();
+            if($ev_count == 0 ){
+                ActionItems::findOrFail($action_id)->update(['status'=>'todo']);
+            }
             return back()->with('success','Data <strong>berhasil</strong> dihapus!');
         }else{
             return back()->withErrors(['Data <strong>gagal</strong> dihapus!']);
