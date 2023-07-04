@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActionItems;
 use App\Models\Attendant;
 use App\Models\Note;
 use App\Models\Pic;
@@ -94,5 +95,30 @@ class ApiController extends Controller
             array_push($attendants,$l->user->name);
         }
         return compact(['note','attendants']);
+    }
+
+    public function action_item_detail(String $hashed_id)
+    {
+        $id = Hashids::decode($hashed_id)[0]; //decode the hashed id
+        $item = ActionItems::find($id);
+        $list = Pic::where('action_id', $id)->get();
+        $pics = array();
+
+        $action_item = [
+            'name' => $item->note->name,
+            'what' => $item->what,
+            'how' => $item->how,
+            'due_date' => $item->due_date,
+            'status' => $item->status
+        ];
+
+        foreach($list as $item){
+            $data = [
+                'name' => $item->user->name
+            ];
+            array_push($pics, $data);
+        }
+
+        return compact(['action_item','pics']);
     }
 }

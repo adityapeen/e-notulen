@@ -75,4 +75,5 @@ Route::group(['middleware' => 'api', "prefix" => "api", "as" => "api."], functio
     Route::get('/notes/{id}', [App\Http\Controllers\ApiController::class, 'note_detail'])->name('notes');
     Route::get('/docs/{id}', [App\Http\Controllers\GDocsController::class, 'createNoteDocs'])->name('gdocs');
     Route::resource('/actions', App\Http\Controllers\ActionItemsController::class)->except(['index']);
+    Route::get('/action_detail/{id}', [App\Http\Controllers\ApiController::class, 'action_item_detail'])->name('action_detail');
 });

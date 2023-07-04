@@ -31,11 +31,16 @@ class HomeController extends Controller
         $title = "Dashboard";
         if(auth()->user()->level_id == 1 || auth()->user()->level_id == 2){ // Ka & Timstra
             $users = User::all()->count();
+            $wa_ready = User::whereNot('phone','')->count();
             $agendas = Agenda::all()->count();
             $notes = Note::all()->count();
+            $notes_locked = Note::where('status','lock')->count();
             $actions = ActionItems::all()->count();
+            $actions_todo = ActionItems::where('status','todo')->count();
+            $actions_progress = ActionItems::where('status','onprogress')->count();
+            $undone = ActionItems::whereNot('status','done')->get();
             $todays = Note::where('date', date('Y-m-d'))->get();
-            return view('admin.notulen', compact(['users','agendas','notes','actions','todays','title']));
+            return view('admin.notulen', compact(['users','agendas','notes','actions','todays','title','wa_ready','notes_locked','actions_todo','actions_progress','undone']));
         }
         else{
             $todays = Note::select('notes.*','attendants.user_id')
