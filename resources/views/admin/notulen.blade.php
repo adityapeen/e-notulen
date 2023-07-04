@@ -104,6 +104,7 @@
                     </td>
                     <td style="cursor: pointer">
                       <?= $item->note->name ?>
+                      <p class="text-secondary mb-0 text-xs">{{ $item->note->date}}</p>
                     </td>
                     <td class="align-middle">                      
                       {{ $item->due_date}}                     
