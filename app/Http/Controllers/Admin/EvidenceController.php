@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Evidence;
 use App\Http\Controllers\Controller;
 use App\Models\ActionItems;
-use App\Models\Pic;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
 
@@ -28,8 +27,7 @@ class EvidenceController extends Controller
         // dd($action_id);
         $action = ActionItems::findOrFail($action_id);
         $evidences = Evidence::where('action_id', $action_id)->get();
-        $pics = Pic::where('action_id', $action_id)->get();
-        return view('admin.evidence.create', compact(['title','action','hashed_id','evidences','pics']));
+        return view('admin.evidence.create', compact(['title','action','hashed_id','evidences']));
     }
 
     /**
