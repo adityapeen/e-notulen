@@ -31,7 +31,7 @@
                 File
               </div>
               <div class="col-md-8">
-                <input type="file" id="file" class="form-control border px-1 @error('file') is-invalid @enderror" name="file" value="{{ old('file') }}" placeholder="Bukti File" required>
+                <input type="file" id="file" class="form-control border px-1 @error('file') is-invalid @enderror" name="file" value="{{ old('file') }}" placeholder="Bukti File" >
                 <small class="font-weight-bold">{{ strlen($evidence->file) > 50 ? substr($evidence->file,0,50)."...".substr($evidence->file,-8) : $evidence->file }}</small>
                 <div class="text-danger font-weight-light small">* Mengganti file akan menghapus file yang sebelumnya telah diupload</div>
               </div>

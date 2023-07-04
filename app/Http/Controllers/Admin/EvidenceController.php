@@ -118,7 +118,7 @@ class EvidenceController extends Controller
     {
         $request->validate([
             'description' => ['required'],
-            'file' => ['required','max:10000']
+            // 'file' => ['required','max:10000']
         ]);
         $id = Hashids::decode($hashed_id);
         $evidence = Evidence::findOrFail($id)->first();

@@ -57,14 +57,14 @@
                   </div>
                 </div>
                 <div class="col-md-3 me-1">
-                  <select class="form-control existing" id="{{ $item->id }}" data-id="{{ $item->id }}" name="who[{{ $idx++ }}][]" multiple="multiple">
+                  <select class="form-control existing" id="{{ $item->id }}" data-id="{{ $item->id }}" name="who[{{ $idx++ }}][]" multiple="multiple" disabled>
                     @foreach($attendants as $a)
                     <option value="{{ $a->user->id_hash() }}">{{ $a->user->name.' - '.$a->user->satker->code }}</option>
                     @endforeach
                   </select>
                 </div>
                 <div class="col-md-1 me-1">
-                  <input type="date" id="date_first" class="form-control border px-1" name="due_date[]" value="{{ $item->due_date}}">
+                  <input type="date" id="date_first" class="form-control border px-1" name="due_date[]" value="{{ $item->due_date}}" disabled>
                 </div>
                 <div class="col me-1 text-center">
                   <span class="badge badge-sm bg-gradient-{{ $item->status == "done" ? "success" : "secondary" }}" >{{ $item->status}}</span>
