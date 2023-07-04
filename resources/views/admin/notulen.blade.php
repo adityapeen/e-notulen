@@ -94,20 +94,26 @@
                   <th class="text-secondary opacity-7"></th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Agenda</th>
                   <th class="text-secondary opacity-7">Due Date</th>
+                  <th class="text-secondary opacity-7"></th>
                 </tr>
               </thead>
               <tbody>
                 @foreach ($undone as $item)
-                  <tr class="clickable-action" data-id="{{ $item->id}}">
+                  <tr>
                     <td>
                       <span class="badge badge-sm bg-gradient-{{ $item->status == "todo" ? "info" : "secondary" }}" >{{ $item->status}}</span>
                     </td>
-                    <td style="cursor: pointer">
+                    <td style="cursor: pointer" class="clickable-action" data-id="{{ $item->id}}">
                       <?= $item->note->name ?>
                       <p class="text-secondary mb-0 text-xs">{{ $item->note->date}}</p>
                     </td>
                     <td class="align-middle">                      
                       {{ $item->due_date}}                     
+                    </td>
+                    <td class="align-middle">   
+                      @if($item->status == 'onprogress')                   
+                        <a href="{{ route('admin.notes.evidence', $item->id)}}" class="badge btn-success badge-sm bg-gradient-success" >Eviden</a>                  
+                      @endif
                     </td>
                   </tr>
                 @endforeach
@@ -142,8 +148,8 @@
               </thead> --}}
               <tbody>
                 @foreach ($todays as $item)
-                  <tr class="clickable-row" data-href="{{$item->status == 'lock'? route('admin.notes.show', $item->id) : $item->link_drive_notulen }}">
-                    <td style="cursor: pointer">
+                  <tr>
+                    <td style="cursor: pointer" class="clickable-row" data-href="{{$item->status == 'lock'? route('admin.notes.show', $item->id) : $item->link_drive_notulen }}">
                       <div class="d-flex px-2 py-1">
                         <div class="me-3">
                           <div

@@ -42,6 +42,8 @@
               <thead>
                 <tr>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Deskripsi</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Owner</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Uploaded</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">File</th>
                   <th class="text-secondary opacity-7"></th>
                 </tr>
@@ -52,17 +54,23 @@
                   <td class="">
                     <h6 class="mb-0">{{ $item->description }}</h6>
                   </td>
+                  <td class="">
+                    <h6 class="mb-0">{{ $item->user->name }}</h6>
+                  </td>
+                  <td class="">
+                    <span class="badge badge-sm bg-gradient-secondary" >{{ substr($item->created_at,0,10) }}</span>
+                  </td>
                   <td class="align-middle text-sm">
-                    <a href="{{ url('/eviden', $item->file )}}" target="_blank" class="btn btn-sm btn-primary" data-file="{{ $item->file }}"> Lihat File </a>
+                    <a href="{{ url('/eviden', $item->file )}}" target="_blank" class="btn btn-sm btn-primary mb-0" data-file="{{ $item->file }}"> Lihat File </a>
                     
                   </td>
                   
                   <td class="align-middle">
                     <a href="{{ route('admin.evidences.edit', [$item->id] ) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Edit Agenda">
-                      <button class="btn btn-sm btn-success"><i class="fa fa-edit"></i></button>
+                      <button class="btn btn-sm btn-success mb-0"><i class="fa fa-edit"></i></button>
                     </a>
                     <a href="#" onclick="handleDestroy('{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Hapus Agenda">
-                      <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+                      <button class="btn btn-sm btn-danger mb-0"><i class="fa fa-trash"></i></button>
                     </a>
                   </td>
                 </tr>
