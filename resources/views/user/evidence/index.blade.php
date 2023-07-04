@@ -120,23 +120,9 @@
       })
       .then(willDelete => {
           if (willDelete) {
-            var link = "{{url('/admin/evidences/')}}/" + id;
+            var link = "{{url('/user/evidences/')}}/" + id;
               $("#delete-form").attr("action", link);
               $("#delete-form").submit();
-          }
-      });
-
-  const handleStatus = () => swal({
-          title: "Apakah anda yakin mengubah status data ini ?",
-          icon: "warning",
-          buttons: true,
-          dangerMode: true,
-      })
-      .then(willChange => {
-          if (willChange) {
-            var link = "{{route('admin.notes.action.status', $action->id)}}";
-              $("#status-form").attr("action", link);
-              $("#status-form").submit();
           }
       });
 
