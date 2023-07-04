@@ -50,7 +50,7 @@
                 Prioritas
               </div>
               <div class="col-md-8">
-                <select id="priority" class="form-select border px-1 @error('priority') is-invalid @enderror" value="{{ old('priority') }}" name="priority">
+                <select id="priority_id" class="form-select border px-1 @error('priority_id') is-invalid @enderror" value="{{ old('priority_id') }}" name="priority_id">
                   @foreach ($priorities as $item)
                       <option value="{{ $item->id }}">{{ $item->name }}</option>
                   @endforeach
