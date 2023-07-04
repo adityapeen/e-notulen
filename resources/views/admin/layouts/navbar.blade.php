@@ -45,12 +45,12 @@
               </li>
               <li class="mb-2">
                 <a class="dropdown-item border-radius-md" href="javascript:;">
-                  <div class="d-flex py-1">
+                  <div class="d-flex py-1" onclick="event.preventDefault();
+                  document.getElementById('logout-form').submit();">
                     <div class="my-auto">
                       <img src="{{ asset('assets/img/user.png') }}" class="avatar avatar-sm  me-3 ">
                     </div>
-                    <div class="d-flex flex-column justify-content-center" onclick="event.preventDefault();
-                    document.getElementById('logout-form').submit();">    
+                    <div class="d-flex flex-column justify-content-center">    
                       <h6 class="text-sm font-weight-normal mb-1">
                         <span class="font-weight-bold" href="{{ route('logout') }}"                                       >
                                         {{ __('Logout') }}
