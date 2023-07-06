@@ -13,6 +13,7 @@ class Pic extends Model
     protected $fillable = [
         'action_id',
         'user_id',
+        'status'
     ];
 
     public function action()

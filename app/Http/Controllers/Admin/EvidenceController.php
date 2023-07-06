@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Evidence;
 use App\Http\Controllers\Controller;
 use App\Models\ActionItems;
+use App\Models\Pic;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
 
@@ -53,27 +54,29 @@ class EvidenceController extends Controller
             'description' => ['required'],
             'file' => ['required','max:10000']
         ]);
-     
+
         if ($request->file('file') != NULL) {            
             $file = $request->file('file'); // menyimpan data file yang diupload ke variabel $file
             $base_name = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension());
             $nama_file =$base_name.'_'.time().'.'.$file->getClientOriginalExtension(); // add timestamp to filename
-                           
+            
             $tujuan_upload = 'eviden'; // isi dengan nama folder tempat kemana file diupload
             $file->move($tujuan_upload,$nama_file);
         }
         else {
             $nama_file = NULL;
         }
-     
+        
+        $action_id = Hashids::decode($request->action_id)[0];
         $evidence = Evidence::updateOrCreate([
-                'action_id' => Hashids::decode($request->action_id)[0],
+                'action_id' => $action_id,
                 'description' => $request->description,
                 'file' => $nama_file,
                 'uploaded_by' => auth()->user()->id,
         ]);
         if($evidence){
-            ActionItems::findOrFail(Hashids::decode($request->action_id)[0])->update(['status'=>'onprogress']);
+            ActionItems::findOrFail($action_id)->update(['status'=>'onprogress']);
+            Pic::where([['action_id','=', $action_id],['user_id','=',auth()->user()->id]])->first()->update(['status'=>'onprogress']);
             return redirect()->route("admin.notes.evidence",$request->action_id)->with('success','Data <strong>berhasil</strong> disimpan');
         }else{
             return back()->withErrors(['Data <strong>gagal</strong> ditambahkan!']);
