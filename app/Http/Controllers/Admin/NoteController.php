@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ActionItems;
 use App\Models\Attendant;
 use App\Models\Evidence;
+use App\Models\MomRecipients;
 use App\Models\Pic;
 use App\Models\User;
 use App\Models\UserGroup;
@@ -97,6 +98,14 @@ class NoteController extends Controller
                     ]);
                 }
             }
+            if($request->mom_recipients != null){
+                foreach( $request->mom_recipients as $r){
+                    MomRecipients::updateOrCreate([
+                        'note_id'=>Hashids::decode($notes->id)[0],
+                        'user_id'=> Hashids::decode($r)[0]
+                    ]);
+                }
+            }
             return redirect()->route("admin.notes.index")->with('success','Data <strong>berhasil</strong> disimpan');
         }else{
             return back()->withErrors(['Data <strong>gagal</strong> ditambahkan!']);
@@ -114,7 +123,9 @@ class NoteController extends Controller
         $id = Hashids::decode($hashed_id); //decode the hashed id
         $note = Note::find($id[0]);
         $list = Attendant::where(['note_id'=>$id])->get();
+        $list_r = MomRecipients::where(['note_id'=>$id])->get();
         $attendants = array();
+        $recipients = array();
         foreach($list as $l){
             $date = new DateTime($l->mom_sent, new DateTimeZone('GMT'));
             $date->setTimezone(new DateTimeZone('Asia/Jakarta'));
@@ -124,7 +135,16 @@ class NoteController extends Controller
             );
             array_push($attendants,$item);
         }
-        return compact(['note','attendants']);
+        foreach($list_r as $l){
+            $date = new DateTime($l->mom_sent, new DateTimeZone('GMT'));
+            $date->setTimezone(new DateTimeZone('Asia/Jakarta'));
+            $item = array(
+                'name' => $l->user->name,
+                'mom_sent' => $l->mom_sent == NULL? NULL : $date->format('Y-m-d H:i:s')
+            );
+            array_push($recipients,$item);
+        }
+        return compact(['note','attendants','recipients']);
     }
 
     /**
@@ -227,6 +247,35 @@ class NoteController extends Controller
                 }
                 foreach($to_insert as $user_id){
                     Attendant::updateOrCreate([
+                        'note_id'=>$note_id,
+                        'user_id'=> $user_id
+                    ]);
+                }
+            }
+            if($request->mom_recipients != null){
+                $note_id = Hashids::decode($notes->id)[0];
+                $recipients = MomRecipients::where('note_id', $note_id)->get();
+
+                $existing = array();
+                foreach ($recipients as $r){
+                    $data = $r->user_id;
+                    array_push($existing, $data);
+                }
+                
+                $new = array();
+                foreach( $request->mom_recipients as $r){
+                    $data =  Hashids::decode($r)[0];
+                    array_push($new, $data);
+                }
+
+                $to_insert = array_diff($new,$existing);
+                $to_delete = array_diff($existing, $new);
+
+                foreach($to_delete as $user_id){
+                    MomRecipients::where(['note_id'=> $note_id, 'user_id' => $user_id])->first()->delete();
+                }
+                foreach($to_insert as $user_id){
+                    MomRecipients::updateOrCreate([
                         'note_id'=>$note_id,
                         'user_id'=> $user_id
                     ]);

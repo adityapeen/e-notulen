@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\ActionItems;
 use App\Models\Attendant;
+use App\Models\MomRecipients;
 use App\Models\Note;
 use App\Models\Pic;
 use App\Models\UserGroup;
@@ -18,7 +19,9 @@ class ApiController extends Controller
     {
         $note_id = Hashids::decode($hashed_id)[0]; //decode the hashed id
         $attendants = Attendant::where(['note_id'=>$note_id])->get();
+        $recipients = MomRecipients::where(['note_id'=>$note_id])->get();
         $res = array();
+        $rec = array();
         foreach($attendants as $a)
         {
             $item = array(
@@ -27,7 +30,18 @@ class ApiController extends Controller
             );
             array_push($res,$item);
         }
-        return json_encode(["results"=>$res]);
+        foreach($recipients as $a)
+        {
+            $item = array(
+                'id'    =>$a->user->id_hash(),
+                'text'  => $a->user->name
+            );
+            array_push($rec,$item);
+        }
+        return json_encode(["results"=>[
+            "attendants" => $res,
+            "mom_recipients" => $rec
+        ]]);
     }
     
     function group_attendants (String $hashed_id)

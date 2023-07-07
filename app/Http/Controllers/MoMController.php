@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\ActionItems;
 use App\Models\Attendant;
+use App\Models\MomRecipients;
 use App\Models\Note;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Vinkla\Hashids\Facades\Hashids;
 use Illuminate\Support\Facades\Http;
 
@@ -23,9 +25,13 @@ class MoMController extends Controller
         $status = true;
         if(is_array($arr_id)){
             $note_id = $arr_id[0];
-            $recipients = Attendant::join('users', 'attendants.user_id', '=', 'users.id')
-                        ->select('attendants.id', 'users.name')
-                        ->where(['note_id'=>$note_id])->get();
+            $attendants = Attendant::join('users', 'attendants.user_id', '=', 'users.id')
+            ->select('attendants.id', 'users.name', DB::raw('"a" as type'))
+            ->where(['note_id'=>$note_id])->get()->toArray();
+            $receivers = MomRecipients::join('users', 'mom_recipients.user_id', '=', 'users.id')
+            ->select('mom_recipients.id', 'users.name', DB::raw('"r" as type'))
+            ->where(['note_id'=>$note_id])->get()->toArray();
+            $recipients = array_merge($attendants, $receivers);
         }
         else{
             $status = false;
@@ -35,12 +41,22 @@ class MoMController extends Controller
 
     }
 
-    public function send_individual_mom(String $hashed_id){
+    public function send_individual_mom(String $hashed_id, String $type){
         $arr_id = Hashids::decode($hashed_id);
         $status = true;
         if(is_array($arr_id)){ //Valid ID
             $attendance_id = $arr_id[0];
-            $attendance = Attendant::find($attendance_id);
+            if($type == "a"){
+                $attendance = Attendant::find($attendance_id);
+            }
+            else if($type == "r"){
+                $attendance = MomRecipients::find($attendance_id);
+            }
+            else{
+                $status = false;
+                $results = null;
+                return response()->json(['status'=>$status,'results'=>$results,'messages'=>NULL]);
+            }
             $notes = Note::where('id',$attendance->note_id)->first();
             $date = date_create($notes->date);
             $file_location = 'notulensi/'.$notes->file_notulen;

@@ -129,6 +129,19 @@
                 @endforeach
             </select>
             </div>
+          </div>
+          <hr class="horizontal dark my-2">
+          <div class="row mb-1 align-items-center">
+            <div class="col-md-4">
+              Daftar Penerima MoM
+            </div>
+            <div class="col-md-8">
+              <select id="mom_recipients" multiple="multiple"  class="form-select border px-1 @error('mom_recipients') is-invalid @enderror" value="{{ old('mom_recipients[]') }}" name="mom_recipients[]">
+                @foreach ($users as $item)
+                    <option value="{{ $item->id_hash() }}">{{ $item->name.' - '.$item->satker->code }}</option>
+                @endforeach
+            </select>
+            </div>
           </form>
           </div>
         </div>
@@ -178,6 +191,9 @@
     $('#attendants').select2({
       placeholder: 'Pilih Peserta Rapat'
     });
+    $('#mom_recipients').select2({
+      placeholder: 'Pilih Penerima MoM'
+    });
   }
 
   $('#agenda_id').change(function(){
@@ -193,7 +209,7 @@
       var list = JSON.parse(data);
       var idselected = [];
       list.results.forEach(item =>idselected.push(item.id));
-      $('#attendants').val(idselected).trigger('change')
+      $('#mom_recipients').val(idselected).trigger('change')
     });
   }
 

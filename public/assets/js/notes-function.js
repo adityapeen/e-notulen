@@ -63,7 +63,7 @@ const handleSend = (id) => {
             var interval = 1000; // miliseconds
             result.results.forEach( (item, index) => {
               setTimeout(function () {
-                var url = "/admin/notes/send-mom/" + item.id;
+                var url = "/admin/notes/send-mom/" + item.id+"/"+item.type;
                 fetch(url)
                   .then((response) => {
                     return response.json();
@@ -114,11 +114,18 @@ const handleView = (id) => {
     $("#note-link").attr("href", res.note.link_drive_notulen);
     $("#note-file").attr("href", url);
     $("#note-attendant").empty();
+    $("#mom-recipients").empty();
     res.attendants.forEach((item) => {
       var list;
       if(item.mom_sent !== null) list = "<li>" + item.name + "   <span class='text-success font-weight-bold' title='"+item.mom_sent+"'>&#10003;</span></li>";
       else list = "<li>" + item.name + "</li>";
       $("#note-attendant").append(list);
+    });
+    res.recipients.forEach((item) => {
+      var list;
+      if(item.mom_sent !== null) list = "<li>" + item.name + "   <span class='text-success font-weight-bold' title='"+item.mom_sent+"'>&#10003;</span></li>";
+      else list = "<li>" + item.name + "</li>";
+      $("#mom-recipients").append(list);
     });
     $("#modal-detail").modal("show");
   });
