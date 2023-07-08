@@ -70,15 +70,7 @@
               <div class="col-md-8">
                 <input type="text" id="place" class="form-control border px-1 @error('place') is-invalid @enderror" name="place" value="{{ old('place') }}" required>
               </div>
-            </div>  
-            <div class="row mb-1 align-items-center">
-              <div class="col-md-4">
-                Max Execute
-              </div>
-              <div class="col-md-8">
-                <input type="date" id="max_execute" class="form-control border px-1 @error('max_execute') is-invalid @enderror" name="max_execute" value="{{ old('max_execute') }}" required>
-              </div>
-            </div>  
+            </div>   
             <div class="row mb-1 align-items-center">
               <div class="col-md-4">
                 Issues
@@ -89,10 +81,9 @@
             </div>  
             <div class="row mb-1 align-items-center">
               <div class="col-md-4 align-top">
-                Link Drive
+                File Notulen
               </div>
               <div class="col-md-8">
-                <input type="text" id="link_drive_notulen" class="form-control border px-1 @error('link_drive_notulen') is-invalid @enderror" name="link_drive_notulen" value="{{ old('link_drive_notulen') }}">
                 <div class="input-group input-group-outline my-1">
                   <input type="file" class="form-control @error('file_notulen') is-invalid @enderror" name="file_notulen" value="{{ old('file_notulen') }}">
                 </div>
