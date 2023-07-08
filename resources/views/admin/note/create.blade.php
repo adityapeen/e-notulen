@@ -164,6 +164,8 @@
     var month = (now.getMonth() + 1);               
     var day = now.getDate();
     var h = now.getHours();
+    if (h < 10) 
+      h = "0" + h
     if (month < 10) 
         month = "0" + month;
     if (day < 10) {

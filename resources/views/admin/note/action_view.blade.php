@@ -107,7 +107,6 @@
       getExisting(id);
     });
     
-    $('#date_first').val(getSeminggu());
     $('.baru-data').last().find('.btn-hapus').css("display","none");
     $('.baru-data').last().find('.btn-tambah').css("display","");
   });
