@@ -27,7 +27,8 @@ class User extends Authenticatable
         'satker_id',
         'level_id',
         'phone',
-        'status'
+        'status',
+        'last_login'
     ];
 
     /**
