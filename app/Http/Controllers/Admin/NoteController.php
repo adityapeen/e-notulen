@@ -79,7 +79,7 @@ class NoteController extends Controller
                 'type' => $request->type,
                 'name' => $request->name,
                 'date' => $request->date,
-                'place' => $request->date,
+                'place' => $request->place,
                 'start_time' => $request->start_time,
                 'end_time' => $request->end_time,
                 'max_execute' => $request->max_execute,
