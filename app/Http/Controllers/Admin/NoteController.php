@@ -215,7 +215,6 @@ class NoteController extends Controller
             'end_time' => $request->end_time,
             'max_execute' => $request->max_execute,
             'issues' => $request->issues,
-            'link_drive_notulen' => $request->link_drive_notulen,
             'file_notulen' => $nama_file,
             'status' => 'open',
             'updated_by' => auth()->user()->id,
