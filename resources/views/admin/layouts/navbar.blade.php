@@ -28,7 +28,7 @@
             </a>
             <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
               <li class="mb-2">
-                <a class="dropdown-item border-radius-md" href="{{ route('admin.users.password') }}">
+                <a class="dropdown-item border-radius-md" href="{{ auth()->user()->level_id < 3 ? route('admin.users.password'): route('user.password') }}">
                   <div class="d-flex py-1">
                     <div class="my-auto">
                       <img src="{{ asset('assets/img/password.png') }}" class="avatar avatar-sm  me-3 ">
