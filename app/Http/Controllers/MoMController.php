@@ -61,7 +61,7 @@ class MoMController extends Controller
             $date = date_create($notes->date);
             $file_location = 'notulensi/'.$notes->file_notulen;
             
-            if($notes->file_notulen == NULL && $attendance->user->level_id > 3){
+            if($notes->file_notulen == NULL && $attendance->user->level_id > 2){
                 $message = "Berikut ini kami sampaikan notulen *"
                     .$notes->name."* pada tanggal *".date_format($date,"d-m-Y").".* Silahkan akses notulen pada link berikut : \n"
                     .$notes->link_drive_notulen
@@ -72,7 +72,7 @@ class MoMController extends Controller
                     'message' => $message,
                 ]);
             }
-            else if($attendance->user->level_id > 3){
+            else if($attendance->user->level_id > 2){
                 $message = "Berikut ini kami sampaikan notulen *"
                     .$notes->name."* pada tanggal *".date_format($date,"d-m-Y").".* \n"
                     ."\nTerimakasih 🙏🙏🙏";
