@@ -42,6 +42,13 @@ class HomeController extends Controller
             $todays = Note::where('date', date('Y-m-d'))->get();
             return view('admin.notulen', compact(['users','agendas','notes','actions','todays','title','wa_ready','notes_locked','actions_todo','actions_progress','undone']));
         }
+        else if (auth()->user()->level_id < 8 ){
+            $todays = Note::select('notes.*','attendants.user_id')
+            ->join('attendants', 'notes.id', '=', 'attendants.note_id')
+            ->where('attendants.user_id',auth()->user()->id)
+            ->where('date', date('Y-m-d'))->get();
+            return view('satker.notulen', compact(['todays','title']));
+        }
         else{
             $todays = Note::select('notes.*','attendants.user_id')
             ->join('attendants', 'notes.id', '=', 'attendants.note_id')

@@ -55,6 +55,10 @@ Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], f
     Route::post('/users/password', [App\Http\Controllers\Admin\UserController::class, 'change_password'])->name('users.change_password');
 });
 
+Route::group(['middleware' => 'satker', "prefix" => "satker", "as" => "satker."], function () {
+    Route::resource('/agendas', App\Http\Controllers\AdminSatker\SatkerAgendaController::class)->except(['show']);
+});
+
 Route::group(['middleware' => 'user', "prefix" => "user", "as" => "user."], function () {
     Route::resource('/notes', App\Http\Controllers\UserNoteController::class)->except(['show']);
     Route::resource('/evidences', App\Http\Controllers\UserEvidenceController::class)->except(['show']);

@@ -16,6 +16,7 @@ class Agenda extends Model
         'date',
         'group_id',
         'priority_id',
+        'satker_id',
         'created_by',
         'updated_by',
     ];
