@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('name');
             $table->foreignId('satker_id')->references('id')->on('m_satkers');
             $table->foreignId('created_by')->references('id')->on('users');
-            $table->foreignId('updated_by')->references('id')->on('users');
+            $table->foreignId('updated_by')->nullable()->references('id')->on('users');
             $table->timestamps();
         });
     }
