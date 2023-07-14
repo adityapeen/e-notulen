@@ -12,6 +12,7 @@ class MGroup extends Model
     use HasFactory;
     protected $fillable = [
         'name',
+        'satker_id',
     ];
 
     /**
