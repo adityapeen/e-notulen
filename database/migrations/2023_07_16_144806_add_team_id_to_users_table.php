@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('agendas', function (Blueprint $table) {
-            $table->foreignId('satker_id')->nullable()->after('priority_id')->references('id')->on('m_satkers');
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreignId('team_id')->after('level_id')->nullable()->references('id')->on('teams');
         });
     }
 
@@ -25,10 +25,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('agendas', function (Blueprint $table) {
-            $table->dropForeign(['satker_id']);
-            $table->dropColumn(['satker_id']);
-            
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign(['team_id']);
+            $table->dropColumn(['team_id']);
         });
     }
 };

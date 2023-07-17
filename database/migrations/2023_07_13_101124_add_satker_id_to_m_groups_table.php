@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('m_groups', function (Blueprint $table) {
-            $table->foreignId('satker_id')->nullable()->references('id')->on('m_satkers')->after('priority_id');
+            $table->foreignId('satker_id')->nullable()->after('name')->references('id')->on('m_satkers');
         });
     }
 

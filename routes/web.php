@@ -59,6 +59,7 @@ Route::group(['middleware' => 'satker', "prefix" => "satker", "as" => "satker."]
     Route::resource('/agendas', App\Http\Controllers\AdminSatker\SatkerAgendaController::class)->except(['show']);
     Route::resource('/groups', App\Http\Controllers\AdminSatker\SatkerMGroupController::class)->except(['show']);
     Route::resource('/teams', App\Http\Controllers\AdminSatker\SatkerTeamController::class)->except(['show']);
+    Route::resource('/users', App\Http\Controllers\AdminSatker\SatkerUserController::class)->except(['create','store','show']);
 });
 
 Route::group(['middleware' => 'user', "prefix" => "user", "as" => "user."], function () {

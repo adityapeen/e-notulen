@@ -26,6 +26,7 @@ class User extends Authenticatable
         'password',
         'satker_id',
         'level_id',
+        'team_id',
         'phone',
         'status',
         'last_login'
@@ -64,6 +65,11 @@ class User extends Authenticatable
     function id_hash()
     {
         return   Hashids::encode($this->id);
+    }
+
+    public function team_id_hash()
+    {
+        return   Hashids::encode($this->team_id);
     }
 
     /**

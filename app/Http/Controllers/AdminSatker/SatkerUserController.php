@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\AdminSatker;
 
 use App\Models\User;
 use App\Models\MLevel;
 use App\Models\MSatker;
 use App\Http\Controllers\Controller;
+use App\Models\Team;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Vinkla\Hashids\Facades\Hashids;
 
-class UserController extends Controller
+class SatkerUserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,8 +21,9 @@ class UserController extends Controller
     public function index()
     {
         $title = "Daftar User";
-        $users = User::all();
-        return view('admin.user.index', compact(['users','title']));
+        $users = User::where('satker_id', auth()->user()->satker_id)
+                        ->where('level_id', '>=', auth()->user()->level_id)->get();
+        return view('satker.user.index', compact(['users','title']));
     }
 
     /**
@@ -31,10 +33,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $title = "Tambah User";
-        $satkers = MSatker::all();
-        $levels = MLevel::all();
-        return view('admin.user.create', compact(['title','satkers','levels']));
+        // 
     }
 
     /**
@@ -45,28 +44,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => ['required'],
-            'nip' => ['required'],
-            'email' => ['required', 'string', 'email', 'max:255'],
-            'phone' => ['required'],
-            'satker_id' => ['required'],
-            'level_id' => ['required'],
-        ]);
-        if(User::updateOrCreate([
-            'name' => $request->name,
-            'password' => Hash::make('12345'),
-            'nip' => $request->nip,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'satker_id' => $request->satker_id,
-            'level_id' => $request->level_id,
-            'status' => 1,
-        ])){
-            return redirect()->route("admin.users.index")->with('success','Data <strong>berhasil</strong> disimpan');
-        }else{
-            return back()->withErrors(['Data <strong>gagal</strong> ditambahkan!']);
-        }
+        // 
     }
 
     /**
@@ -91,10 +69,9 @@ class UserController extends Controller
         $title = "Edit User";
         $id = Hashids::decode($hashed_id); //decode the hashed id
         $user = User::find($id[0]);
-        $satkers = MSatker::all();
-        $levels = MLevel::all();
-
-        return view('admin.user.edit', compact('title','user','satkers','levels'));
+        $levels = MLevel::where('id','>=',auth()->user()->level_id)->get();
+        $teams = Team::where('satker_id', auth()->user()->satker_id)->get();
+        return view('satker.user.edit', compact('title','user','levels','teams'));
     }
 
     /**
@@ -109,19 +86,19 @@ class UserController extends Controller
         $request->validate([
             'name' => ['required'],
             'phone' => ['required'],
-            'satker_id' => ['required'],
             'level_id' => ['required'],
         ]);
         $id = Hashids::decode($hashed_id);
+        $team_id = Hashids::decode($request->team_id)[0];
         if(User::findOrFail($id)->first()->update([
             'name' => $request->name,
             'email' => $request->email,
             'nip' => $request->nip,
             'phone' => $request->phone,
-            'satker_id' => $request->satker_id,
             'level_id' => $request->level_id,
+            'team_id' => $team_id,
         ])){
-            return redirect()->route("admin.users.index")->with('success','Data <strong>berhasil</strong> disimpan');
+            return redirect()->route("satker.users.index")->with('success','Data <strong>berhasil</strong> disimpan');
         }else{
             return back()->withErrors(['Data <strong>gagal</strong> ditambahkan!']);
         }
@@ -149,9 +126,6 @@ class UserController extends Controller
         $user = User::findOrFail(auth()->user()->id);
         if($user->level_id <= 2){
             return view('admin.user.password', compact(['user','title']));
-        }
-        else if($user->level_id <= 8){
-            return view('satker.user.password', compact(['user','title']));
         }
         else {
             return view('user.password', compact(['user','title']));
