@@ -20,7 +20,7 @@ class SatkerUserController extends Controller
      */
     public function index()
     {
-        $title = "Daftar User";
+        $title = "Daftar User - ".auth()->user()->satker->name;
         $users = User::where('satker_id', auth()->user()->satker_id)
                         ->where('level_id', '>=', auth()->user()->level_id)->get();
         return view('satker.user.index', compact(['users','title']));

@@ -57,6 +57,11 @@ class User extends Authenticatable
         return $this->hasMany(Pic::class);
     }
 
+    public function team()
+    {
+        return $this->belongsTo(Team::class);
+    }
+
     /**
      * Hash the ids
      *

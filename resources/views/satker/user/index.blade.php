@@ -18,8 +18,8 @@
                 <tr>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Email</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Satker</th>
                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Level</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Bidang</th>
                   <th class="text-secondary opacity-7"></th>
                 </tr>
               </thead>
@@ -33,10 +33,10 @@
                     {{ $item->email }}
                   </td>
                   <td class="align-middle text-sm">
-                    {{ $item->satker->name }}
+                    {{ $item->level->name }}
                   </td>
                   <td class="align-middle text-sm">
-                    {{ $item->level->name }}
+                    {{ $item->team == null ? "" : $item->team->name }}
                   </td>
                   
                   <td class="align-middle">
