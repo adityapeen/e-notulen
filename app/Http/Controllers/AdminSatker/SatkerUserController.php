@@ -21,8 +21,15 @@ class SatkerUserController extends Controller
     public function index()
     {
         $title = "Daftar User - ".auth()->user()->satker->name;
-        $users = User::where('satker_id', auth()->user()->satker_id)
-                        ->where('level_id', '>=', auth()->user()->level_id)->get();
+        if(auth()->user()->level_id == 7){ // Admin Bidang
+            $users = User::where('satker_id', auth()->user()->satker_id)
+            ->where('level_id', '>=', auth()->user()->level_id)->get();
+        }
+        else { // Admin Satker
+            $users = User::where('satker_id', auth()->user()->satker_id)
+            ->where('level_id', '>', auth()->user()->level_id)
+            ->where('team_id', auth()->user()->team_id)->get();
+        }
         return view('satker.user.index', compact(['users','title']));
     }
 
