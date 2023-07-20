@@ -61,7 +61,9 @@ Route::group(['middleware' => 'satker', "prefix" => "satker", "as" => "satker."]
     Route::resource('/teams', App\Http\Controllers\AdminSatker\SatkerTeamController::class)->except(['show']);
     Route::resource('/users', App\Http\Controllers\AdminSatker\SatkerUserController::class)->except(['create','store','show']);
     Route::resource('/notes', App\Http\Controllers\AdminSatker\SatkerNoteController::class)->except(['show']);
+    Route::resource('/evidences', App\Http\Controllers\AdminSatker\SatkerEvidenceController::class)->except(['show']);
     Route::post('/notes/lock/{id}', [App\Http\Controllers\AdminSatker\SatkerNoteController::class, 'lock'])->name('lock');
+    Route::post('/notes/action/{id}', [App\Http\Controllers\ActionItemsController::class, 'change_status'])->name('notes.action.status');
     Route::get('/notes/show/{id}', [App\Http\Controllers\AdminSatker\SatkerNoteController::class, 'showNote'])->name('notes.show');
     Route::get('/notes/qr/{id}', [App\Http\Controllers\AdminSatker\SatkerNoteController::class, 'qrcode'])->name('notes.qrcode');
     Route::get('/notes/export/{id}', [App\Http\Controllers\GDocsController::class, 'exportPDF'])->name('export.docs');
@@ -69,6 +71,9 @@ Route::group(['middleware' => 'satker', "prefix" => "satker", "as" => "satker."]
     Route::get('/notes/send-mom/{id}/{type}', [App\Http\Controllers\MoMController::class, 'send_individual_mom'])->name('notes.mom');
     Route::get('/notes/attendance/{id}', [App\Http\Controllers\MoMController::class, 'mom_recipient'])->name('notes.attendant');
     Route::get('/notes/action/{id}', [App\Http\Controllers\AdminSatker\SatkerNoteController::class, 'action_item'])->name('notes.action');
+    Route::get('/notes/action/{id}/evidences', [App\Http\Controllers\AdminSatker\SatkerNoteController::class, 'evidence'])->name('notes.evidence');
+    Route::get('/notes/action/{id}/evidences/add', [App\Http\Controllers\AdminSatker\SatkerEvidenceController::class, 'add'])->name('notes.evidence.add');
+    Route::post('/notes/action/{id}', [App\Http\Controllers\ActionItemsController::class, 'change_status'])->name('notes.action.status');
 });
 
 Route::group(['middleware' => 'user', "prefix" => "user", "as" => "user."], function () {

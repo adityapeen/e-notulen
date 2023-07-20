@@ -359,7 +359,7 @@ class SatkerNoteController extends Controller
         $action = ActionItems::findOrFail($action_id);
         $evidences = Evidence::where('action_id', $action_id)->get();
         $pics = Pic::where('action_id', $action_id)->get();
-        return view('admin.evidence.index', compact(['title','action','evidences','pics']));
+        return view('satker.evidence.index', compact(['title','action','evidences','pics']));
     }
 
     public function qrcode(String $hashed_id){
