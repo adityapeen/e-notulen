@@ -39,7 +39,7 @@
                       {{ $item->date }}
                     </td>
                     <td class="align-middle text-sm">
-                      <a href="{{ route('admin.notes.action', [$item->id]) }}" class="btn btn-sm bg-gradient-info">Action
+                      <a href="{{ route('satker.notes.action', [$item->id]) }}" class="btn btn-sm bg-gradient-info">Action
                         Items</a>
                     </td>
                     <td class="align-middle text-sm">

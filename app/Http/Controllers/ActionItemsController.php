@@ -60,7 +60,7 @@ class ActionItemsController extends Controller
                 }
             }
         }
-        return redirect()->route("admin.notes.action", $request->note_id)->with('success','Data <strong>berhasil</strong> disimpan');
+        return back()->with('success','Data <strong>berhasil</strong> disimpan');
     }
 
     /**

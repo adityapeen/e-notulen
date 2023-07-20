@@ -321,11 +321,11 @@ class NoteController extends Controller
         $actions = ActionItems::withCount(['evidences'])->where('note_id',$note_id)->get();
         $attendants = Attendant::where('note_id',$note_id)->get();
         if($note->status=='lock')
-            return view('admin.note.action_view', compact(['title','note','actions', 'attendants']));
+            return view('admin.action.view', compact(['title','note','actions', 'attendants']));
         if(sizeof($actions)>0)
-            return view('admin.note.action_edit', compact(['title','note','actions', 'attendants']));
+            return view('admin.action.edit', compact(['title','note','actions', 'attendants']));
         else 
-            return view('admin.note.action', compact(['title','note','actions', 'attendants']));
+            return view('admin.action.create', compact(['title','note','actions', 'attendants']));
     }
 
     public function byAgenda(String $hashed_id){

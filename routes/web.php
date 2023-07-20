@@ -36,13 +36,13 @@ Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], f
     Route::resource('/evidences', App\Http\Controllers\Admin\EvidenceController::class)->except(['show']);
     Route::resource('/levels', App\Http\Controllers\MLevelController::class)->except(['create','show']);
     Route::post('/notes/lock/{id}', [App\Http\Controllers\Admin\NoteController::class, 'lock'])->name('lock');
+    Route::post('/notes/action/{id}', [App\Http\Controllers\ActionItemsController::class, 'change_status'])->name('notes.action.status');
     Route::get('/agenda', [App\Http\Controllers\Admin\NoteController::class, 'groupByAgenda'])->name('agenda');
     Route::get('/notes/send-mom/{id}/{type}', [App\Http\Controllers\MoMController::class, 'send_individual_mom'])->name('notes.mom');
     Route::get('/notes/attendance/{id}', [App\Http\Controllers\MoMController::class, 'mom_recipient'])->name('notes.attendant');
     Route::get('/notes/view/{id}', [App\Http\Controllers\Admin\NoteController::class, 'show'])->name('notes.view');
     Route::get('/notes/test-mom/', [App\Http\Controllers\MoMController::class, 'test_file'])->name('notes.test');
     Route::get('/notes/action/{id}', [App\Http\Controllers\Admin\NoteController::class, 'action_item'])->name('notes.action');
-    Route::post('/notes/action/{id}', [App\Http\Controllers\ActionItemsController::class, 'change_status'])->name('notes.action.status');
     Route::get('/notes/agenda/{id}', [App\Http\Controllers\Admin\NoteController::class, 'byAgenda'])->name('notes.agenda');
     Route::get('/notes/show/{id}', [App\Http\Controllers\Admin\NoteController::class, 'showNote'])->name('notes.show');
     Route::get('/notes/action/{id}/evidences', [App\Http\Controllers\Admin\NoteController::class, 'evidence'])->name('notes.evidence');
@@ -62,12 +62,13 @@ Route::group(['middleware' => 'satker', "prefix" => "satker", "as" => "satker."]
     Route::resource('/users', App\Http\Controllers\AdminSatker\SatkerUserController::class)->except(['create','store','show']);
     Route::resource('/notes', App\Http\Controllers\AdminSatker\SatkerNoteController::class)->except(['show']);
     Route::post('/notes/lock/{id}', [App\Http\Controllers\AdminSatker\SatkerNoteController::class, 'lock'])->name('lock');
-    Route::get('/notes/show/{id}', [App\Http\Controllers\Admin\NoteController::class, 'showNote'])->name('notes.show');
+    Route::get('/notes/show/{id}', [App\Http\Controllers\AdminSatker\SatkerNoteController::class, 'showNote'])->name('notes.show');
     Route::get('/notes/qr/{id}', [App\Http\Controllers\AdminSatker\SatkerNoteController::class, 'qrcode'])->name('notes.qrcode');
     Route::get('/notes/export/{id}', [App\Http\Controllers\GDocsController::class, 'exportPDF'])->name('export.docs');
     Route::get('/notes/absensi/{id}', [App\Http\Controllers\PDFController::class, 'generateAttendanceList'])->name('notes.absensi');
     Route::get('/notes/send-mom/{id}/{type}', [App\Http\Controllers\MoMController::class, 'send_individual_mom'])->name('notes.mom');
     Route::get('/notes/attendance/{id}', [App\Http\Controllers\MoMController::class, 'mom_recipient'])->name('notes.attendant');
+    Route::get('/notes/action/{id}', [App\Http\Controllers\AdminSatker\SatkerNoteController::class, 'action_item'])->name('notes.action');
 });
 
 Route::group(['middleware' => 'user', "prefix" => "user", "as" => "user."], function () {
