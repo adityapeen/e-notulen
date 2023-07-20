@@ -14,6 +14,10 @@ use Vinkla\Hashids\Facades\Hashids;
 
 class ApiController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     //
     function attendants (String $hashed_id)
     {
