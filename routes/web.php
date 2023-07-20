@@ -74,6 +74,9 @@ Route::group(['middleware' => 'satker', "prefix" => "satker", "as" => "satker."]
     Route::get('/notes/action/{id}/evidences', [App\Http\Controllers\AdminSatker\SatkerNoteController::class, 'evidence'])->name('notes.evidence');
     Route::get('/notes/action/{id}/evidences/add', [App\Http\Controllers\AdminSatker\SatkerEvidenceController::class, 'add'])->name('notes.evidence.add');
     Route::post('/notes/action/{id}', [App\Http\Controllers\ActionItemsController::class, 'change_status'])->name('notes.action.status');
+    Route::get('/notes/agenda/{id}', [App\Http\Controllers\AdminSatker\SatkerNoteController::class, 'byAgenda'])->name('notes.agenda');
+    Route::get('/agenda', [App\Http\Controllers\AdminSatker\SatkerNoteController::class, 'groupByAgenda'])->name('agenda');
+    Route::get('/notes/view/{id}', [App\Http\Controllers\AdminSatker\SatkerNoteController::class, 'show'])->name('notes.view');
 });
 
 Route::group(['middleware' => 'user', "prefix" => "user", "as" => "user."], function () {

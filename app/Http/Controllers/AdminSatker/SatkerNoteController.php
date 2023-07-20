@@ -376,6 +376,7 @@ class SatkerNoteController extends Controller
         DB::raw('(SELECT COUNT(*) FROM notes WHERE notes.agenda_id = agendas.id) as notes_count'))
         ->orderBy('priority_id', 'asc')
         ->orderBy('agendas.name', 'asc')
+        ->where('satker_id', auth()->user()->satker_id)
         ->get();
         $color = ['primary','dark','info','warning','success','light'];
         // dd($agendas);

@@ -18,7 +18,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-white {{ Request::is('admin/agenda') ? 'active bg-gradient-primary' : '' }}" href="{{ route('admin.agenda') }}">
+        <a class="nav-link text-white {{ Request::is('satker/agenda') ? 'active bg-gradient-primary' : '' }}" href="{{ route('satker.agenda') }}">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">question_answer</i>
           </div>
