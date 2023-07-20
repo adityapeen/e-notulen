@@ -27,6 +27,7 @@
                 <span class="d-sm-inline d-none">{{ Auth::user()->name }}</span>
             </a>
             <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
+              <div class="text-center font-size-sm"><small>{{ auth()->user()->level->name}}</small></div>
               <li class="mb-2">
                 <a class="dropdown-item border-radius-md" href="{{ auth()->user()->level_id < 3 ? route('admin.users.password'): route('user.password') }}">
                   <div class="d-flex py-1">
