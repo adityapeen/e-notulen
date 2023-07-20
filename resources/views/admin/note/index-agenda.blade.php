@@ -45,7 +45,7 @@
                   </td>
                   
                   <td class="align-middle">
-                    <a href="#" onclick="handleView('{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Lihat Notulensi">
+                    <a href="#" onclick="handleView('admin','{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Lihat Notulensi">
                       <button class="btn btn-sm btn-info"><i class="fa fa-eye"></i></button>
                     </a>
                     @if($item->status != 'lock')
@@ -53,14 +53,14 @@
                       <button class="btn btn-sm btn-success"><i class="fa fa-edit"></i></button>
                     </a>
                     @endif
-                    <a href="#" onclick="handleLock('{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="{{ $item->status == 'lock'? 'Buka':'Kunci' }} Notulensi">
+                    <a href="#" onclick="handleLock('admin','{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="{{ $item->status == 'lock'? 'Buka':'Kunci' }} Notulensi">
                       <button class="btn btn-sm btn-{{ $item->status == 'lock'? 'primary':'warning' }}"><i class="fa fa-lock"></i></button>
                     </a>
                     {{-- <a href="#" onclick="handleMoM('{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Kirim MoM">
                       <button class="btn btn-sm btn-info"><i class="fa fa-file"></i></button>
                     </a> --}}
                     @if($item->status == 'lock')
-                    <a href="#" onclick="handleSend('{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Kirim MoM">
+                    <a href="#" onclick="handleSend('admin','{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Kirim MoM">
                       <button class="btn btn-sm btn-info"><i class="fa fa-file"></i></button>
                     </a>
                     <a href="{{ route('admin.notes.absensi', $item->id)}}" target="_blank"
@@ -68,7 +68,7 @@
                       <button class="btn btn-sm btn-warning"><i class="fa fa-list"></i></button>
                     </a>
                     @else
-                    <a href="#" onclick="handleDestroy('{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Hapus Agenda">
+                    <a href="#" onclick="handleDestroy('admin','{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Hapus Agenda">
                       <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
                     </a>
                     @endif

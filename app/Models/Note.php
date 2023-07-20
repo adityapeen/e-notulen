@@ -12,6 +12,7 @@ class Note extends Model
     use HasFactory;
     protected $fillable = [
         'agenda_id',
+        'team_id',
         'type',
         'name',
         'date',
@@ -39,6 +40,11 @@ class Note extends Model
     public function updater()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function team()
+    {
+        return $this->belongsTo(Team::class);
     }
 
     /**

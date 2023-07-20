@@ -1,4 +1,4 @@
-@extends('admin.layouts.template')
+@extends('satker.layouts.template')
 @section('title', $title . ' - ' . config('app.name'))
 @section('breadcrumbs', $title . ' - ' . config('app.name'))
 
@@ -9,7 +9,7 @@
         <div class="card-header position-relative mt-n4 z-index-2 mx-3 p-0">
           <div class="bg-gradient-info shadow-info border-radius-lg d-flex align-items-center pt-2 pb-2">
             <h6 class="text-capitalize ps-3 text-white">{{ $title }}</h6>
-            <a href="{{ route('admin.notes.create') }}" class="btn btn-success shadow-dark ms-auto me-3 mb-0">Tambah</a>
+            <a href="{{ route('satker.notes.create') }}" class="btn btn-success shadow-dark ms-auto me-3 mb-0">Tambah</a>
           </div>
         </div>
         <div class="card-body pb-2">
@@ -44,13 +44,13 @@
                     </td>
                     <td class="align-middle text-sm">
                       <span class="badge badge-sm bg-gradient-{{ $item->status == 'open' ? 'success' : 'danger' }} btn"
-                        onclick="handleView('admin','{{ $item->id }}')" data-toggle="tooltip"
+                        onclick="handleView('satker','{{ $item->id }}')" data-toggle="tooltip"
                         title="Lihat Notulensi">{{ $item->status }} <div class="fa fa-eye"></div></span>
                     </td>
 
                     <td class="align-middle">
                       @if ($item->status != 'lock')
-                        <a href="{{ route('admin.notes.edit', [$item->id]) }}"
+                        <a href="{{ route('satker.notes.edit', [$item->id]) }}"
                           class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Edit Notulensi">
                           <button class="btn btn-sm btn-success"><i class="fa fa-edit"></i></button>
                         </a>
@@ -60,12 +60,12 @@
                             <button class="btn btn-sm btn-secondary"><i class="fab fa-google-drive"></i></button>
                           </a>
                         @endif
-                        <a href="{{ route('admin.notes.qrcode', [$item->id]) }}" target="_blank"
+                        <a href="{{ route('satker.notes.qrcode', [$item->id]) }}" target="_blank"
                           class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="QR Join Meeting">
                           <button class="btn btn-sm btn-dark"><i class="fa fa-qrcode"></i></button>
                         </a>
                       @endif
-                      <a href="#" onclick="handleLock('admin','{{ $item->id }}')"
+                      <a href="#" onclick="handleLock('satker','{{ $item->id }}')"
                         class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
                         title="{{ $item->status == 'lock' ? 'Buka' : 'Kunci' }} Notulensi">
                         <button class="btn btn-sm btn-{{ $item->status == 'lock' ? 'primary' : 'warning' }}"><i
@@ -76,21 +76,21 @@
                     </a> --}}
                       @if ($item->status == 'lock')
                         @if($item->file_notulen == NULL)
-                          <a href="{{ route('admin.export.docs', [$item->id]) }}" target="_blank" class="text-secondary font-weight-bold text-xs"
+                          <a href="{{ route('satker.export.docs', [$item->id]) }}" target="_blank" class="text-secondary font-weight-bold text-xs"
                             data-toggle="tooltip" title="Generate PDF">
                             <button class="btn btn-sm btn-danger"><i class="fa fa-file-pdf"></i></button>
                           </a>
                         @endif
-                        <a href="#" onclick="handleSend('admin','{{ $item->id }}')"
+                        <a href="#" onclick="handleSend('satker','{{ $item->id }}')"
                           class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Kirim MoM">
                           <button class="btn btn-sm btn-info"><i class="fa fa-file"></i></button>
                         </a>
-                        <a href="{{ route('admin.notes.absensi', $item->id)}}" target="_blank"
+                        <a href="{{ route('satker.notes.absensi', $item->id)}}" target="_blank"
                           class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Daftar Hadir">
                           <button class="btn btn-sm btn-warning"><i class="fa fa-list"></i></button>
                         </a>
                         @else
-                        <a href="#" onclick="handleDestroy('admin','{{ $item->id }}')"
+                        <a href="#" onclick="handleDestroy('satker','{{ $item->id }}')"
                           class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Hapus Agenda">
                           <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
                         </a>

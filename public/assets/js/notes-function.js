@@ -1,4 +1,4 @@
-const handleDestroy = (id) =>
+const handleDestroy = (prefix,id) =>
   Swal.fire({
     title: "Apakah anda yakin menghapus data ini ?",
     // text: "Once deleted, you will not be able to recover this item!",
@@ -8,13 +8,13 @@ const handleDestroy = (id) =>
     allowOutsideClick: false,
   }).then((willDelete) => {
     if (willDelete.isConfirmed) {
-      var link = "/admin/notes/" + id;
+      var link = `/${prefix}/notes/${id}`;
       $("#delete-form").attr("action", link);
       $("#delete-form").submit();
     }
   });
 
-const handleLock = (id) => {
+const handleLock = (prefix,id) => {
   Swal.fire({
     title: "Apakah anda yakin mengubah status notulensi ini ?",
     icon: "warning",
@@ -22,14 +22,14 @@ const handleLock = (id) => {
     confirmButtonText: "Ya",
   }).then((willLock) => {
     if (willLock.isConfirmed) {
-      var link = "/admin/notes/lock/" + id;
+      var link = `/${prefix}/notes/lock/${id}`;
       $("#lock-form").attr("action", link);
       $("#lock-form").submit();
     }
   });
 };
 
-const handleSend = (id) => {
+const handleSend = (prefix,id) => {
   Swal.fire({
     title: "Apakah anda akan mengirimkan notulensi ini ?",
     icon: "info",
@@ -41,7 +41,7 @@ const handleSend = (id) => {
     allowOutsideClick: false,
   }).then((result) => {
     if (result.isConfirmed) {
-      var link = "/admin/notes/attendance/" + id;
+      var link = `/${prefix}/notes/attendance/${id}`;
       return fetch(link)
         .then((response) => {
           if (!response.ok) {
@@ -63,7 +63,7 @@ const handleSend = (id) => {
             var interval = 1000; // miliseconds
             result.results.forEach( (item, index) => {
               setTimeout(function () {
-                var url = "/admin/notes/send-mom/" + item.id+"/"+item.type;
+                var url = `/${prefix}/notes/send-mom/${item.id}/${item.type}`;
                 fetch(url)
                   .then((response) => {
                     return response.json();
@@ -92,8 +92,8 @@ const handleSend = (id) => {
   });
 };
 
-const handleView = (id) => {
-  var link = "/admin/notes/view/" + id;
+const handleView = (prefix,id) => {
+  var link = `/${prefix}/notes/view/${id}`;
   var url = "/notulensi/";
   $.ajax({
     url: link,
