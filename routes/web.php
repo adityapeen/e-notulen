@@ -34,6 +34,7 @@ Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], f
     Route::resource('/agendas', App\Http\Controllers\Admin\AgendaController::class)->except(['show']);
     Route::resource('/notes', App\Http\Controllers\Admin\NoteController::class)->except(['show']);
     Route::resource('/evidences', App\Http\Controllers\Admin\EvidenceController::class)->except(['show']);
+    Route::resource('/teams', App\Http\Controllers\Admin\TeamController::class)->except(['show']);
     Route::resource('/levels', App\Http\Controllers\MLevelController::class)->except(['create','show']);
     Route::post('/notes/lock/{id}', [App\Http\Controllers\Admin\NoteController::class, 'lock'])->name('lock');
     Route::post('/notes/action/{id}', [App\Http\Controllers\ActionItemsController::class, 'change_status'])->name('notes.action.status');
