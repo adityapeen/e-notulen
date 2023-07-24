@@ -64,10 +64,19 @@ class HomeController extends Controller
                     ->whereHas('note.team', function ($query) {
                         $query->where('satker_id', auth()->user()->satker_id);
                     })->count();
-            $undone = ActionItems::where('status', '<>', 'done')
-                    ->whereHas('note.team', function ($query) {
-                        $query->where('satker_id', auth()->user()->satker_id);
-                    })->get();
+            if(auth()->user()->level_id == 7){
+                $undone = ActionItems::where('status', '<>', 'done')
+                        ->whereHas('note.team', function ($query) {
+                            $query->where('satker_id', auth()->user()->satker_id);
+                        })->get();
+                    }
+            else{
+                $undone = ActionItems::where('status', '<>', 'done')
+                        ->whereHas('note.team', function ($query) {
+                            $query->where('team_id', auth()->user()->team_id);
+                        })->get();
+
+            }
             $todays = Note::select('notes.*','attendants.user_id')
             ->join('attendants', 'notes.id', '=', 'attendants.note_id')
             ->where('attendants.user_id',auth()->user()->id)

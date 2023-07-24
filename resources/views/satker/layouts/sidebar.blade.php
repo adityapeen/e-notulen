@@ -36,6 +36,7 @@
       <li class="nav-item mt-3">
         <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Master</h6>
       </li>
+      @if(auth()->user()->level_id < 8)
       <li class="nav-item">
         <a class="nav-link text-white {{ Request::is('satker/agendas*') ? 'active bg-gradient-primary' : '' }}" href="{{ route('satker.agendas.index') }}">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -53,19 +54,20 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-white {{ Request::is('satker/users*') ? 'active bg-gradient-primary' : '' }}" href="{{ route('satker.users.index')}}">
-          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-            <i class="material-icons opacity-10">person</i>
-          </div>
-          <span class="nav-link-text ms-1">User</span>
-        </a>
-      </li>
-      <li class="nav-item">
         <a class="nav-link text-white {{ Request::is('satker/groups*') ? 'active bg-gradient-primary' : '' }}" href="{{ route('satker.groups.index')}}">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">groups</i>
           </div>
           <span class="nav-link-text ms-1">Group</span>
+        </a>
+      </li>
+      @endif
+      <li class="nav-item">
+        <a class="nav-link text-white {{ Request::is('satker/users*') ? 'active bg-gradient-primary' : '' }}" href="{{ route('satker.users.index')}}">
+          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="material-icons opacity-10">person</i>
+          </div>
+          <span class="nav-link-text ms-1">User</span>
         </a>
       </li>
     </ul>

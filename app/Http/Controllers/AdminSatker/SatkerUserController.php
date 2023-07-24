@@ -28,7 +28,11 @@ class SatkerUserController extends Controller
         else { // Admin Satker
             $users = User::where('satker_id', auth()->user()->satker_id)
             ->where('level_id', '>', auth()->user()->level_id)
-            ->where('team_id', auth()->user()->team_id)->get();
+            ->orWhere(function ($query) {
+                $query->where('team_id', auth()->user()->team_id)
+                      ->where('team_id', '=', NULL);
+            })
+            ->get();
         }
         return view('satker.user.index', compact(['users','title']));
     }
