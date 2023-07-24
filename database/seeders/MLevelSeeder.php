@@ -15,30 +15,39 @@ class MLevelSeeder extends Seeder
      */
     public function run()
     {
+        // #1
         MLevel::create([
             "name" => "Ka. BPSDM"
         ]);
+        // #2
         MLevel::create([
-            "name" => "Timstra"
+            "name" => "Tim Strategis / Superadmin"
         ]);
+        // #3
         MLevel::create([
             "name" => "Ses. BPSDM"
         ]);
+        // #4
         MLevel::create([
             "name" => "Kepala Pusat"
         ]);
+        // #5
+        MLevel::create([
+            "name" => "Koordinator Program"
+        ]);
+        // #6
         MLevel::create([
             "name" => "Sekretaris Kapus"
         ]);
+        // #7
         MLevel::create([
-            "name" => "Kepala Bagian Umum"
+            "name" => "Admin Satker"
         ]);
+        // #8
         MLevel::create([
-            "name" => "Koordinator"
+            "name" => "Admin Bidang / Pokja"
         ]);
-        MLevel::create([
-            "name" => "Subkoordinator"
-        ]);
+        // #9
         MLevel::create([
             "name" => "Pegawai"
         ]);

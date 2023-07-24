@@ -23,7 +23,7 @@ class UserSeeder extends Seeder
             "password" => $default_pass,
             "satker_id" => 1,
             "level_id" => 2,
-            "phone" => "082339970974"
+            "phone" => NULL
         ]);
         User::create([
             "name" => "Dara Kurnia Sari" ,
@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
             "password" => $default_pass,
             "satker_id" => 8,
             "level_id" => 2,
-            "phone" => "081363517065"
+            "phone" => NULL
         ]);
         User::create([
             "name" => "Andhika Sinusaroyo" ,
@@ -39,7 +39,7 @@ class UserSeeder extends Seeder
             "password" => $default_pass,
             "satker_id" => 2,
             "level_id" => 2,
-            "phone" => "087862390242"
+            "phone" => NULL
         ]);
         User::create([
             "name" => "Natasha Ruth Ulida Sitorus" ,
@@ -47,7 +47,7 @@ class UserSeeder extends Seeder
             "password" => $default_pass,
             "satker_id" => 4,
             "level_id" => 2,
-            "phone" => "081362895797"
+            "phone" => NULL
         ]);
         User::create([
             "name" => "Meylad Fitriana" ,
@@ -55,7 +55,7 @@ class UserSeeder extends Seeder
             "password" => $default_pass,
             "satker_id" => 1,
             "level_id" => 2,
-            "phone" => "081327636327"
+            "phone" => NULL
         ]);
         User::create([
             "name" => "Aditya Pratama N" ,
@@ -63,7 +63,7 @@ class UserSeeder extends Seeder
             "password" => $default_pass,
             "satker_id" => 5,
             "level_id" => 2,
-            "phone" => "087738956722"
+            "phone" => NULL
         ]);
         User::create([
             "name" => "Nidya " ,
@@ -71,7 +71,7 @@ class UserSeeder extends Seeder
             "password" => $default_pass,
             "satker_id" => 1,
             "level_id" => 5,
-            "phone" => "082299833797"
+            "phone" => NULL
         ]);
         User::create([
             "name" => "Dhafi" ,
@@ -79,7 +79,7 @@ class UserSeeder extends Seeder
             "password" => $default_pass,
             "satker_id" => 2,
             "level_id" => 5,
-            "phone" => "082126737773"
+            "phone" => NULL
         ]);
         User::create([
             "name" => "Emma " ,
@@ -87,7 +87,7 @@ class UserSeeder extends Seeder
             "password" => $default_pass,
             "satker_id" => 3,
             "level_id" => 5,
-            "phone" => "081228307566"
+            "phone" => NULL
         ]);
         User::create([
             "name" => "Devi " ,
@@ -95,7 +95,7 @@ class UserSeeder extends Seeder
             "password" => $default_pass,
             "satker_id" => 4,
             "level_id" => 5,
-            "phone" => "081319463191"
+            "phone" => NULL
         ]);
         User::create([
             "name" => "Tely H " ,
@@ -103,7 +103,7 @@ class UserSeeder extends Seeder
             "password" => $default_pass,
             "satker_id" => 5,
             "level_id" => 5,
-            "phone" => "082116163719"
+            "phone" => NULL
         ]);
         User::create([
             "name" => "Dewi" ,
@@ -111,7 +111,7 @@ class UserSeeder extends Seeder
             "password" => $default_pass,
             "satker_id" => 6,
             "level_id" => 5,
-            "phone" => "085640344115"
+            "phone" => NULL
         ]);
         User::create([
             "name" => "Ayu Ratna Wulansari" ,
@@ -119,7 +119,7 @@ class UserSeeder extends Seeder
             "password" => $default_pass,
             "satker_id" => 7,
             "level_id" => 5,
-            "phone" => "082122195330"
+            "phone" => NULL
         ]);
         User::create([
             "name" => "Suci Dwi H " ,
@@ -127,7 +127,7 @@ class UserSeeder extends Seeder
             "password" => $default_pass,
             "satker_id" => 8,
             "level_id" => 5,
-            "phone" => "081256014576"
+            "phone" => NULL
         ]);
         
     }
