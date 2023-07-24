@@ -61,7 +61,7 @@ class MoMController extends Controller
             $date = date_create($notes->date);
             $file_location = 'notulensi/'.$notes->file_notulen;
             
-            if($notes->file_notulen == NULL && $attendance->user->level_id > 2){
+            if($notes->file_notulen == NULL && $attendance->user->level_id > 2 && $attendance->mom_sent == NULL){
                 $message = "Berikut ini kami sampaikan notulen *"
                     .$notes->name."* pada tanggal *".date_format($date,"d-m-Y").".* Silahkan akses notulen pada link berikut : \n"
                     .$notes->link_drive_notulen
@@ -72,7 +72,7 @@ class MoMController extends Controller
                     'message' => $message,
                 ]);
             }
-            else if($attendance->user->level_id > 2){
+            else if($attendance->user->level_id > 2 && $attendance->mom_sent == NULL){
                 $message = "Berikut ini kami sampaikan notulen *"
                     .$notes->name."* pada tanggal *".date_format($date,"d-m-Y").".* \n"
                     ."\nTerimakasih 🙏🙏🙏";
@@ -85,7 +85,8 @@ class MoMController extends Controller
             }
             else{
                 $results = $attendance->user->name." - SKIP";
-                $status = true;
+                $status = false;
+                return response()->json(['status'=>$status,'results'=>$results,'messages'=>$results]);
             }
 
             $res = json_decode($response);
