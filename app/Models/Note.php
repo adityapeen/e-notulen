@@ -46,6 +46,10 @@ class Note extends Model
     {
         return $this->belongsTo(Team::class);
     }
+    public function action_items()
+    {
+        return $this->hasMany(ActionItems::class);
+    }
 
     /**
      * Hash the ids

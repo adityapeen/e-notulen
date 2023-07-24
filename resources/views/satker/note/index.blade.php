@@ -29,8 +29,7 @@
                   <tr>
                     <td class="text-sm">
                       <h6 class="mb-0">{{ $item->name }}</h6>
-                      <span
-                        class="badge badge-sm bg-gradient-{{ $item->type == 'public' ? 'success' : 'info' }}">{{ $item->type }}</span>
+                      <span class="badge badge-sm bg-gradient-{{ $item->type == 'public' ? 'success' : 'info' }} px-1">&nbsp;</span>
                       @if ($item->agenda != null)
                         <span class="badge badge-sm bg-gradient-secondary">{{ $item->agenda->name }}</span>
                       @endif
@@ -40,7 +39,7 @@
                     </td>
                     <td class="align-middle text-sm">
                       <a href="{{ route('satker.notes.action', [$item->id]) }}" class="btn btn-sm bg-gradient-info">Action
-                        Items</a>
+                        Items <span class="badge bg-gradient-light text-dark ms-2">{{ $item->action_items_count }}</span></a>
                     </td>
                     <td class="align-middle text-sm">
                       <span class="badge badge-sm bg-gradient-{{ $item->status == 'open' ? 'success' : 'danger' }} btn"

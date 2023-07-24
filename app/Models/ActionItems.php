@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Vinkla\Hashids\Facades\Hashids;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class ActionItems extends Model
 {
@@ -41,7 +42,11 @@ class ActionItems extends Model
     }
     public function pics()
     {
-        return $this->hasMany(Pic::class);
+        return $this->hasMany(Pic::class, 'action_id');
+    }
+    public function team(): HasOneThrough
+    {
+        return $this->hasOneThrough(Note::class, Team::class, 'action_id');
     }
 
     /**

@@ -28,7 +28,7 @@ class NoteController extends Controller
     public function index()
     {
         $title = "Daftar Notulensi";
-        $notes = Note::orderBy('date', 'DESC')->paginate(15);
+        $notes = Note::withCount(['action_items'])->orderBy('date', 'DESC')->paginate(15);
         return view('admin.note.index', compact(['notes','title']));
     }
 
@@ -368,6 +368,7 @@ class NoteController extends Controller
         DB::raw('(SELECT COUNT(*) FROM notes WHERE notes.agenda_id = agendas.id) as notes_count'))
         ->orderBy('priority_id', 'asc')
         ->orderBy('agendas.name', 'asc')
+        ->where('satker_id', NULL)
         ->get();
         $color = ['primary','dark','info','warning','success','light'];
         // dd($agendas);

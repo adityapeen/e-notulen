@@ -43,13 +43,39 @@ class HomeController extends Controller
             return view('admin.notulen', compact(['users','agendas','notes','actions','todays','title','wa_ready','notes_locked','actions_todo','actions_progress','undone']));
         }
         else if (auth()->user()->level_id < 9 ){
+            $users = User::where('satker_id', auth()->user()->satker_id)->count();
+            $wa_ready = User::where('satker_id', auth()->user()->satker_id)->whereNot('phone','')->count();
+            $agendas = Agenda::where('satker_id', auth()->user()->satker_id)->count();
+            $notes = Note::whereHas('team', function ($query) {
+                        $query->where('satker_id', auth()->user()->satker_id);
+                    })->count();
+            $notes_locked = Note::where('status','lock')
+                    ->whereHas('team', function ($query) {
+                        $query->where('satker_id', auth()->user()->satker_id);
+                    })->count();
+            $actions = ActionItems::whereHas('note.team', function ($query) {
+                        $query->where('satker_id', auth()->user()->satker_id);
+                    })->count();
+            $actions_todo = ActionItems::where('status','todo')
+                    ->whereHas('note.team', function ($query) {
+                        $query->where('satker_id', auth()->user()->satker_id);
+                    })->count();
+            $actions_progress = ActionItems::where('status','onprogress')
+                    ->whereHas('note.team', function ($query) {
+                        $query->where('satker_id', auth()->user()->satker_id);
+                    })->count();
+            $undone = ActionItems::where('status', '<>', 'done')
+                    ->whereHas('note.team', function ($query) {
+                        $query->where('satker_id', auth()->user()->satker_id);
+                    })->get();
             $todays = Note::select('notes.*','attendants.user_id')
             ->join('attendants', 'notes.id', '=', 'attendants.note_id')
             ->where('attendants.user_id',auth()->user()->id)
             ->where('date', date('Y-m-d'))->get();
-            return view('satker.notulen', compact(['todays','title']));
+            return view('satker.notulen', compact(['users','agendas','notes','actions','todays','title','wa_ready','notes_locked','actions_todo','actions_progress','undone']));
         }
         else{
+            $undone = ActionItems::with('pics')->where('status','done')->get();
             $todays = Note::select('notes.*','attendants.user_id')
             ->join('attendants', 'notes.id', '=', 'attendants.note_id')
             ->where('attendants.user_id',auth()->user()->id)

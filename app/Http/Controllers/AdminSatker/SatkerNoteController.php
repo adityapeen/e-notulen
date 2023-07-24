@@ -28,10 +28,10 @@ class SatkerNoteController extends Controller
     {
         $title = "Daftar Notulensi";
         if(auth()->user()->level_id == 8){ // Admin Bidang
-            $notes = Note::orderBy('date', 'DESC')->where('team_id', auth()->user()->team_id)->paginate(15);
+            $notes = Note::withCount(['action_items'])->orderBy('date', 'DESC')->where('team_id', auth()->user()->team_id)->paginate(15);
         }
         else { // Admin Satker
-            $notes = Note::with('team')->orderBy('date', 'DESC')
+            $notes = Note::withCount(['action_items'])->with('team')->orderBy('date', 'DESC')
             ->whereHas('team', function ($query) {
                 $query->where('satker_id', auth()->user()->satker_id);
             })->paginate(15);
