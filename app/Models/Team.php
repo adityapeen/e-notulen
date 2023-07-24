@@ -21,7 +21,7 @@ class Team extends Model
 
     public function satker()
     {
-        return $this->belongsTo(MSatker::class);
+        return $this->belongsTo(MSatker::class, 'satker_id');
     }
 
     public function creator()

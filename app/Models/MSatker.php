@@ -20,4 +20,14 @@ class MSatker extends Model
         return   Hashids::encode($this->id);
     }
 
+    function team()
+    {
+        return $this->hasMany(Team::class, 'satker_id');
+    }
+
+    function notes()
+    {
+        return $this->hasManyThrough(Note::class, Team::class, 'satker_id');
+    }
+
 }

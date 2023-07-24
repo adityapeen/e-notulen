@@ -35,8 +35,13 @@
           </div>
         </div>
         <hr class="horizontal dark my-0">
-        <div class="card-footer py-2">
+        <div class="card-footer py-2 cursor-pointer" data-bs-toggle="collapse" href="#notesCount">
           <p class="d-flex text-sm justify-content-between mb-0">Locked <span class="ms-auto text-success font-weight-bolder text-sm">{{ $notes_locked}} </span> </p>
+          <div id="notesCount" class="collapse">
+            @foreach ($notes_satkers as $item)
+            <p class="d-flex text-sm justify-content-between mb-0"><b>{{ $item->team == NULL ? 'BPS' : $item->code}}</b> <span class="ms-auto text-success font-weight-bolder text-sm">{{ $item->notes_count}} </span> </p>
+            @endforeach
+          </div>
         </div>
       </div>
     </div>

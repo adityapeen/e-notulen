@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ActionItems;
 use App\Models\Agenda;
+use App\Models\MSatker;
 use App\Models\Note;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -34,6 +35,7 @@ class HomeController extends Controller
             $wa_ready = User::whereNot('phone','')->count();
             $agendas = Agenda::all()->count();
             $notes = Note::all()->count();
+            $notes_satkers = MSatker::withCount('notes')->get();
             $notes_locked = Note::where('status','lock')->count();
             $actions = ActionItems::all()->count();
             $actions_todo = ActionItems::where('status','todo')->count();
@@ -43,7 +45,7 @@ class HomeController extends Controller
                                     $query->where('team_id', NULL);
                                 })->get();
             $todays = Note::where('date', date('Y-m-d'))->get();
-            return view('admin.notulen', compact(['users','agendas','notes','actions','todays','title','wa_ready','notes_locked','actions_todo','actions_progress','undone']));
+            return view('admin.notulen', compact(['users','agendas','notes','actions','todays','title','wa_ready','notes_locked','actions_todo','actions_progress','undone','notes_satkers']));
         }
         else if (auth()->user()->level_id < 9 ){
             $users = User::where('satker_id', auth()->user()->satker_id)->count();
