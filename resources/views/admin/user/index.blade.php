@@ -28,7 +28,11 @@
                 @foreach ($users as $item)
                 <tr>
                   <td class="">
-                    <h6 class="mb-0">{{ $item->name }}</h6>
+                    <h6 class="mb-0">{{ $item->name }}
+                      @if($item->phone != NULL)
+                      <i class="fa fa-whatsapp text-success"></i>
+                      @endif
+                    </h6>
                   </td>
                   <td class="align-middle text-sm">
                     {{ $item->email }}
