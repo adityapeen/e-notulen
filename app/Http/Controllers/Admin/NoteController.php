@@ -9,9 +9,9 @@ use App\Models\ActionItems;
 use App\Models\Attendant;
 use App\Models\Evidence;
 use App\Models\MomRecipients;
+use App\Models\MSatker;
 use App\Models\Pic;
 use App\Models\User;
-use App\Models\UserGroup;
 use DateTime;
 use DateTimeZone;
 use Illuminate\Http\Request;
@@ -29,7 +29,28 @@ class NoteController extends Controller
     {
         $title = "Daftar Notulensi";
         $notes = Note::withCount(['action_items'])->orderBy('date', 'DESC')->paginate(15);
-        return view('admin.note.index', compact(['notes','title']));
+        $satkers = MSatker::all();
+        return view('admin.note.index', compact(['notes','title','satkers']));
+    }
+
+
+    public function bySatker(String $hashed_id)
+    {
+        if($hashed_id == 'ALL'){
+            return redirect()->route("admin.notes.index");
+        }
+        else if($hashed_id == 'BPS'){
+            $notes = Note::where('team_id',NULL)->orderBy('date','DESC')->paginate(15);;
+        }
+        else {
+            $satker_id = Hashids::decode($hashed_id)[0]; //decode the hashed id
+            $notes = Note::whereHas('team', function ($query) use($satker_id) {
+                $query->where('satker_id', $satker_id);
+            })->orderBy('date','DESC')->paginate(15);;
+        }
+        $title = "Daftar Notulensi";
+        $satkers = MSatker::all();
+        return view('admin.note.index', compact(['notes','title','satkers']));
     }
 
     /**

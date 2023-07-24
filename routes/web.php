@@ -38,6 +38,7 @@ Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], f
     Route::resource('/levels', App\Http\Controllers\MLevelController::class)->except(['create','show']);
     Route::post('/notes/lock/{id}', [App\Http\Controllers\Admin\NoteController::class, 'lock'])->name('lock');
     Route::post('/notes/action/{id}', [App\Http\Controllers\ActionItemsController::class, 'change_status'])->name('notes.action.status');
+    Route::get('/notes/satker/{id}', [App\Http\Controllers\Admin\NoteController::class, 'bySatker'])->name('notes.satker');
     Route::get('/agenda', [App\Http\Controllers\Admin\NoteController::class, 'groupByAgenda'])->name('agenda');
     Route::get('/notes/send-mom/{id}/{type}', [App\Http\Controllers\MoMController::class, 'send_individual_mom'])->name('notes.mom');
     Route::get('/notes/attendance/{id}', [App\Http\Controllers\MoMController::class, 'mom_recipient'])->name('notes.attendant');

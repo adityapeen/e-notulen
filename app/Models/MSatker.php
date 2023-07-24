@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Vinkla\Hashids\Facades\Hashids;
 
 class MSatker extends Model
 {
@@ -13,5 +14,10 @@ class MSatker extends Model
         'name'
     ];
     public $timestamps = false;
+
+    function id_hash()
+    {
+        return   Hashids::encode($this->id);
+    }
 
 }

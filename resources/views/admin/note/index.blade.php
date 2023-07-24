@@ -8,7 +8,15 @@
       <div class="card my-4">
         <div class="card-header position-relative mt-n4 z-index-2 mx-3 p-0">
           <div class="bg-gradient-info shadow-info border-radius-lg d-flex align-items-center pt-2 pb-2">
-            <h6 class="text-capitalize ps-3 text-white">{{ $title }}</h6>
+            <h6 class="text-capitalize ps-3 text-white mb-0">{{ $title }}</h6>
+            <select id="satker_code" class="ms-3 rounded p-2 bg-gradient-light text-xxs font-weight-bolder">
+              <option value="ALL">ALL</option>
+              <option value="BPS">BPS</option>
+                @foreach($satkers as $item)
+                <option value="{{ $item->id_hash() }}">{{ $item->code}}</option>
+                @endforeach
+            </select>
+            <button class="btn btn-sm btn-light shadow-dark ms-3 mb-0" onclick="filterNote()">Filter</button>
             <a href="{{ route('admin.notes.create') }}" class="btn btn-success shadow-dark ms-auto me-3 mb-0">Tambah</a>
           </div>
         </div>
@@ -132,12 +140,15 @@
   {{-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> --}}
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="{{asset('assets/js/notes-function.js')}}"></script>
+  <script src="{{asset('assets/js/notes-function-admin.js')}}"></script>
 
   <script>
     $(document).ready(function() {
       $('#tableNotulensi').DataTable({
         ordering: false
       });
+      prepareDropdown()
     });
+  
   </script>
 @endsection
