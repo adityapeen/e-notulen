@@ -74,18 +74,21 @@ class HomeController extends Controller
                         ->whereHas('note.team', function ($query) {
                             $query->where('satker_id', auth()->user()->satker_id);
                         })->get();
-                    }
+                $todays = Note::select('notes.*')
+                        ->whereHas('team', function($query){
+                            $query->where('satker_id', auth()->user()->satker_id);
+                        })->where('date', date('Y-m-d'))->get();
+            }
             else{
                 $undone = ActionItems::where('status', '<>', 'done')
                         ->whereHas('note.team', function ($query) {
                             $query->where('team_id', auth()->user()->team_id);
                         })->get();
-
+                $todays = Note::select('notes.*')
+                        ->where('team_id', auth()->user()->team_id)
+                        ->where('date', date('Y-m-d'))->get();
             }
-            $todays = Note::select('notes.*','attendants.user_id')
-            ->join('attendants', 'notes.id', '=', 'attendants.note_id')
-            ->where('attendants.user_id',auth()->user()->id)
-            ->where('date', date('Y-m-d'))->get();
+            
             return view('satker.notulen', compact(['users','agendas','notes','actions','todays','title','wa_ready','notes_locked','actions_todo','actions_progress','undone']));
         }
         else{

@@ -29,7 +29,7 @@
                 Icon
               </div>
               <div class="col-md-8">
-                <input type="text" id="icon_material" class="form-control border px-1 @error('icon_material') is-invalid @enderror" name="icon_material" value="{{ $agenda->icon_material }}" placeholder="card_membership" required>
+                <input type="text" id="icon_material" class="form-control border px-1 @error('icon_material') is-invalid @enderror" name="icon_material" value="{{ $agenda->icon_material }}" placeholder="card_membership">
               </div>
             </div>            
             <div class="row mb-1 align-items-center">
@@ -42,7 +42,7 @@
                   @foreach ($groups as $item)
                       <option value="{{ $item->id }}" {{ $item->id == $agenda->group_id_hash() ? 'selected' : ''}}>{{ $item->name }}</option>
                   @endforeach
-              </select>
+                </select>
               </div>
             </div>
             <div class="row mb-1 align-items-center">
@@ -54,7 +54,15 @@
                   @foreach ($priorities as $item)
                       <option value="{{ $item->id }}" {{ $item->id == $agenda->priority_id ? 'selected' : ''}}>{{ $item->name }}</option>
                   @endforeach
-              </select>
+                </select>
+              </div>
+            </div>
+            <div class="row mb-1 align-items-center">
+              <div class="col-md-4">
+                ID Template Notulen
+              </div>
+              <div class="col-md-8">
+                <input type="text" id="docs_template_id" class="form-control border px-1 @error('docs_template_id') is-invalid @enderror" name="docs_template_id" value="{{ $agenda->docs_template_id }}" placeholder="isikan ID template notulen">
               </div>
             </div>
             <div class="row mb-1 align-items-center">
@@ -66,7 +74,7 @@
                   @foreach ($users as $item)
                       <option value="{{ $item->id_hash() }}">{{ $item->name.' - '.$item->satker->code }}</option>
                   @endforeach
-              </select>
+                </select>
               </div>
             </div>
             <div class="mt-3 d-flex" >         

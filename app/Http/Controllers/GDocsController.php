@@ -18,8 +18,9 @@ class GDocsController extends Controller
         $notes = Note::where('id', $note_id)->first();
 
         $filename = str_replace('-', '.', $notes->date) . ' ' . $notes->name;
+        $template_id = $notes->agenda == NULL ? NULL : $notes->agenda->docs_template_id;
 
-        $doc_id = $this->createDocumentFromTemplate($filename);
+        $doc_id = $this->createDocumentFromTemplate($filename, $template_id);
 
         $link_drive = "https://docs.google.com/document/d/" . $doc_id;
         $notes->update([
@@ -29,7 +30,7 @@ class GDocsController extends Controller
 
         return redirect()->route("home")->with('success', 'Data <strong>berhasil</strong> disimpan');
     }
-    public function createDocumentFromTemplate($copyTitle = "Copy Title")
+    public function createDocumentFromTemplate($copyTitle = "Copy Title", $template_id = NULL)
     {
         // Set up the API client
         $client = new Google_Client();
@@ -40,8 +41,8 @@ class GDocsController extends Controller
         $driveService = new Google_Service_Drive($client);
 
         // Get the ID of the template document
-        // $template_id = '12zcCTsPB1JJ7qtcsmHYih-fULfvxaG2N'; // Word .docx
-        $template_id = '1m72qKLdOcQ8KsDxMcgKAIHEvwwhK_RwTUALmMZUiNhA'; // GDocs (Exportable via API) 
+        if($template_id == NULL)
+        $template_id = env('DOCS_TEMPLATE_ID');
 
         // Create a new document from the template
         // $body = new Google_Service_Docs_Document();
@@ -52,7 +53,7 @@ class GDocsController extends Controller
         $documentCopyId = $driveResponse->id;
 
         // printf("Created document with id: %s\n", $documentCopyId);
-        $folderId = "15jqyBLq94S3QU5fYdYhOH6BApFTWbahw";
+        $folderId = env('DOCS_FOLDER_ID');
         $this->moveFileToFolder($documentCopyId, $folderId);
 
         return $documentCopyId;

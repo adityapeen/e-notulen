@@ -30,8 +30,11 @@
                   <td class="text-sm">
                     <h6 class="mb-0">{{ $item->name }}</h6>
                     <span class="badge badge-sm bg-gradient-{{ $item->type == "public" ? "success":"info" }}" >{{ $item->type }}</span>
+                    @if ($item->team != null)
+                      <span class="badge badge-sm bg-gradient-light text-dark">{{ $item->team->satker->code }}</span>
+                    @endif
                     @if($item->agenda != NULL)
-                    <span class="badge badge-sm bg-gradient-secondary" >{{ $item->agenda->name }}</span>
+                      <span class="badge badge-sm bg-gradient-secondary" >{{ $item->agenda->name }}</span>
                     @endif
                   </td>
                   <td class="align-middle text-sm">

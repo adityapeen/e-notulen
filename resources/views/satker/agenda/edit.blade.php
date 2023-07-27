@@ -59,6 +59,14 @@
             </div>
             <div class="row mb-1 align-items-center">
               <div class="col-md-4">
+                ID Template Notulen
+              </div>
+              <div class="col-md-8">
+                <input type="text" id="docs_template_id" class="form-control border px-1 @error('docs_template_id') is-invalid @enderror" name="docs_template_id" value="{{ $agenda->docs_template_id }}" placeholder="isikan ID template notulen">
+              </div>
+            </div>
+            <div class="row mb-1 align-items-center">
+              <div class="col-md-4">
                 Peserta Rapat
               </div>
               <div class="col-md-8">
