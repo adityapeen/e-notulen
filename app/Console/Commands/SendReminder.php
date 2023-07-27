@@ -48,7 +48,7 @@ class SendReminder extends Command
             $datediff = strtotime($item->due_date) - time();
             $sisa = round($datediff / (60 * 60 * 24)); // selisih dalam hari
 
-            if($sisa == 3){
+            if($sisa == 5 || $sisa == 3){
                 $message = "Berikut ini kami sampaikan pengingat terhadap Action Item *"
                     .$item->note->name."* pada tanggal *".date_format(date_create($item->note->date),"d-m-Y").".*" 
                     ."\n\n*What* "
