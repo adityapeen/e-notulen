@@ -61,3 +61,17 @@ if(!function_exists('tgl_indo')){
 	return $tgl_indo;
     }
 }
+
+if(!function_exists('valid_docs_id')){
+	function valid_docs_id($url){
+		$regex = '/^(?:https?:\/\/)?(?:docs\.google\.com\/(?:document|spreadsheets|presentation)\/d\/|drive\.google\.com\/(?:file\/d\/|open\?id=))([a-zA-Z0-9_-]+)(?:\/[a-zA-Z0-9_-]+)?$/';
+
+		if(preg_match($regex, $url, $matches)){
+			return $matches[1];
+		}
+		else {
+			return false;
+		}
+	}
+
+}

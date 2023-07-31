@@ -87,10 +87,9 @@ class GDocsController extends Controller
         $note_id = Hashids::decode($hashed_id)[0];
         $notes = Note::where('id', $note_id)->first();
         $url = $notes->link_drive_notulen;
-        $regex = '/^(?:https?:\/\/)?(?:docs\.google\.com\/(?:document|spreadsheets|presentation)\/d\/|drive\.google\.com\/(?:file\/d\/|open\?id=))([a-zA-Z0-9_-]+)(?:\/[a-zA-Z0-9_-]+)?$/';
 
-        if (preg_match($regex, $url, $matches)) {
-            $documentId = $matches[1];
+        if (valid_docs_id($url)) {
+            $documentId = valid_docs_id($url);
             $filename = str_replace('-', '.', $notes->date) . ' ' . $notes->name.'.pdf';
             $filename = str_replace('/', '_', $filename);
             $localPath = $this->exportDocsToPDF($documentId, $filename);
@@ -137,5 +136,29 @@ class GDocsController extends Controller
         } catch (Exception $e) {
             echo "Error Message: " . $e;
         }
+    }
+
+    function changeFilePremission($docs_id, $type = "lock")
+    {
+        $client = new Google_Client();
+        $client->setAuthConfig(config('services.google.service_account_credentials_json'));
+        $client->addScope(Google_Service_Drive::DRIVE);
+        $service = new Google_Service_Drive($client);
+
+        if($type == "lock"){
+            $role = "reader";
+        }
+        else {
+            $role = "writer";
+        }
+        $permission = new \Google_Service_Drive_Permission([
+            'type' => 'anyone',
+            'role' => $role, // 'reader' allows reading, 'writer' allows editing
+            'withLink' => false, // set to false to make sure it's not public
+        ]);
+
+        $service->permissions->create($docs_id, $permission);
+
+        return "OK";
     }
 }

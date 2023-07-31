@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Note;
 use App\Models\Agenda;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\GDocsController;
 use App\Models\ActionItems;
 use App\Models\Attendant;
 use App\Models\Evidence;
@@ -329,6 +330,11 @@ class NoteController extends Controller
         $note = Note::findOrFail($id)->first();
         $status = $note->status == 'open'?'lock':'open';
         if($note->update(['status'=>$status])){
+            if(valid_docs_id($note->link_drive_notulen)){
+                $file_id = valid_docs_id($note->link_drive_notulen);
+                $GDocs = new GDocsController();
+                $GDocs->changeFilePremission( $file_id,$note->status);
+            }
             return back()->with('success','Data <strong>berhasil</strong> diubah!');
         }else{
             return back()->withErrors(['Data <strong>gagal</strong> diubah!']);
