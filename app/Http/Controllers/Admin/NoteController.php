@@ -40,11 +40,11 @@ class NoteController extends Controller
             return redirect()->route("admin.notes.index");
         }
         else if($hashed_id == 'BPS'){
-            $notes = Note::where('team_id',NULL)->orderBy('date','DESC')->paginate(15);;
+            $notes = Note::withCount(['action_items'])->where('team_id',NULL)->orderBy('date','DESC')->paginate(15);;
         }
         else {
             $satker_id = Hashids::decode($hashed_id)[0]; //decode the hashed id
-            $notes = Note::whereHas('team', function ($query) use($satker_id) {
+            $notes = Note::withCount(['action_items'])->whereHas('team', function ($query) use($satker_id) {
                 $query->where('satker_id', $satker_id);
             })->orderBy('date','DESC')->paginate(15);;
         }
