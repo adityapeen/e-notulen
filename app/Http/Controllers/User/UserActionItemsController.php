@@ -18,7 +18,7 @@ class UserActionItemsController extends Controller
         $title = "Action Items";
         $actions = ActionItems::whereHas('pics', function($query){
             $query->where('user_id', auth()->user()->id);
-        })->paginate(15);
+        })->orderBy('id', 'DESC')->paginate(15);
 
         return view('user.action', compact(['title','actions']));
     }
