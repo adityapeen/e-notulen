@@ -82,12 +82,13 @@ Route::group(['middleware' => 'satker', "prefix" => "satker", "as" => "satker."]
 });
 
 Route::group(['middleware' => 'user', "prefix" => "user", "as" => "user."], function () {
-    Route::resource('/notes', App\Http\Controllers\UserNoteController::class)->except(['show']);
-    Route::resource('/evidences', App\Http\Controllers\UserEvidenceController::class)->except(['show']);
-    Route::get('/notes/action/{id}', [App\Http\Controllers\UserNoteController::class, 'action_items'])->name('notes.action');
-    Route::get('/notes/action/{id}/evidences', [App\Http\Controllers\UserNoteController::class, 'evidence'])->name('notes.evidence');
-    Route::get('/notes/action/{id}/evidences/add', [App\Http\Controllers\UserEvidenceController::class, 'add'])->name('notes.evidence.add');
-    Route::get('/notes/view/{id}', [App\Http\Controllers\UserNoteController::class, 'show'])->name('notes.show');
+    Route::resource('/notes', App\Http\Controllers\User\UserNoteController::class)->except(['show']);
+    Route::resource('/evidences', App\Http\Controllers\User\UserEvidenceController::class)->except(['show']);
+    Route::resource('/action-items', App\Http\Controllers\User\UserActionItemsController::class)->only(['index']);
+    Route::get('/notes/action/{id}', [App\Http\Controllers\User\UserNoteController::class, 'action_items'])->name('notes.action');
+    Route::get('/notes/action/{id}/evidences', [App\Http\Controllers\User\UserNoteController::class, 'evidence'])->name('notes.evidence');
+    Route::get('/notes/action/{id}/evidences/add', [App\Http\Controllers\User\UserEvidenceController::class, 'add'])->name('notes.evidence.add');
+    Route::get('/notes/view/{id}', [App\Http\Controllers\User\UserNoteController::class, 'show'])->name('notes.show');
     Route::get('/profile', [App\Http\Controllers\Admin\UserController::class, 'profile'])->name('profile');
     Route::put('/profile', [App\Http\Controllers\Admin\UserController::class, 'self_update'])->name('profile.update');
     Route::get('/password', [App\Http\Controllers\Admin\UserController::class, 'password'])->name('password');

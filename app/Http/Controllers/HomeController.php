@@ -92,12 +92,15 @@ class HomeController extends Controller
             return view('satker.notulen', compact(['users','agendas','notes','actions','todays','title','wa_ready','notes_locked','actions_todo','actions_progress','undone']));
         }
         else{
-            $undone = ActionItems::with('pics')->where('status','done')->get();
+            $undone = ActionItems::with('pics')->whereNot('status','done')
+                                    ->whereHas('pics', function($query){
+                                        $query->where('user_id', auth()->user()->id);
+                                    })->get();
             $todays = Note::select('notes.*','attendants.user_id')
             ->join('attendants', 'notes.id', '=', 'attendants.note_id')
             ->where('attendants.user_id',auth()->user()->id)
             ->where('date', date('Y-m-d'))->get();
-            return view('user.notulen', compact(['todays','title']));
+            return view('user.notulen', compact(['todays','title','undone']));
         }
     }
 }
