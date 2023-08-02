@@ -37,15 +37,16 @@
                     <span class="badge badge-sm bg-gradient-{{ $item->status == "done" ? "success":"danger" }}">{{ $item->status }}</span>
                   </td>
                   <td class="align-middle text-sm">
-                    <a href="{{ route('user.notes.action', $item->note->id)}}" class="badge bg-gradient-info">Evidences</a>
+                    <a href="#" class="btn btn-sm bg-gradient-secondary mb-0" onclick="viewAction('{{ $item->id }}')">Detail</a>
+                    <a href="{{ route('user.notes.evidence', $item->id)}}" class="btn btn-sm bg-gradient-info mb-0">Evidences</a>
                   </td>                  
                   <td class="align-middle text-sm">
                     <a href="#" onclick="handleView('{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Detail Notulensi">
-                      <button class="btn btn-sm btn-info"><i class="fa fa-eye"></i></button>
+                      <button class="btn btn-sm btn-info mb-0"><i class="fa fa-eye"></i></button>
                     </a>
-                    @if($item->status == 'lock')
-                    <a href="{{ route('user.notes.show', $item->id) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Lihat Notulensi">
-                      <button class="btn btn-sm btn-success">Lihat Notulen</button>
+                    @if($item->note->status == 'lock')
+                    <a href="{{ route('user.notes.show', $item->note->id) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Lihat Notulensi">
+                      <button class="btn btn-sm btn-success mb-0">Lihat Notulen</button>
                     </a>
                     @endif
           
@@ -91,7 +92,7 @@
 @endsection
 
 @section('script')
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
   $(document).ready(function(){
@@ -125,6 +126,26 @@
               $("#modal-detail").modal('show');
             });
     }
+
+    const viewAction = id => {
+      $.ajax({
+        type: 'GET',
+        url: "{{ url('/api/action_detail') }}" + "/"+id,
+        context: document.body
+      }).done(function(data) {  
+        var html = '<b>What</b><br>' + data.action_item.what +
+                   '<br><b>How</b><br>' + data.action_item.how +
+                   '<b>Due Date<br>'+data.action_item.due_date +'</b>';
+        var pic = '<br><br><b>PIC</b> : ' + data.pics.map(function(item) { return ' ' + item['name']; });
+
+        Swal.fire({
+              title: data.action_item.name,
+              html : html + pic
+            });
+      }).always(function(data) {
+        // console.log(JSON.stringify(data));
+      });;
+    };
     
 </script>
 @endsection
