@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\MSatker;
 use App\Models\Team;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
@@ -30,7 +31,8 @@ class TeamController extends Controller
     public function create()
     {
         $title = "Tambah Bidang";
-        return view('admin.team.create', compact('title'));
+        $satkers = MSatker::All();
+        return view('admin.team.create', compact(['title','satkers']));
     }
 
     /**
@@ -48,7 +50,7 @@ class TeamController extends Controller
         if(Team::updateOrCreate([
             'code' => $request->code,
             'name' => $request->name,
-            'satker_id' => auth()->user()->satker_id,
+            'satker_id' => $request->satker_id,
             'created_by' => auth()->user()->id,
         ])){
             return redirect()->route("admin.teams.index")->with('success','Data <strong>berhasil</strong> disimpan');
