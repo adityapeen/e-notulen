@@ -1,4 +1,4 @@
-@extends('user.layouts.template')
+@extends('admin.layouts.template')
 @section('title', $title.' - '.config('app.name'))
 @section('breadcrumbs', $title.' - '.config('app.name'))
 
@@ -8,7 +8,15 @@
       <div class="card my-4">
         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
           <div class="bg-gradient-info shadow-info border-radius-lg pt-2 pb-2 d-flex align-items-center">
-            <h6 class="text-white text-capitalize ps-3">{{$title}}</h6>
+            <h6 class="text-white text-capitalize ps-3 mb-0">{{$title}}</h6>
+              <select id="satker_code" class="ms-3 rounded p-2 bg-gradient-light text-xxs font-weight-bolder">
+                <option value="ALL">ALL</option>
+                <option value="BPS">BPS</option>
+                  @foreach($satkers as $item)
+                  <option value="{{ $item->id_hash() }}">{{ $item->code}}</option>
+                  @endforeach
+              </select>
+              <button class="btn btn-sm btn-light shadow-dark ms-3 mb-0" onclick="filterAction()">Filter</button>
           </div>
         </div>
         <div class="card-body pb-2">
@@ -34,18 +42,18 @@
                     {{ $item->due_date }}
                   </td>
                   <td class="align-middle text-sm">
-                    <span class="badge badge-sm bg-gradient-{{ $item->status == "done" ? "success":"danger" }}">{{ $item->status }}</span>
+                    <span class="badge badge-sm bg-gradient-{{ $item->status == "done" ? "success":( $item->status == "onprogress" ? "info" : "danger") }}">{{ $item->status }}</span>
                   </td>
                   <td class="align-middle text-sm">
                     <a href="#" class="btn btn-sm bg-gradient-secondary mb-0" onclick="viewAction('{{ $item->id }}')">Detail</a>
-                    <a href="{{ route('user.notes.evidence', $item->id)}}" class="btn btn-sm bg-gradient-info mb-0">Evidences</a>
+                    <a href="{{ route('admin.notes.evidence', $item->id)}}" class="btn btn-sm bg-gradient-info mb-0">Evidences</a>
                   </td>                  
                   <td class="align-middle text-sm">
-                    <a href="#" onclick="handleView('{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Detail Notulensi">
+                    <a href="#" onclick="handleView('{{$item->note->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Detail Notulensi">
                       <button class="btn btn-sm btn-info mb-0"><i class="fa fa-eye"></i></button>
                     </a>
                     @if($item->note->status == 'lock')
-                    <a href="{{ route('user.notes.show', $item->note->id) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Lihat Notulensi">
+                    <a href="{{ route('admin.notes.show', $item->note->id) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Lihat Notulensi">
                       <button class="btn btn-sm btn-success mb-0">Lihat Notulen</button>
                     </a>
                     @endif
@@ -93,12 +101,15 @@
 
 @section('script')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{{asset('assets/js/notes-function-admin.js')}}"></script>
+
 
 <script>
   $(document).ready(function(){
     $('#tableNotulensi').DataTable({
       ordering:  false
     });
+    prepareDropdown()
   });
 
     const handleView = id =>{

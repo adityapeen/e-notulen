@@ -52,6 +52,7 @@ Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], f
     Route::get('/notes/qr/{id}', [App\Http\Controllers\Admin\NoteController::class, 'qrcode'])->name('notes.qrcode');
     Route::get('/notes/export/{id}', [App\Http\Controllers\GDocsController::class, 'exportPDF'])->name('export.docs');
     Route::get('/notes/absensi/{id}', [App\Http\Controllers\PDFController::class, 'generateAttendanceList'])->name('notes.absensi');
+    Route::get('/action-items/{id}', [App\Http\Controllers\ActionItemsListController::class, 'index_admin'])->name('action_items');
     Route::get('/reminder', [App\Http\Controllers\MoMController::class, 'send_reminder'])->name('notes.reminder');
     Route::get('/users/password', [App\Http\Controllers\Admin\UserController::class, 'password'])->name('users.password');
     Route::post('/users/password', [App\Http\Controllers\Admin\UserController::class, 'change_password'])->name('users.change_password');
@@ -75,10 +76,10 @@ Route::group(['middleware' => 'satker', "prefix" => "satker", "as" => "satker."]
     Route::get('/notes/action/{id}', [App\Http\Controllers\AdminSatker\SatkerNoteController::class, 'action_item'])->name('notes.action');
     Route::get('/notes/action/{id}/evidences', [App\Http\Controllers\AdminSatker\SatkerNoteController::class, 'evidence'])->name('notes.evidence');
     Route::get('/notes/action/{id}/evidences/add', [App\Http\Controllers\AdminSatker\SatkerEvidenceController::class, 'add'])->name('notes.evidence.add');
-    Route::post('/notes/action/{id}', [App\Http\Controllers\ActionItemsController::class, 'change_status'])->name('notes.action.status');
     Route::get('/notes/agenda/{id}', [App\Http\Controllers\AdminSatker\SatkerNoteController::class, 'byAgenda'])->name('notes.agenda');
-    Route::get('/agenda', [App\Http\Controllers\AdminSatker\SatkerNoteController::class, 'groupByAgenda'])->name('agenda');
     Route::get('/notes/view/{id}', [App\Http\Controllers\AdminSatker\SatkerNoteController::class, 'show'])->name('notes.view');
+    Route::get('/action-items', [App\Http\Controllers\ActionItemsListController::class, 'index_satker'])->name('action_items');
+    Route::get('/agenda', [App\Http\Controllers\AdminSatker\SatkerNoteController::class, 'groupByAgenda'])->name('agenda');
 });
 
 Route::group(['middleware' => 'user', "prefix" => "user", "as" => "user."], function () {
