@@ -43,7 +43,7 @@ class HomeController extends Controller
             $undone = ActionItems::whereNot('status','done')
                                 ->whereHas('note', function ($query) {
                                     $query->where('team_id', NULL);
-                                })->get();
+                                })->paginate(10);
             $todays = Note::where('date', date('Y-m-d'))->get();
             return view('admin.notulen', compact(['users','agendas','notes','actions','todays','title','wa_ready','notes_locked','actions_todo','actions_progress','undone','notes_satkers']));
         }

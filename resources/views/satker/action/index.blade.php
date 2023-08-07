@@ -3,6 +3,29 @@
 @section('breadcrumbs', $title.' - '.config('app.name'))
 
 @section('content')
+<div class="row mb-3">
+  <?php $i=0; ?>
+  @foreach ($count as $item)
+  <div class="col mb-4">
+    <div class="card">
+      <div class="card-header p-3 pt-2">
+        <div
+          class="icon icon-lg icon-shape bg-gradient-{{ $color[$i] }} shadow-{{ $color[$i] }} border-radius-xl mt-n4 position-absolute text-center">
+          <i class="material-icons opacity-10">engineering</i>
+        </div>
+        <div class="pt-1 text-end">
+          <p class="text-capitalize mb-0 text-sm font-weight-bold">{{ $item->status }}</p>
+          <h4 class="mb-0">{{ $item->total }}</h4>
+        </div>
+      </div>
+      <hr class="horizontal dark my-0">
+      <div class="card-footer py-2">
+      </div>
+    </div>
+  </div>
+  <?php $i++; if($i==sizeof($color)) $i=0; ?>
+  @endforeach
+</div>
 <div class="row">
     <div class="col-12">
       <div class="card my-4">
