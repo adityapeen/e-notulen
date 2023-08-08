@@ -41,6 +41,14 @@
             <span class="nav-link-text ms-1">Action Items</span>
           </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link text-white {{ Request::is('admin/wa-blast*') ? 'active bg-gradient-primary' : '' }}" href="{{ route('admin.wa-blast.form') }}">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">speaker_notes</i>
+            </div>
+            <span class="nav-link-text ms-1">WA Blast</span>
+          </a>
+        </li>
         {{-- <li class="nav-item">
           <a class="nav-link text-white " href="../pages/billing.html">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">

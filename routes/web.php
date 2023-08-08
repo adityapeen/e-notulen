@@ -56,6 +56,8 @@ Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], f
     Route::get('/reminder', [App\Http\Controllers\MoMController::class, 'send_reminder'])->name('notes.reminder');
     Route::get('/users/password', [App\Http\Controllers\Admin\UserController::class, 'password'])->name('users.password');
     Route::post('/users/password', [App\Http\Controllers\Admin\UserController::class, 'change_password'])->name('users.change_password');
+    Route::get('/wa-blast', [App\Http\Controllers\Admin\WABlastController::class, 'index'])->name('wa-blast.form');
+    Route::post('/wa-blast/send', [App\Http\Controllers\Admin\WABlastController::class, 'send_blast'])->name('wa-blast.send');
 });
 
 Route::group(['middleware' => 'satker', "prefix" => "satker", "as" => "satker."], function () {
