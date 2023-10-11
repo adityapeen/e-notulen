@@ -47,6 +47,9 @@ class HomeController extends Controller
             $todays = Note::where('date', date('Y-m-d'))->get();
             return view('admin.notulen', compact(['users','agendas','notes','actions','todays','title','wa_ready','notes_locked','actions_todo','actions_progress','undone','notes_satkers']));
         }
+        else if(auth()->user()->level_id == 3){
+            return redirect()->route('ses.dashboard');
+        }
         else if (auth()->user()->level_id < 9 ){
             $users = User::where('satker_id', auth()->user()->satker_id)->count();
             $wa_ready = User::where('satker_id', auth()->user()->satker_id)->whereNot('phone','')->count();

@@ -23,12 +23,16 @@ const prepareDropdown = () => {
 
 const filterNote = () => {
   var id = $('#satker_code').val();
-  var link = `/admin/notes/satker/${id}`;
+  var segments = $(location).attr('href').split('/');
+  var role = segments[3];
+  var link = `/${role}/notes/satker/${id}`;
   window.location.href = link;  
 };
 
 const filterAction = () => {
   var id = $('#satker_code').val();
-  var link = `/admin/action-items/${id}`;
+  var segments = $(location).attr('href').split('/');
+  var role = segments[3];
+  var link = `/${role}/action-items/${id}`;
   window.location.href = link;  
 };

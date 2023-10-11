@@ -75,5 +75,38 @@ class ActionItemsListController extends Controller
         return view('satker.action.index', compact(['title','actions','count','color']));
     }
 
+    public function index_ses(String $hashed_id)
+    {
+        $color = ['primary','info','success'];
+        if($hashed_id == 'ALL'){
+            $actions = ActionItems::orderBy('id', 'DESC')->paginate(15);
+            $count = ActionItems::select('action_items.status', DB::raw('count(status) as total'))->groupBy('status')->get();
+        }
+        else if($hashed_id == 'BPS'){
+            $actions = ActionItems::whereHas('note', function ($query){
+                $query->where('team_id', NULL);
+            })->orderBy('id', 'DESC')->paginate(15);
+            $count = ActionItems::select('action_items.status', DB::raw('count(status) as total'))->whereHas('note', function ($query){
+                $query->where('team_id', NULL);
+            })->groupBy('status')->get();
+        }
+        else {
+            $satker_id = Hashids::decode($hashed_id)[0]; //decode the hashed id
+            $actions = ActionItems::whereHas('note', function ($query) use ($satker_id){
+                $query->whereHas('team', function ($query) use ($satker_id){
+                    $query->where('satker_id', $satker_id);
+                });
+            })->orderBy('id', 'DESC')->paginate(15);
+            $count = ActionItems::select('action_items.status', DB::raw('count(status) as total'))->whereHas('note', function ($query) use ($satker_id){
+                $query->whereHas('team', function ($query) use ($satker_id){
+                    $query->where('satker_id', $satker_id);
+                });
+            })->groupBy('status')->get();
+        }
+        $title = "Action Items";
+        $satkers = MSatker::all();
+        return view('observer.ses.action_index', compact(['title','actions','satkers','count','color']));
+    }
+
 
 }

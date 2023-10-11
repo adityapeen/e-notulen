@@ -60,6 +60,22 @@ Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], f
     Route::post('/wa-blast/send', [App\Http\Controllers\Admin\WABlastController::class, 'send_blast'])->name('wa-blast.send');
 });
 
+Route::group(['middleware' => 'ses', "prefix" => "ses", "as" => "ses."], function () {
+    Route::get('/dashboard', [App\Http\Controllers\Observer\SesController::class, 'index'])->name('dashboard');
+    Route::get('/agenda', [App\Http\Controllers\Observer\SesController::class, 'agenda'])->name('agenda');
+    // Route::get('/notes', [App\Http\Controllers\Observer\SesController::class, 'notes'])->name('notes');
+    Route::get('/notes/satker/{id}', [App\Http\Controllers\Observer\SesController::class, 'notes'])->name('notes');
+    Route::get('/notes/agenda/{id}', [App\Http\Controllers\Observer\SesController::class, 'byAgenda'])->name('notes.agenda');
+    Route::get('/action-items', [App\Http\Controllers\Observer\SesController::class, 'index'])->name('action_items');
+    Route::get('/notes/view/{id}', [App\Http\Controllers\Observer\SesController::class, 'show'])->name('notes.view');
+    Route::get('/notes/action/{id}/evidences', [App\Http\Controllers\Observer\SesController::class, 'evidence'])->name('notes.evidence');
+    Route::get('/notes/action/{id}', [App\Http\Controllers\Observer\SesController::class, 'action_item'])->name('notes.action');
+    Route::get('/notes/absensi/{id}', [App\Http\Controllers\PDFController::class, 'generateAttendanceList'])->name('notes.absensi');
+    Route::get('/notes/show/{id}', [App\Http\Controllers\Observer\SesController::class, 'showNote'])->name('notes.show');
+    Route::get('/action-items/{id}', [App\Http\Controllers\ActionItemsListController::class, 'index_ses'])->name('action_items');
+
+});
+
 Route::group(['middleware' => 'satker', "prefix" => "satker", "as" => "satker."], function () {
     Route::resource('/agendas', App\Http\Controllers\AdminSatker\SatkerAgendaController::class)->except(['show']);
     Route::resource('/groups', App\Http\Controllers\AdminSatker\SatkerMGroupController::class)->except(['show']);
