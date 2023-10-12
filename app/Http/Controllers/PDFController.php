@@ -11,6 +11,8 @@ use Dompdf\Dompdf;
 use Illuminate\Support\Facades\Response;
 use Vinkla\Hashids\Facades\Hashids;
 
+use function PHPUnit\Framework\isNull;
+
 class PDFController extends Controller
 {
     public function index()
@@ -65,7 +67,7 @@ class PDFController extends Controller
                 'attendants' => $attendants
             ];
 
-            $code = $notes->team->satker->code;
+            $code = $notes->team == NULL ? "SBP" : $notes->team->satker->code;
             if($code == "SBP") $view = 'pdf.daftar_hadir_ses';
             else if($code == "BPM") $view = 'pdf.daftar_hadir_bpm';
             else if($code == "BPA") $view = 'pdf.daftar_hadir_bpa';
