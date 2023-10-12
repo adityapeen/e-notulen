@@ -21,7 +21,7 @@
             @method('post')
           <div class="row mb-3 justify-content-center p-1">
             <div class="col-md-6">
-              <input id="nip" type="number" class="form-control border px-1" placeholder="Masukan NIP Anda"
+              <input id="nip" type="text" class="form-control border px-1" placeholder="Masukan NIP / Email Anda"
                 name="nip" value="{{ $nip }}" required autofocus>
             </div>
           </div>

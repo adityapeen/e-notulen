@@ -39,9 +39,17 @@ class MeetingController extends Controller
         if($note == NULL){
             return back()->withErrors(['Data <strong>tidak ditemukan</strong>!']);
         }
-        // dd($request->nip);
-        $nip = $request->nip;
-        $user = User::firstWhere('nip',$nip);
+
+        $identifier = $request->nip;
+        $type = $this->detectNIPOrEmail($request->nip);
+
+        if($type == 'number')
+            $user = User::firstWhere('nip',$identifier);
+        else if($type == 'email')
+            $user = User::firstWhere('email',$identifier);
+        else
+            return back()->withErrors(['Format Data <strong>salah</strong>!']);
+
         if($user == NULL){
             return back()->withErrors(['Data <strong>tidak ditemukan</strong>!']);
         }
@@ -57,5 +65,21 @@ class MeetingController extends Controller
 
     public function custom_register($meeting_id){
         return redirect()->route("register")->with('meeting',$meeting_id);
+    }
+
+    private function detectNIPOrEmail($input) {
+        // Regular expression to match NIP (18 digits with optional dashes or spaces)
+        $phonePattern = '/^\d{18}$/';
+    
+        // Regular expression to match an email address
+        $emailPattern = '/^\S+@\S+\.\S+$/';
+    
+        if (preg_match($phonePattern, $input)) {
+            return 'number';
+        } elseif (preg_match($emailPattern, $input)) {
+            return 'email';
+        } else {
+            return 'unknown';
+        }
     }
 }
