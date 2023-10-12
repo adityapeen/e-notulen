@@ -65,8 +65,18 @@ class PDFController extends Controller
                 'attendants' => $attendants
             ];
 
+            $code = $notes->team->satker->code;
+            if($code == "SBP") $view = 'pdf.daftar_hadir_ses';
+            else if($code == "BPM") $view = 'pdf.daftar_hadir_bpm';
+            else if($code == "BPA") $view = 'pdf.daftar_hadir_bpa';
+            else if($code == "BPG") $view = 'pdf.daftar_hadir_bpg';
+            else if($code == "BPE") $view = 'pdf.daftar_hadir_bpe';
+            else if($code == "BPP") $view = 'pdf.daftar_hadir_bpp';
+            else if($code == "BPB") $view = 'pdf.daftar_hadir_bpb';
+            else if($code == "BDT") $view = 'pdf.daftar_hadir_bdt';
+
             // Pass the data to a view file
-            $html = View::make('pdf.daftar_hadir_ses', $data)->render();
+            $html = View::make($view, $data)->render();
 
             // Generate the PDF using Dompdf
             $dompdf = new Dompdf();
