@@ -40,9 +40,9 @@ class LoginController extends Controller
     }
 
     function authenticated(Request $request, $user)
-{
-    $user->update([
-        'last_login' => \Carbon\Carbon::now()->toDateTimeString()
-    ]);
-}
+    {
+        $user->update([
+            'last_login' => \Carbon\Carbon::now()->toDateTimeString()
+        ]);
+    }
 }

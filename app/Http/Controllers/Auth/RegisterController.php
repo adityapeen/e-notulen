@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Attendant;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use App\Models\MSatker;
+use App\Models\Note;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Vinkla\Hashids\Facades\Hashids;
 
 class RegisterController extends Controller
 {
@@ -50,6 +54,9 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+        if(array_key_exists('meeting',$data)){
+            Session::flash('meeting', $data['meeting']);
+        }
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -67,7 +74,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
@@ -75,6 +82,13 @@ class RegisterController extends Controller
             'level_id' => 9,
             'phone' => $data['phone']
         ]);
+        if(array_key_exists('meeting',$data)){
+            $this->addUserToMeeting($data, $user->id);
+        }
+        else {
+            echo 'normal';
+        }
+        return $user;
     }
 
     public function showRegistrationForm()
@@ -82,6 +96,25 @@ class RegisterController extends Controller
         $satkers = MSatker::get();
 
         return view('auth.register', compact("satkers"));
+    }
+
+    protected function addUserToMeeting($data, $user_id)
+    {
+        $id = Hashids::decode($data['meeting'])[0]; //decode the hashed id
+        $note = Note::find($id);
+        if($note == NULL){
+            return back()->withErrors(['Data <strong>tidak ditemukan</strong>!']);
+        }
+        $user = User::findOrFail($user_id);
+        if($user == NULL){
+            return back()->withErrors(['Data <strong>tidak ditemukan</strong>!']);
+        }
+        else{
+            Attendant::updateOrCreate([
+                'note_id' => Hashids::decode($note->id)[0],
+                'user_id' => $user->id
+            ]);
+        }
     }
 
 }

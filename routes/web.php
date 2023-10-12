@@ -27,6 +27,7 @@ Route::get('/group', [App\Http\Controllers\Admin\MGroupController::class, 'index
 Route::get('/docs', [App\Http\Controllers\GDocsController::class, 'createDocumentFromTemplate'])->name('tes_docs');
 Route::get('/check-in/{id}', [App\Http\Controllers\MeetingController::class, 'check_in'])->name('check_in');
 Route::post('/join/{id}', [App\Http\Controllers\MeetingController::class, 'join_meeting'])->name('join_meeting');
+Route::get('/quick_register/{id}', [App\Http\Controllers\MeetingController::class, 'custom_register'])->name('quick_register');
 
 Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], function () {
     Route::resource('/groups', App\Http\Controllers\Admin\MGroupController::class)->except(['show']);
