@@ -93,7 +93,7 @@
                       </div>
                     </td>
                     <td class="align-middle">
-                      {{ substr($item->start_time,0,5). ' - '.substr($item->start_time,0,5)}}
+                      {{ substr($item->start_time,0,5). ' - '.substr($item->end_time,0,5)}}
                     </td>
                   </tr>
                 @endforeach
