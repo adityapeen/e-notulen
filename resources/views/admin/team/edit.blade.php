@@ -32,6 +32,18 @@
                 <input type="text" name="name" id="name" class="form-control border px-1" value="{{ $team->name}}" required>
               </div>
             </div>
+            <div class="row mb-1 align-items-center">
+              <div class="col-md-4">
+                Nama Satker
+              </div>
+              <div class="col-md-8">
+                <select id="satker_id" class="form-select border px-1 @error('satker_id') is-invalid @enderror" value="{{ $team->satker_id }}" name="satker_id" required>
+                  @foreach ($satkers as $item)
+                      <option value="{{ $item->id }}" {{ $item->id == $team->satker_id ? 'selected' : ''}}>{{ $item->name }}</option>
+                  @endforeach
+              </select>
+              </div>
+            </div>
             <div class="mt-3 d-flex" >         
                 <button type="submit" class="btn btn-info me-2">Simpan</button>
                 <button type="button" onclick="history.back()" class="btn btn-light">Batal</button>

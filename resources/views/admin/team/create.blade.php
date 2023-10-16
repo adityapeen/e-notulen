@@ -33,7 +33,7 @@
             </div>
             <div class="row mb-1 align-items-center">
               <div class="col-md-4">
-                Nama Bidang
+                Nama Satker
               </div>
               <div class="col-md-8">
                 <select id="satker_id" class="form-select border px-1 @error('satker_id') is-invalid @enderror" value="{{ auth()->user()->satker_id }}" name="satker_id" required>

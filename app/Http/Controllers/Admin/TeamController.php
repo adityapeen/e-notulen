@@ -81,8 +81,9 @@ class TeamController extends Controller
         $title = "Edit Bidang";
         $id = Hashids::decode($hashed_id); //decode the hashed id
         $team = Team::find($id[0]);
+        $satkers = MSatker::All();
 
-        return view('admin.team.edit', compact('team','title'));
+        return view('admin.team.edit', compact('team','title','satkers'));
     }
 
     /**
@@ -102,6 +103,7 @@ class TeamController extends Controller
         if(Team::findOrFail($id)->update([
             'code' => $request->code,
             'name' => $request->name,
+            'satker_id' => $request->satker_id,
             'updated_by' => auth()->user()->id,
         ])){
             return redirect()->route("admin.teams.index")->with('success','Data <strong>berhasil</strong> disimpan');
