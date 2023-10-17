@@ -28,7 +28,7 @@
                 <tr>
                   <td class="">
                     <h6 class="mb-0">{{ $item->name }}
-                      @if($item->phone != NULL)
+                      @if($item->phone != NULL && is_numeric($item->phone))
                       <i class="fa fa-whatsapp text-success"></i>
                       @endif
                     </h6>
