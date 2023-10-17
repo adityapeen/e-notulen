@@ -69,14 +69,14 @@
                   </td>
                   <td class="align-middle text-sm">
                     <a href="#" class="btn btn-sm bg-gradient-secondary mb-0" onclick="viewAction('{{ $item->id }}')">Detail</a>
-                    <a href="{{ route('admin.notes.evidence', $item->id)}}" class="btn btn-sm bg-gradient-info mb-0">Evidences</a>
+                    <a href="{{ route('ses.notes.evidence', $item->id)}}" class="btn btn-sm bg-gradient-info mb-0">Evidences</a>
                   </td>                  
                   <td class="align-middle text-sm">
                     <a href="#" onclick="handleView('{{$item->note->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Detail Notulensi">
                       <button class="btn btn-sm btn-info mb-0"><i class="fa fa-eye"></i></button>
                     </a>
                     @if($item->note->status == 'lock')
-                    <a href="{{ route('admin.notes.show', $item->note->id) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Lihat Notulensi">
+                    <a href="{{ route('ses.notes.show', $item->note->id) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Lihat Notulensi">
                       <button class="btn btn-sm btn-success mb-0">Lihat Notulen</button>
                     </a>
                     @endif
