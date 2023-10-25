@@ -26,7 +26,7 @@ class WABlastController extends Controller
     public function send_blast(Request $request)
     {
         $status = true;
-        $message = $request->message;
+        $message = wa_text($request->message);
         $recipient = Hashids::decode($request->recipients);
         if(!is_array($recipient)){ // Not Valid ID
             return response()->json(['status'=>'fail','messages'=>'Invlaid IDs']);

@@ -23,7 +23,7 @@
                 Pesan
               </div>
               <div class="col-md-8">
-                <textarea name="message" id="message" rows="5" class="form-control border px-2" placeholder="Tuliskan pesan anda disini"></textarea>
+                <textarea name="message" id="message" rows="5" class="form-control border px-2 textarea" placeholder="Tuliskan pesan anda disini"></textarea>
               </div>
             </div>
             <div class="row mb-1 align-items-center">
@@ -52,12 +52,31 @@
 
 @section('script')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
 <script src="{{asset('assets/js/wa-blast.js')}}"></script>
 <script>
   $(document).ready( function() {
     $('#recipients').select2({
       placeholder: 'Pilih Penerima Pesan'
     });
+
+
+  $(".textarea").each(function(){
+    ClassicEditor
+      .create( this ,{
+        height: "300px",
+        removePlugins: [ 'Heading' ],
+        toolbar: [ 'bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote' , 'link', 'undo', 'redo']
+      })
+      .then(editor => {
+      editor.model.document.on('change:data', () => {
+        this.value = editor.getData();
+      });
+    })
+      .catch( error => {
+          console.error( error );
+    } )
+  });
   });
 </script>
 @endsection
