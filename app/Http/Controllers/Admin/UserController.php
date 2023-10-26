@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\MLevel;
 use App\Models\MSatker;
 use App\Http\Controllers\Controller;
+use App\Models\Team;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Vinkla\Hashids\Facades\Hashids;
@@ -93,8 +94,9 @@ class UserController extends Controller
         $user = User::find($id[0]);
         $satkers = MSatker::all();
         $levels = MLevel::all();
+        $teams = Team::all();
 
-        return view('admin.user.edit', compact('title','user','satkers','levels'));
+        return view('admin.user.edit', compact('title','user','satkers','levels','teams'));
     }
 
     /**
@@ -120,6 +122,7 @@ class UserController extends Controller
             'phone' => $request->phone,
             'satker_id' => $request->satker_id,
             'level_id' => $request->level_id,
+            'team_id' => Hashids::decode($request->team_id)[0],
         ])){
             return redirect()->route("admin.users.index")->with('success','Data <strong>berhasil</strong> disimpan');
         }else{
