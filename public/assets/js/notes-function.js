@@ -73,7 +73,10 @@ const handleSend = (prefix,id) => {
                   })
                   .then((res) => {
                     count++;
-                    receiver += res.results + " <br>";
+                    if(res == undefined)
+                      receiver += item.name+" - ERROR" + " <br>";
+                    else
+                      receiver += res.results + " <br>";
                     head =
                       count === result.results.length
                         ? "Selesai mengirim notulen"
