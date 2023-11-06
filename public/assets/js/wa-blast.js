@@ -37,6 +37,7 @@ const sendWA = (prefix = 'admin', csrfToken) => {
       if (result.isConfirmed) {
         Swal.fire({
         title: head,
+        allowOutsideClick: false,
         });
         var receiver = "";
         var count = 0;
@@ -67,6 +68,12 @@ const sendWA = (prefix = 'admin', csrfToken) => {
                         });
                     },
                     error: function(xhr, status, error) {
+                        count++;
+                        receiver +=  error + " <br>";
+                        Swal.update({
+                            title: head,
+                            html: receiver,
+                            });
                         console.log(error);
                     }
                 });

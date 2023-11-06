@@ -57,6 +57,7 @@ const handleSend = (prefix,id) => {
             var head = `Sedang mengirim notulen`;
             Swal.fire({
               title: head,
+              allowOutsideClick: false,
             });
             var receiver = "";
             var count = 0;
