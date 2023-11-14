@@ -222,22 +222,15 @@ class EvidenceController extends Controller
             $performance = 100;
         }
         else if($today < $end_date) {// Early done
-            $dev = round(date_diff($end_date,$today)->d/$duration->d*100);
+            $dev = round(date_diff($end_date,$today)->days/$duration->d*100);
             $performance = 100 + $dev;
         }
         else {// Late done
             $extend = 14; // permitted date
-            $dev = round(date_diff($today,$end_date)->d/$extend*100);
+            $dev = round(date_diff($today,$end_date)->days/$extend*100);
             $performance = 100 - $dev;
+            if($performance < 25) $performance = 25;
         }
-        // $data = [
-        //     'today' => $today,
-        //     'start_date' => $start_date,
-        //     'end_date' => $end_date,
-        //     'duration' => $duration,
-        //     'dev' => $dev,
-        //     'performance' => $performance,
-        // ];
         return $performance;
     }
 }
