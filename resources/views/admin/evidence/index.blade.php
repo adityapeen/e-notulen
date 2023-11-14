@@ -12,7 +12,14 @@
         <div class="row"><div class="col-md-4 font-weight-bold">Dateline</div><div class="col-md-8">{{ $action->due_date}}</div></div>
         <div class="row"><div class="col-md-4 font-weight-bold">PIC</div><div class="col-md-8 font-weight-bold">
           @foreach ($pics as $item)
-          <li>{{ $item->user->name}}</li>
+          <li class="d-flex align-items-center mb-1">
+            @if($item->status != "done")
+              <a href="{{ route('admin.notes.pic.done', $item->id) }}" class="btn badge badge-sm bg-gradient-info mb-0 mr-2" title="Action Item selesai dikerjakan">Done</a> &nbsp; 
+            @else
+            <div class="btn badge badge-sm bg-gradient-success mb-0 mr-2" title="Selesai {{ $item->done_date}}"><i class="fas fa-check"></i></div> &nbsp; 
+            @endif
+             {{ $item->user->name}}
+          </li>
           @endforeach
         </div></div>
         <div class="row"><div class="col-md-4 font-weight-bold">Status</div><div class="col-md-8 font-weight-bold">

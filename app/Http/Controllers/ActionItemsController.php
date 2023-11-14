@@ -188,6 +188,9 @@ class ActionItemsController extends Controller
         }
         else{
             $status = "done";
+            Pic::where('action_id', Hashids::decode($hashed_id)[0])
+                ->whereNot('status', $status)->update(['status' => $status,'done_date' => date('Y-m-d')]);
+            $action->update(['done_date' => date('Y-m-d')]);
         }
         $action->update(['status' => $status]);
         return back()->with('success','Data <strong>berhasil</strong> diubah!');

@@ -187,4 +187,57 @@ class EvidenceController extends Controller
             return back()->withErrors(['Data <strong>gagal</strong> dihapus!']);
         }
     }
+
+    public function change_pic_status(String $hashed_id)
+    {
+        $pic_id = Hashids::decode($hashed_id)[0];
+        $pic = Pic::findOrFail($pic_id);
+        $pic->update([
+            'status'=>'done',
+            'done_date' => date('Y-m-d'),
+            'performance' => $this->_calculate_performance($pic_id)
+        ]);
+
+        $undone = Pic::where('action_id', $pic->action_id)->whereNot('status', 'done')->count(); 
+        if($undone == 0){
+            ActionItems::findOrFail($pic->action_id)->update(['status' => 'done']);
+        }     
+
+        if($pic){
+            return back()->with('success','Data <strong>berhasil</strong> disimpan');
+        }else{
+            return back()->withErrors(['Data <strong>gagal</strong> ditambahkan!']);
+        }
+    }
+
+    private function _calculate_performance($pic_id){
+        $performance = 0;
+        $pic = Pic::findOrFail($pic_id);
+        $today = date_create(date('Y-m-d'));
+        $start_date = date_create($pic->action->note->date);
+        $end_date = date_create($pic->action->due_date);
+        $duration = date_diff($end_date,$start_date);
+        
+        if($today == $end_date){
+            $performance = 100;
+        }
+        else if($today < $end_date) {// Early done
+            $dev = round(date_diff($end_date,$today)->d/$duration->d*100);
+            $performance = 100 + $dev;
+        }
+        else {// Late done
+            $extend = 14; // permitted date
+            $dev = round(date_diff($today,$end_date)->d/$extend*100);
+            $performance = 100 - $dev;
+        }
+        // $data = [
+        //     'today' => $today,
+        //     'start_date' => $start_date,
+        //     'end_date' => $end_date,
+        //     'duration' => $duration,
+        //     'dev' => $dev,
+        //     'performance' => $performance,
+        // ];
+        return $performance;
+    }
 }

@@ -59,6 +59,10 @@ Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], f
     Route::post('/users/password', [App\Http\Controllers\Admin\UserController::class, 'change_password'])->name('users.change_password');
     Route::get('/wa-blast', [App\Http\Controllers\Admin\WABlastController::class, 'index'])->name('wa-blast.form');
     Route::post('/wa-blast/send', [App\Http\Controllers\Admin\WABlastController::class, 'send_blast'])->name('wa-blast.send');
+    Route::get('/performance', [App\Http\Controllers\Admin\PerformanceController::class, 'index'])->name('performance.index');
+    Route::get('/performance/detail/{id}', [App\Http\Controllers\Admin\PerformanceController::class, 'employee'])->name('performance.detail');
+    Route::get('/notes/pic/{id}/done', [App\Http\Controllers\Admin\EvidenceController::class, 'change_pic_status'])->name('notes.pic.done');
+
 });
 
 Route::group(['middleware' => 'ses', "prefix" => "ses", "as" => "ses."], function () {
