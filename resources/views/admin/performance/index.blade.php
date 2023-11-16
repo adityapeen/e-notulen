@@ -41,13 +41,12 @@
                     <span class="badge badge-sm bg-gradient-info" title="On Progress">{{ $item->onprogress_count}}</span>
                     <span class="badge badge-sm bg-gradient-success" title="Done">{{ $item->done_count}}</span>
                     <span class="badge badge-sm bg-gradient-dark" title="Total">{{ $item->todo_count+$item->onprogress_count+$item->done_count}}</span>
-                </td>
-                <td>
-                      <span class="badge badge-sm bg-gradient-warning" title="Total">{{ round($item->performance_avg,2) }}%</span>
                   </td>
-                  
+                  <td>
+                    <span class="badge badge-sm bg-gradient-warning" title="Performance">{{ round($item->performance_avg,2) }}%</span>
+                  </td>
                   <td class="align-middle">
-                    <a href="{{ route('admin.performance.detail', [$item->user_hash()] ) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Edit group">
+                    <a href="{{ route('admin.performance.detail', [$item->user_hash()] ) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Detail Performance">
                       <button class="btn btn-sm btn-dark"><i class="fas fa-chart-line"></i> Detail</button>
                     </a>
                   </td>
