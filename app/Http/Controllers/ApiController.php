@@ -124,6 +124,7 @@ class ApiController extends Controller
 
         $action_item = [
             'name' => $item->note->name,
+            'date' => $item->note->date,
             'what' => $item->what,
             'how' => $item->how,
             'due_date' => $item->due_date,

@@ -4,6 +4,68 @@
 
 @section('content')
 <div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-2 pb-2 d-flex align-items-center">
+          <h6 class="text-white text-capitalize ps-3">Summary Progress</h6>
+          <a href="{{ route('admin.agenda.summary', $agenda->id) }}" class="btn btn-sm btn-success shadow-dark mb-0 ms-auto me-3">
+            <i class="fas fa-chart-line" aria-hidden="true"></i></a>
+        </div>
+      </div>
+      <div class="card-body pb-2">
+        <?php echo $agenda->summary ?>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <div class="card my-4">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-info shadow-info border-radius-lg pt-2 pb-2 d-flex align-items-center">
+          <h6 class="text-white text-capitalize ps-3">Pending Action Items</h6>
+        </div>
+      </div>
+      <div class="card-body pb-2">
+        <table class="table align-items-center mb-0" id="tableAction">
+          <thead>
+            <tr>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">What</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Due Date</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">PIC</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
+              <th class="text-secondary opacity-7"></th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach ($pending_actions as $item)
+            <tr>
+              <td class="text-sm">
+                <?php  echo $item->what ?>
+              </td>
+              <td class="text-sm">
+                {{ $item->due_date }}
+              </td>
+              <td class="text-sm">
+                <a href="#" data-id="{{ $item->id }}" onclick="handleDetail('{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Lihat Notulensi">
+                  <button class="btn btn-sm btn-info"><i class="fa fa-eye"></i></button>
+                </a>
+              </td>
+              <td class="text-sm">
+                <span
+                class="badge badge-sm bg-gradient-{{ $item->status == 'done' ? 'success' : ($item->status == 'onprogress' ? 'info' : 'danger') }}">{{ $item->status }}</span>
+              </td>
+            </tr>
+            @endforeach
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
     <div class="col-12">
       <div class="card my-4">
         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
@@ -110,6 +172,26 @@
       ordering:  false
     });
   });
+
+  const handleDetail = (id) => {
+      $.ajax({
+        type: 'GET',
+        url: "{{ url('/api/action_detail') }}" + "/"+id,
+        context: document.body
+      }).done(function(data) {  
+        var html = '<b>What</b><br>' + data.action_item.what +
+                   '<br><b>How</b><br>' + data.action_item.how +
+                   '<b>Due Date<br>'+data.action_item.due_date +'</b>';
+        var pic = '<br><br><b>PIC</b> : ' + data.pics.map(function(item) { return ' ' + item['name']; });
+
+        Swal.fire({
+              title: `${data.action_item.name} \n ${data.action_item.date}` ,
+              html : html + pic
+            });
+      }).always(function(data) {
+        // console.log(JSON.stringify(data));
+      });;
+  }
     
 </script>
 @endsection

@@ -179,4 +179,28 @@ class AgendaController extends Controller
             return back()->withErrors(['Data <strong>gagal</strong> dihapus!']);
         }
     }
+
+    public function edit_summary(String $hashed_id)
+    {
+        $title = "Edit Summary Agenda";
+        $id = Hashids::decode($hashed_id); //decode the hashed id
+        $agenda = Agenda::find($id[0]);
+        $groups = MGroup::all();
+        $users = User::all();
+        $priorities = MPriority::all();
+
+        return view('admin.agenda.summary', compact('title','agenda','groups','users','priorities'));
+    }
+
+    public function save_summary(Request $request, String $hashed_id)
+    {
+        $id = Hashids::decode($hashed_id)[0];
+        $data = str_replace("<table>","<table border='1' width='100%'",$request->summary);
+        $agenda = Agenda::findOrFail($id)->update([
+            'summary' => $data,
+            'updated_by' => auth()->user()->id,
+        ]);
+
+        return back()->with('success','Data <strong>berhasil</strong> disimpan');
+    }
 }

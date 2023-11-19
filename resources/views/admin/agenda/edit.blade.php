@@ -79,7 +79,8 @@
             </div>
             <div class="mt-3 d-flex" >         
                 <button type="submit" class="btn btn-info me-2">Simpan</button>
-                <button type="button" onclick="history.back()" class="btn btn-light">Batal</button>
+                <button type="button" onclick="history.back()" class="btn btn-light me-2">Batal</button>
+                <a href="{{ route('admin.agenda.summary', $agenda->id) }}" class="btn btn-success">Target</a>
             </div>
           </form>
         </div>
