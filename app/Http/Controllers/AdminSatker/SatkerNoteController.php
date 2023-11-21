@@ -346,7 +346,7 @@ class SatkerNoteController extends Controller
         $agenda_id = Hashids::decode($hashed_id)[0];
         $agenda = Agenda::findOrFail($agenda_id);
         $title = "Daftar Notulensi - ".$agenda->name;
-        $notes = Note::where('agenda_id', $agenda_id)->orderBy('date', 'DESC')->paginate(15);
+        $notes = Note::withCount(['action_items'])->where('agenda_id', $agenda_id)->orderBy('date', 'DESC')->paginate(15);
 
         return view('satker.note.index-agenda', compact(['title','notes','agenda_id','agenda']));
     }

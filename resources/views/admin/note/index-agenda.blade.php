@@ -103,7 +103,8 @@
                     {{ $item->date }}
                   </td>
                   <td class="align-middle text-sm">
-                    <a href="{{ route('admin.notes.action', [$item->id] ) }}" class="btn btn-sm bg-gradient-info">Action Items</a>
+                    <a href="{{ route('admin.notes.action', [$item->id] ) }}" class="btn btn-sm bg-gradient-info mb-0">Action Items 
+                      <span class="badge bg-gradient-light text-dark ms-2">{{ $item->action_items_count }}</span></a>
                   </td>
                   <td class="align-middle text-sm">
                     <span class="badge badge-sm bg-gradient-{{ $item->status == "open" ? "success":"danger" }}">{{ $item->status }}</span>

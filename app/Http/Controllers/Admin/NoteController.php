@@ -362,7 +362,7 @@ class NoteController extends Controller
         $pending_actions = ActionItems::whereHas('note', function ($query) use ($agenda_id) {
             $query->where('agenda_id', $agenda_id);
         })->whereNot('status','done')->get();
-        $notes = Note::where('agenda_id', $agenda_id)->orderBy('date', 'DESC')->paginate(15);
+        $notes = Note::withCount(['action_items'])->where('agenda_id', $agenda_id)->orderBy('date', 'DESC')->paginate(15);
 
         return view('admin.note.index-agenda', compact(['title','notes','agenda_id','agenda','pending_actions']));
     }
