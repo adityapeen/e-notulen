@@ -272,13 +272,13 @@ class MoMController extends Controller
         else{
             $status = false;
             $results = null;
-            return response()->json(['status'=>$status,'results'=>$results,'messages'=>NULL]);
+            return response()->json(['status'=>$status,'results'=>$results,'messages'=>NULL], 404);
         }       
         
-        if($attendance->update(['mom_sent'=>date('Y-m-d h:i:s')]))
+        if($attendance != null && $attendance->update(['mom_sent'=>date('Y-m-d h:i:s')]))
             return response()->json(['status'=>'OK']);
         else
-            return response()->json(['status'=>false]);
+            return response()->json(['status'=>false], 500);
     }
 
     private function checkAuthHeader($token){
