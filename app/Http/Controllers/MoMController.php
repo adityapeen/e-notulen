@@ -70,6 +70,7 @@ class MoMController extends Controller
                 $response = Http::withBasicAuth(env('API_USER'), env('API_PASSWORD'))->post($this->url.'/send-message', [
                     'number' => $attendance->user->phone,
                     'message' => $message,
+                    'id' => $type.';'.$attendance->id
                 ]);
             }
             else if($attendance->user->level_id > 2 && $attendance->mom_sent == NULL && $attendance->user->phone !== '-'){
@@ -77,10 +78,11 @@ class MoMController extends Controller
                     .$notes->name."* pada tanggal *".date_format($date,"d-m-Y").".* \n"
                     ."\nTerimakasih 🙏🙏🙏";
 
-                $response = Http::timeout(180)->withBasicAuth(env('API_USER'), env('API_PASSWORD'))
+                $response = Http::timeout(240)->withBasicAuth(env('API_USER'), env('API_PASSWORD'))
                                 ->attach('file', file_get_contents($file_location),$notes->file_notulen)->post($this->url.'/send-message', [
                     'number' => $attendance->user->phone,
                     'message' => $message,
+                    'id' => $type.';'.$attendance->id
                 ]);
             }
             else{
@@ -253,4 +255,40 @@ class MoMController extends Controller
         return response()->json(['status'=>$status,'fail'=>$fail]);
     }
 
+    public function update_mom_status(Request $request, String $id, String $type){
+        if(!$this->checkAuthHeader($request->header('Authorization')))
+        {
+            return response('Unauthorized', 401);
+        }
+
+        $attendance_id = Hashids::decode($id)[0];
+
+        if($type == "a"){
+            $attendance = Attendant::find($attendance_id);
+        }
+        else if($type == "r"){
+            $attendance = MomRecipients::find($attendance_id);
+        }
+        else{
+            $status = false;
+            $results = null;
+            return response()->json(['status'=>$status,'results'=>$results,'messages'=>NULL]);
+        }       
+        
+        if($attendance->update(['mom_sent'=>date('Y-m-d h:i:s')]))
+            return response()->json(['status'=>'OK']);
+        else
+            return response()->json(['status'=>false]);
+    }
+
+    private function checkAuthHeader($token){
+        $username = env('API_USER');
+        $password = env('API_PASSWORD');
+        $key = 'Basic '.base64_encode($username.':'.$password);
+
+        if($token == $key) 
+            return true;
+        else 
+            return false;        
+    }
 }

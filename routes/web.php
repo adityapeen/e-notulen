@@ -28,6 +28,7 @@ Route::get('/docs', [App\Http\Controllers\GDocsController::class, 'createDocumen
 Route::get('/check-in/{id}', [App\Http\Controllers\MeetingController::class, 'check_in'])->name('check_in');
 Route::post('/join/{id}', [App\Http\Controllers\MeetingController::class, 'join_meeting'])->name('join_meeting');
 Route::get('/quick_register/{id}', [App\Http\Controllers\MeetingController::class, 'custom_register'])->name('quick_register');
+Route::get('/mom_status/{id}/{type}', [App\Http\Controllers\MoMController::class, 'update_mom_status'])->name('mom_status');
 
 Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], function () {
     Route::resource('/groups', App\Http\Controllers\Admin\MGroupController::class)->except(['show']);
@@ -64,7 +65,6 @@ Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], f
     Route::get('/performance', [App\Http\Controllers\Admin\PerformanceController::class, 'index'])->name('performance.index');
     Route::get('/performance/detail/{id}', [App\Http\Controllers\Admin\PerformanceController::class, 'employee'])->name('performance.detail');
     Route::get('/notes/pic/{id}/done', [App\Http\Controllers\Admin\EvidenceController::class, 'change_pic_status'])->name('notes.pic.done');
-
 });
 
 Route::group(['middleware' => 'ses', "prefix" => "ses", "as" => "ses."], function () {
