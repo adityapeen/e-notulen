@@ -22,6 +22,7 @@
         </div>
         <div class="card-body pb-2">
           {{-- {{ $dataTable->table() }} --}}
+          <div class="table-responsive">
           <table class="table row-border" id="users-table">
             <thead>
                 <tr>
@@ -32,7 +33,8 @@
                     <th></th>
                 </tr>
             </thead>
-        </table>
+          </table>
+          </div>
             <form id="delete-form" action="" method="post">
               @method('DELETE')
               @csrf
