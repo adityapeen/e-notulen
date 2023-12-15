@@ -18,6 +18,7 @@ use DateTimeZone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Vinkla\Hashids\Facades\Hashids;
+use Yajra\DataTables\Facades\DataTables;
 
 class NoteController extends Controller
 {
@@ -34,8 +35,94 @@ class NoteController extends Controller
         return view('admin.note.index', compact(['notes','title','satkers']));
     }
 
+    public function bySatker(Request $request, String $hashed_id){
 
-    public function bySatker(String $hashed_id)
+        $title = "Daftar Notulensi";
+        $satkers = MSatker::all();
+        if($hashed_id == 'ALL'){
+            return redirect()->route("admin.notes.index");
+        }
+        else if($hashed_id == 'BPS'){
+            $notes = Note::withCount(['action_items'])->where('team_id',NULL)->orderBy('date','DESC');
+        }
+        else {
+            $satker_id = Hashids::decode($hashed_id)[0]; //decode the hashed id
+            $notes = Note::withCount(['action_items'])->whereHas('team', function ($query) use($satker_id) {
+                $query->where('satker_id', $satker_id);
+            })->orderBy('date','DESC');
+        }
+        
+        if ($request->ajax()) {
+            return DataTables::of($notes)
+            ->addColumn('name_b', function($row){
+                $type = $row->type == 'public' ? 'success' : 'info';
+                $name = '<h6 class="mb-0">'. $row->name .'</h6>
+                <span class="badge badge-sm bg-gradient-'. $type .' px-1">&nbsp;</span>
+                '.($row->team != null? '<span class="badge badge-sm bg-gradient-light text-dark">'. $row->team->satker->code .'</span>':'')
+                 .($row->agenda != null ? '<span class="badge badge-sm bg-gradient-secondary">'. $row->agenda->name .'</span>' : '');
+                return $name;
+            })
+            ->addColumn('action_item', function($row){
+                $actionItem = '<a href="'.route('admin.notes.action', [$row->id]).'" class="btn btn-sm bg-gradient-info mb-0">Action
+                Items <span class="badge bg-gradient-light text-dark ms-2">'.$row->action_items_count.'</span></a>';
+                return $actionItem;
+            })
+            ->addColumn('status_b', function($row){
+                $type = $row->status == 'open' ? 'success' : 'danger';
+                $status = '<span class="badge badge-sm bg-gradient-'. $type .' btn mb-0"
+                onclick="handleView(`admin`,`'. $row->id .'`)" data-toggle="tooltip"
+                title="Lihat Notulensi">'. $row->status .'<div class="fa fa-eye"></div></span>';
+                return $status;
+            })
+            ->addColumn('action', function($row){
+                $bt_edit = '<a href="'. route('admin.notes.edit', [$row->id]) .'"
+                class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Edit Notulensi">
+                <button class="btn btn-sm btn-success mb-0"><i class="fa fa-edit"></i></button>
+              </a>';
+                $bt_docs = '<a href="'. route('api.gdocs', [$row->id]) .'" class="text-secondary font-weight-bold text-xs"
+              data-toggle="tooltip" title="Generate File Notulen">
+              <button class="btn btn-sm btn-secondary mb-0"><i class="fab fa-google-drive"></i></button>
+            </a>';
+                $bt_qr = '<a href="'. route('admin.notes.qrcode', [$row->id]) .'" target="_blank"
+                class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="QR Join Meeting">
+                <button class="btn btn-sm btn-dark mb-0"><i class="fa fa-qrcode"></i></button>
+              </a>';
+              $type = $row->status == 'lock' ? 'primary' : 'warning';
+              $bt_lock = '<a href="#" onclick="handleLock(`admin`,`'. $row->id .'`)"
+              class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
+              title="'. ($row->status == 'lock' ? 'Buka' : 'Kunci' ).' Notulensi">
+              <button class="btn btn-sm btn-'. $type .' mb-0"><i
+                  class="fa fa-lock"></i></button>
+            </a>';
+                $bt_pdf = '<a href="'. route('admin.export.docs', [$row->id]) .'" target="_blank" class="text-secondary font-weight-bold text-xs"
+                         data-toggle="tooltip" title="Generate PDF">
+                         <button class="btn btn-sm btn-danger mb-0"><i class="fa fa-file-pdf"></i></button>
+                      </a>';
+                $bt_send = '<a href="#" onclick="handleSend(`admin`,`'. $row->id .'`)"
+                class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Kirim MoM">
+                <button class="btn btn-sm btn-info mb-0"><i class="fa fa-file"></i></button>
+              </a>';
+                $bt_absen = '<a href="'. route('admin.notes.absensi', $row->id).'" target="_blank"
+                class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Daftar Hadir">
+                <button class="btn btn-sm btn-warning mb-0"><i class="fa fa-list"></i></button>
+              </a>';
+                $bt_delete = '<a href="#" onclick="handleDestroy(`admin`,`'. $row->id .'`)"
+                class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Hapus Agenda">
+                <button class="btn btn-sm btn-danger mb-0"><i class="fa fa-trash"></i></button>
+              </a>';
+                $actionBtn = $row->status != 'lock'? $bt_edit.($row->link_drive_notulen == '-'? $bt_docs : '').$bt_qr.$bt_lock.$bt_delete
+                            :
+                            $bt_lock.($row->file_notulen == NULL? $bt_pdf:'').$bt_send.$bt_absen;
+
+                return $actionBtn;
+            })
+            ->rawColumns(['name_b','action','status_b','action_item'])->toJson();
+        }
+        
+        return view('admin.note.index-table', compact(['title','satkers']));
+    }
+
+    public function bySatkerx(String $hashed_id)
     {
         if($hashed_id == 'ALL'){
             return redirect()->route("admin.notes.index");
