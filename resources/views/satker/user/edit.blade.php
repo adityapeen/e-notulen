@@ -48,7 +48,7 @@
                 <input type="text" id="phone" class="form-control border px-1 @error('phone') is-invalid @enderror" name="phone" value="{{ $user->phone }}" placeholder="(contoh : 088723455677)" required>
               </div>
             </div>
-            <div class="row mb-1 align-items-center">
+            {{-- <div class="row mb-1 align-items-center">
               <div class="col-md-4">
                 Level
               </div>
@@ -56,6 +56,18 @@
                 <select id="level_id" class="form-select border px-1 @error('level_id') is-invalid @enderror" value="{{ $user->level_id }}" name="level_id" required>
                   @foreach ($levels as $item)
                       <option value="{{ $item->id }}" {{ $item->id == $user->level_id ? 'selected' : ''}}>{{ $item->name }}</option>
+                  @endforeach
+              </select>
+              </div>
+            </div> --}}
+            <div class="row mb-1 align-items-center">
+              <div class="col-md-4">
+                Role(s)
+              </div>
+              <div class="col-md-8">
+                <select id="roles" multiple="multiple" class="form-select border px-1 @error('roles') is-invalid @enderror" value="" name="roles[]" required >
+                  @foreach ($roles as $item)
+                      <option value="{{ $item->id }}">{{ $item->name }}</option>
                   @endforeach
               </select>
               </div>
@@ -85,5 +97,13 @@
 @endsection
 
 @section('script')
+<script>
+  $(document).ready( function() {
+    $('#roles').select2({
+      placeholder: 'Pilih Role User',
+      });
 
+    $("#roles").val(<?php echo  $assigned_roles ?>).trigger('change')
+  });
+</script>
 @endsection

@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\MLevel;
 use App\Models\MSatker;
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\Team;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -80,9 +81,11 @@ class SatkerUserController extends Controller
         $title = "Edit User";
         $id = Hashids::decode($hashed_id); //decode the hashed id
         $user = User::find($id[0]);
-        $levels = MLevel::where('id','>=',auth()->user()->level_id)->get();
+        // $levels = MLevel::where('id','>=',auth()->user()->level_id)->get();
+        $roles = Role::where('id','>=',auth()->user()->current_role_id)->get();
         $teams = Team::where('satker_id', auth()->user()->satker_id)->get();
-        return view('satker.user.edit', compact('title','user','levels','teams'));
+        $assigned_roles =  $user->roles->pluck('id');
+        return view('satker.user.edit', compact('title','user','teams','roles','assigned_roles'));
     }
 
     /**
@@ -97,18 +100,25 @@ class SatkerUserController extends Controller
         $request->validate([
             'name' => ['required'],
             'phone' => ['required'],
-            'level_id' => ['required'],
+            // 'level_id' => ['required'],
         ]);
         $id = Hashids::decode($hashed_id);
         $team_id = Hashids::decode($request->team_id)[0];
-        if(User::findOrFail($id)->first()->update([
+        $user = User::findOrFail($id[0]);
+        if($user->update([
             'name' => $request->name,
             'email' => $request->email,
             'nip' => $request->nip,
             'phone' => $request->phone,
-            'level_id' => $request->level_id,
+            // 'level_id' => $request->level_id,
             'team_id' => $team_id,
         ])){
+            $new_role = array();
+            foreach ($request->roles as $role){
+                $r = Role::findById($role);
+                array_push($new_role, $r->name);
+            }
+            $user->syncRoles($new_role);
             return redirect()->route("satker.users.index")->with('success','Data <strong>berhasil</strong> disimpan');
         }else{
             return back()->withErrors(['Data <strong>gagal</strong> ditambahkan!']);
