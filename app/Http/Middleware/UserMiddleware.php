@@ -17,7 +17,7 @@ class UserMiddleware
     public function handle(Request $request, Closure $next)
     {
         if ($request->user()) {
-            if(auth()->user()->level_id >= 3 ){
+            if(auth()->user()->current_role_id >= 3 ){
                 return $next($request);
             }
             abort('403');
