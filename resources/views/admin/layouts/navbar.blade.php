@@ -27,7 +27,20 @@
                 <span class="d-sm-inline d-none">{{ Auth::user()->name }}</span>
             </a>
             <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
-              <div class="text-center font-size-sm"><small>{{ auth()->user()->level->name}}</small></div>
+              <div class="text-center font-size-sm" href="#"><small>
+                {{ __('Logged in as: :role', ['role' => auth()->user()->currentRole != null ? auth()->user()->currentRole->name : '']) }}
+              </small></div>
+
+              @if(auth()->user()->roles->count() > 1)
+                  @foreach(auth()->user()->roles->where('id', '!=', auth()->user()->current_role_id) as $role)
+                  <li class="mb-1 text-center">
+                    <a href="{{ route('switch.role', $role->id_hash())}}" class="dropdown-item border-radius-md font-size-sm d-flex align-items-center">
+                      <i class="material-icons opacity-10">synch</i>
+                          {{ __('Switch to :name', ['name' => $role->name]) }}
+                    </a>
+                  </li>
+                  @endforeach
+              @endif
               <li class="mb-2">
                 <a class="dropdown-item border-radius-md" href="{{ auth()->user()->level_id < 3 ? route('admin.users.password'): route('user.password') }}">
                   <div class="d-flex py-1">

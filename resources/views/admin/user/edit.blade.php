@@ -74,6 +74,18 @@
             </div>
             <div class="row mb-1 align-items-center">
               <div class="col-md-4">
+                Role(s)
+              </div>
+              <div class="col-md-8">
+                <select id="roles" multiple="multiple" class="form-select border px-1 @error('roles') is-invalid @enderror" value="" name="roles[]" required >
+                  @foreach ($roles as $item)
+                      <option value="{{ $item->id }}">{{ $item->name }}</option>
+                  @endforeach
+              </select>
+              </div>
+            </div>
+            <div class="row mb-1 align-items-center">
+              <div class="col-md-4">
                 Team
               </div>
               <div class="col-md-8">
@@ -97,5 +109,13 @@
 @endsection
 
 @section('script')
+<script>
+  $(document).ready( function() {
+    $('#roles').select2({
+      placeholder: 'Pilih Role User',
+      });
 
+    $("#roles").val(<?php echo  $assigned_roles ?>).trigger('change')
+  });
+</script>
 @endsection

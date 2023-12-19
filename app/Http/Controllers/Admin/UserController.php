@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\MLevel;
 use App\Models\MSatker;
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\Team;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -95,8 +96,10 @@ class UserController extends Controller
         $satkers = MSatker::all();
         $levels = MLevel::all();
         $teams = Team::all();
+        $roles = Role::all();
+        $assigned_roles =  auth()->user()->roles->pluck('id');
 
-        return view('admin.user.edit', compact('title','user','satkers','levels','teams'));
+        return view('admin.user.edit', compact('title','user','satkers','levels','teams','roles','assigned_roles'));
     }
 
     /**
@@ -112,18 +115,25 @@ class UserController extends Controller
             'name' => ['required'],
             'phone' => ['required'],
             'satker_id' => ['required'],
-            'level_id' => ['required'],
+            // 'level_id' => ['required'],
         ]);
         $id = Hashids::decode($hashed_id);
-        if(User::findOrFail($id)->first()->update([
+        $user = User::findOrFail($id[0]);
+        if($user->update([
             'name' => $request->name,
             'email' => $request->email,
             'nip' => $request->nip,
             'phone' => $request->phone,
             'satker_id' => $request->satker_id,
-            'level_id' => $request->level_id,
+            // 'level_id' => $request->level_id,
             'team_id' => Hashids::decode($request->team_id)[0],
         ])){
+            $new_role = array();
+            foreach ($request->roles as $role){
+                $r = Role::findById($role);
+                array_push($new_role, $r->name);
+            }
+            $user->syncRoles($new_role);
             return redirect()->route("admin.users.index")->with('success','Data <strong>berhasil</strong> disimpan');
         }else{
             return back()->withErrors(['Data <strong>gagal</strong> ditambahkan!']);

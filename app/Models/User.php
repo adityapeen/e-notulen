@@ -9,11 +9,12 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Vinkla\Hashids\Facades\Hashids;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Spatie\Permission\Traits\HasRoles;
 
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -25,6 +26,7 @@ class User extends Authenticatable
         'email',
         'password',
         'satker_id',
+        'current_role_id',
         'level_id',
         'team_id',
         'phone',
@@ -62,6 +64,11 @@ class User extends Authenticatable
         return $this->belongsTo(Team::class);
     }
 
+    public function currentRole()
+    {
+        return $this->belongsTo(Role::class, 'current_role_id');
+    }
+
     /**
      * Hash the ids
      *
@@ -75,6 +82,11 @@ class User extends Authenticatable
     public function team_id_hash()
     {
         return   Hashids::encode($this->team_id);
+    }
+
+    public function role_hash()
+    {
+        return   Hashids::encode($this->current_role_id);
     }
 
     /**

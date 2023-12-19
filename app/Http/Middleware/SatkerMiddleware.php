@@ -17,7 +17,7 @@ class SatkerMiddleware
     public function handle(Request $request, Closure $next)
     {
         if ($request->user()) {
-            if(auth()->user()->level_id == 7 || auth()->user()->level_id == 8){ // Admin Satker
+            if(auth()->user()->current_role_id == 7 || auth()->user()->current_role_id == 8){ // Admin Satker
                 return $next($request);
             }
             abort('403');

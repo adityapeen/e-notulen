@@ -80,6 +80,7 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
             'satker_id' => $data['satker_id'],
             'level_id' => 9,
+            'current_role_id' => 9,
             'phone' => $data['phone']
         ]);
         if(array_key_exists('meeting',$data)){

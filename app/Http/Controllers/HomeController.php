@@ -7,6 +7,7 @@ use App\Models\Agenda;
 use App\Models\MSatker;
 use App\Models\Note;
 use App\Models\User;
+use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -30,7 +31,10 @@ class HomeController extends Controller
     {
         // return view('home');
         $title = "Dashboard";
-        if(auth()->user()->level_id == 1 || auth()->user()->level_id == 2){ // Ka & Timstra
+        // $user = User::find(auth()->user()->id);
+        // if(auth()->user()->level_id == 1 || auth()->user()->level_id == 2){ // Ka & Timstra
+        if(auth()->user()->current_role_id == 1 || auth()->user()->current_role_id == 2){ // Ka & Timstra
+            // $user->assignRole(['Superadmin', 'Pegawai']);
             $users = User::all()->count();
             $wa_ready = User::whereNot('phone','')->count();
             $agendas = Agenda::all()->count();
@@ -47,10 +51,10 @@ class HomeController extends Controller
             $todays = Note::where('date', date('Y-m-d'))->get();
             return view('admin.notulen', compact(['users','agendas','notes','actions','todays','title','wa_ready','notes_locked','actions_todo','actions_progress','undone','notes_satkers']));
         }
-        else if(auth()->user()->level_id == 3){
+        else if(auth()->user()->current_role_id == 3){
             return redirect()->route('ses.dashboard');
         }
-        else if (auth()->user()->level_id < 9 ){
+        else if (auth()->user()->current_role_id < 9 ){
             $users = User::where('satker_id', auth()->user()->satker_id)->count();
             $wa_ready = User::where('satker_id', auth()->user()->satker_id)->whereNot('phone','')->count();
             $agendas = Agenda::where('satker_id', auth()->user()->satker_id)->count();
@@ -72,7 +76,7 @@ class HomeController extends Controller
                     ->whereHas('note.team', function ($query) {
                         $query->where('satker_id', auth()->user()->satker_id);
                     })->count();
-            if(auth()->user()->level_id == 7){
+            if(auth()->user()->current_role_id == 7){
                 $undone = ActionItems::where('status', '<>', 'done')
                         ->whereHas('note.team', function ($query) {
                             $query->where('satker_id', auth()->user()->satker_id);

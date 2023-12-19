@@ -17,7 +17,7 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next)
     {
         if ($request->user()) {
-            if(auth()->user()->level_id == 1 || auth()->user()->level_id == 2){ // Ka & Timstra
+            if(auth()->user()->current_role_id == 1 || auth()->user()->current_role_id == 2){ // Ka & Timstra
                 return $next($request);
             }
             abort('403');

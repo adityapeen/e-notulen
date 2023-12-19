@@ -17,7 +17,7 @@ class SesMiddleware
     public function handle(Request $request, Closure $next)
     {
         if ($request->user()) {
-            if(auth()->user()->level_id == 3){ // Ses
+            if(auth()->user()->current_role_id == 3){ // Ses
                 return $next($request);
             }
             abort('403');

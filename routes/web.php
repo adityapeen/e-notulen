@@ -30,6 +30,10 @@ Route::post('/join/{id}', [App\Http\Controllers\MeetingController::class, 'join_
 Route::get('/quick_register/{id}', [App\Http\Controllers\MeetingController::class, 'custom_register'])->name('quick_register');
 Route::get('/mom_status/{id}/{type}', [App\Http\Controllers\MoMController::class, 'update_mom_status'])->name('mom_status');
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/switch-role/{role}', [App\Http\Controllers\SwitchRoleController::class, '__invoke'])->name('switch.role');
+});
+
 Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], function () {
     Route::resource('/groups', App\Http\Controllers\Admin\MGroupController::class)->except(['show']);
     Route::resource('/users', App\Http\Controllers\Admin\UserController::class)->except(['show']);
