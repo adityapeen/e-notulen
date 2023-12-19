@@ -59,7 +59,7 @@
               </select>
               </div>
             </div>
-            <div class="row mb-1 align-items-center">
+            {{-- <div class="row mb-1 align-items-center">
               <div class="col-md-4">
                 Level
               </div>
@@ -70,7 +70,7 @@
                   @endforeach
               </select>
               </div>
-            </div>
+            </div> --}}
             <div class="mt-3 d-flex" >         
                 <button type="submit" class="btn btn-info me-2">Simpan</button>
                 <button type="button" onclick="history.back()" class="btn btn-light">Batal</button>

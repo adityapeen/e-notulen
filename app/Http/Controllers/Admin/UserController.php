@@ -126,6 +126,7 @@ class UserController extends Controller
             'phone' => $request->phone,
             'satker_id' => $request->satker_id,
             // 'level_id' => $request->level_id,
+            'current_role_id' => $request->roles[0],
             'team_id' => Hashids::decode($request->team_id)[0],
         ])){
             $new_role = array();

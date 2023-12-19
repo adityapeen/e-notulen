@@ -60,7 +60,7 @@
               </select>
               </div>
             </div>
-            <div class="row mb-1 align-items-center">
+            {{-- <div class="row mb-1 align-items-center">
               <div class="col-md-4">
                 Level
               </div>
@@ -71,7 +71,7 @@
                   @endforeach
               </select>
               </div>
-            </div>
+            </div> --}}
             <div class="row mb-1 align-items-center">
               <div class="col-md-4">
                 Role(s)
