@@ -44,7 +44,7 @@
       <li class="nav-item mt-3">
         <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Master</h6>
       </li>
-      @if(auth()->user()->level_id < 8)
+      @if(auth()->user()->current_role_id < 8)
       <li class="nav-item">
         <a class="nav-link text-white {{ Request::is('satker/agendas*') ? 'active bg-gradient-primary' : '' }}" href="{{ route('satker.agendas.index') }}">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
