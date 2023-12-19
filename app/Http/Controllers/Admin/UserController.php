@@ -97,7 +97,7 @@ class UserController extends Controller
         $levels = MLevel::all();
         $teams = Team::all();
         $roles = Role::all();
-        $assigned_roles =  auth()->user()->roles->pluck('id');
+        $assigned_roles =  $user->roles->pluck('id');
 
         return view('admin.user.edit', compact('title','user','satkers','levels','teams','roles','assigned_roles'));
     }
