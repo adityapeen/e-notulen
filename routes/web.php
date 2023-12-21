@@ -32,6 +32,7 @@ Route::get('/mom_status/{id}/{type}', [App\Http\Controllers\MoMController::class
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/switch-role/{role}', [App\Http\Controllers\SwitchRoleController::class, '__invoke'])->name('switch.role');
+    Route::post('/mark-as-read', [App\Http\Controllers\NotificationController::class, 'markNotification'])->name('mark.notif');
 });
 
 Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], function () {

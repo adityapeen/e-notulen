@@ -19,7 +19,49 @@
           </div>
           </a>
         </li>
-       
+
+        <?php  $notifications = auth()->user()->unreadNotifications; ?>
+
+        <li class="nav-item dropdown pe-3 d-flex align-items-center">
+          <a href="javascript:;" class="nav-link text-body p-0 position-relative" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa fa-bell me-sm-1 cursor-pointer">
+            </i>
+            @if(count($notifications) > 0)
+            <span class="position-absolute top-5 start-100 translate-middle badge rounded-pill bg-danger border border-white small py-1 px-1" id="badge-notif">
+              <span class="small">{{ count($notifications) }}</span>
+            </span>
+            @endif
+          </a>
+          <ul style="width: 500px" class="dropdown-menu dropdown-menu-end p-2 me-sm-n4" aria-labelledby="dropdownMenuButton">
+            @foreach ($notifications as $item)
+            <li class="notif-item mb-1 ">
+              <a class="dropdown-item border-radius-md" onclick="viewNotification('{{$item->data['type']}}','{{$item->data['action_id']}}','{{ $item->id}}')">
+                <div class="d-flex align-items-center py-1">
+                  <i class="fa fa-exclamation-circle"></i>
+                  <div class="ms-2 text-wrap">
+                    <h6 class="text-sm font-weight-normal my-auto">
+                      {{ $item->data['name'].' '.$item->data['message'].' '.$item->data['meeting']}}
+                    </h6>
+                  </div>
+                </div>
+              </a>
+            </li>
+            @endforeach     
+            @if(count($notifications) > 0)
+            <li class="mb-0 text-center">
+              <a class="dropdown-item border-radius-md" onclick="markAll()">   
+                Mark All as Read  
+              </a>
+            </li>
+            @else 
+            <li class="mb-0 text-center">
+              <a class="dropdown-item border-radius-md">   
+                Kosong 
+              </a>
+            </li>
+            @endif  
+          </ul>
+        </li>
         
         <li class="nav-item dropdown pe-2 d-flex align-items-center">
             <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">

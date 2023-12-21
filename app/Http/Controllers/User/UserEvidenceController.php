@@ -6,7 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\ActionItems;
 use App\Models\Evidence;
 use App\Models\Pic;
+use App\Models\User;
+use App\Notifications\NewEvidenceNotification;
+use App\Notifications\UpdateEvidenceNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Vinkla\Hashids\Facades\Hashids;
 
 class UserEvidenceController extends Controller
@@ -76,7 +80,9 @@ class UserEvidenceController extends Controller
                 'uploaded_by' => auth()->user()->id,
         ]);
         if($evidence){
-            ActionItems::findOrFail($action_id)->update(['status'=>'onprogress']);
+            $action_item = ActionItems::findOrFail($action_id);
+            $this->_notify_admin_add($action_item);
+            $action_item->update(['status'=>'onprogress']);
             Pic::where([['action_id', '=', $action_id], ['user_id', '=', auth()->user()->id]])->first()->update(['status'=>'onprogress']);
             return redirect()->route("user.notes.evidence",$request->action_id)->with('success','Data <strong>berhasil</strong> disimpan');
         }else{
@@ -151,8 +157,10 @@ class UserEvidenceController extends Controller
             'description' => $request->description,
             'file' => $nama_file,
             'updated_by' => auth()->user()->id,
-        ]) ;
+        ]);
         if($evidence){
+            $action_item = ActionItems::find($evidence->action_id);
+            $this->_notify_admin_update($action_item);
             return redirect()->route("user.notes.evidence",$evidence->action->id)->with('success','Data <strong>berhasil</strong> disimpan');
         }else{
             return back()->withErrors(['Data <strong>gagal</strong> ditambahkan!']);
@@ -191,5 +199,21 @@ class UserEvidenceController extends Controller
         }else{
             return back()->withErrors(['Data <strong>gagal</strong> dihapus!']);
         }
+    }
+
+    private function _notify_admin_add($action_item){
+        $admins = User::whereHas('roles', function ($query) {
+            $query->where('id', 2);
+        })->get();
+
+        Notification::send($admins, new NewEvidenceNotification(auth()->user(), $action_item));
+    }
+
+    private function _notify_admin_update($action_item){
+        $admins = User::whereHas('roles', function ($query) {
+            $query->where('id', 2);
+        })->get();
+
+        Notification::send($admins, new UpdateEvidenceNotification(auth()->user(), $action_item));
     }
 }
