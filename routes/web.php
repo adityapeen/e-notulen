@@ -126,7 +126,7 @@ Route::group(['middleware' => 'user', "prefix" => "user", "as" => "user."], func
     Route::post('/password', [App\Http\Controllers\Admin\UserController::class, 'change_password'])->name('change_password');
 });
 
-Route::group(['middleware' => 'api', "prefix" => "api", "as" => "api."], function () {
+Route::group(['middleware' => 'auth', "prefix" => "api", "as" => "api."], function () {
     Route::get('/attendants/{id}', [App\Http\Controllers\ApiController::class, 'attendants'])->name('attendants'); 
     Route::get('/g_attendants/{id}', [App\Http\Controllers\ApiController::class, 'group_attendants'])->name('group_attendants'); 
     Route::get('/act_pic/{id}', [App\Http\Controllers\ApiController::class, 'action_pic'])->name('action_pic'); 
@@ -135,4 +135,6 @@ Route::group(['middleware' => 'api', "prefix" => "api", "as" => "api."], functio
     Route::get('/docs/{id}', [App\Http\Controllers\GDocsController::class, 'createNoteDocs'])->name('gdocs');
     Route::resource('/actions', App\Http\Controllers\ActionItemsController::class)->except(['index']);
     Route::get('/action_detail/{id}', [App\Http\Controllers\ApiController::class, 'action_item_detail'])->name('action_detail');
+    Route::get('/comments/{id}', [App\Http\Controllers\CommentController::class, 'get_comments'])->name('get_comments');
+    Route::post('/comments', [App\Http\Controllers\CommentController::class, 'store'])->name('comment.store');
 });

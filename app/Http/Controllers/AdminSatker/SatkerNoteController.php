@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\GDocsController;
 use App\Models\ActionItems;
 use App\Models\Attendant;
+use App\Models\Comment;
 use App\Models\Evidence;
 use App\Models\MomRecipients;
 use App\Models\Pic;
@@ -365,7 +366,8 @@ class SatkerNoteController extends Controller
         $action = ActionItems::findOrFail($action_id);
         $evidences = Evidence::where('action_id', $action_id)->get();
         $pics = Pic::where('action_id', $action_id)->get();
-        return view('satker.evidence.index', compact(['title','action','evidences','pics']));
+        $comments = Comment::where('action_id', $action_id)->count();
+        return view('satker.evidence.index', compact(['title','action','evidences','pics','comments']));
     }
 
     public function qrcode(String $hashed_id){

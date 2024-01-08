@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\ActionItems;
 use App\Models\Attendant;
+use App\Models\Comment;
 use App\Models\Evidence;
 use App\Models\Note;
 use App\Models\Pic;
@@ -115,6 +116,7 @@ class UserNoteController extends Controller
         $action = ActionItems::findOrFail($action_id);
         $evidences = Evidence::where('action_id', $action_id)->get();
         $pics = Pic::where('action_id', $action_id)->get();
-        return view('user.evidence.index', compact(['title','action','evidences','pics']));
+        $comments = Comment::where('action_id', $action_id)->count();
+        return view('user.evidence.index', compact(['title','action','evidences','pics','comments']));
     }
 }

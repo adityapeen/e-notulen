@@ -4,6 +4,8 @@
 
 @section('content')
 <div class="row">
+  <div class="col-md-8">
+  <div class="row">
   <div class="col-12">
     <div class="card my-4">
       <div class="card-body">
@@ -28,6 +30,9 @@
           <button class="btn badge badge-sm bg-gradient-{{ $action->status == "todo" ? "info" : "success"}}" onclick="handleStatus()">Mark as {{ $action->status == "todo" ? "on progress" : "done"}}</button>
           @endif
           <button data-url="{{route('admin.notes.action', $action->note->id)}}" class="btn badge badge-sm bg-gradient-primary"onclick="handleBack(event)" >Back to Action Items</button>
+          <button class="btn badge badge-sm bg-gradient-info" type="button" data-bs-toggle="collapse" data-bs-target="#commentsSection" aria-expanded="false" aria-controls="commentsSection">
+            Show Comment Section
+          </button>
         </div></div>
       </div>
     </div>
@@ -105,13 +110,49 @@
       </div>
     </div>
   </div>
+  </div>
+  <div class="col-md-4 {{ $comments == 0 ? "collapse" : "" }} collapse-horizontal" id="commentsSection">
+    <div class="row pe-3">
+      <div class="card mt-4 mb-2 p-2 min-height-500 max-height-500" id="comments-card" >
+        <div class="card-body" >
+        </div>
+      </div>
+      <div class="card">
+        <hr class="dark horizontal my-0">
+        <div class="card-footer row p-0 align-items-center">
+          <div class="col-10">
+            <form id="comment-form" action="" method="post">
+              @method("POST")
+              @csrf
+              <div class="input-group input-group-outline my-2">
+                <label class="form-label">Tulis Komentar</label>
+                <input type="text" id="message" name="message" class="form-control">
+              </div>
+            </form>
+          </div>
+          <div class="col-2 justify-content-center">
+            <button class="btn btn-sm btn-success mb-0" onclick="sendComment('{{$action->id}}')"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 @endsection
 
 @section('script')
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="{{ asset('assets/js/comments.js') }}"></script>
 
 <script>
+  $(document).ready(function() {
+      refreshComments();
+    });
+  
+  const ps = new PerfectScrollbar('#comments-card');
+  const container = document.getElementById('comments-card');
+
   const handleDestroy = id =>
       swal({
           title: "Apakah anda yakin menghapus data ini ?",
@@ -146,6 +187,5 @@
     window.location.href = event.target.dataset.url;
   }
 
-    
 </script>
 @endsection
