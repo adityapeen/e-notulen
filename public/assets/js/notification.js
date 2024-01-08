@@ -11,14 +11,10 @@ const currentURL = () => {
 
 const viewNotification = (type, id, notif_id) => {
     url = currentURL();
-
-    if(type == 'evidence'){
-        url = `${url}/admin/notes/action/${id}/evidences`
-    }
     
-    sendMarkRequest(notif_id)
+    sendMarkRequest(type, notif_id)
     .then(data => {
-        return window.location = url;
+        return window.location = data.url;
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -27,22 +23,22 @@ const viewNotification = (type, id, notif_id) => {
 }
 
 const markAll = () => {
-    let request = sendMarkRequest();
+    let request = sendMarkRequest('all');
     request.done(() => {
         $('li.notif-item').remove();
         $('#badge-notif').hide()
     })
 }
 
-const sendMarkRequest = (id = null) => {
+const sendMarkRequest = (type, id = null) => {
     var _token = $('meta[name="_token"]').attr('content');
-    console.log(_token);
     var url = currentURL()+'/mark-as-read';
     return $.ajax(url, {
         method: 'POST',
         data: {
             _token,
-            id
+            id,
+            type
         }
     });
 }

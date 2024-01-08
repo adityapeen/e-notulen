@@ -22,12 +22,12 @@ class Pic extends Model
 
     public function action()
     {
-        return $this->belongsTo(ActionItems::class);
+        return $this->belongsTo(ActionItems::class, 'action_id');
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function user_hash()

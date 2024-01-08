@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use App\Http\Controllers\Controller;
+use App\Models\ActionItems;
+use App\Models\User;
+use App\Notifications\NewCommentNotification;
 use DateTime;
 use DateTimeZone;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Vinkla\Hashids\Facades\Hashids;
 
 class CommentController extends Controller
@@ -49,6 +53,8 @@ class CommentController extends Controller
             'message' => $request->message,
             'user_id' => auth()->user()->id,
         ])){
+            $action_item = ActionItems::find($action_id);
+            $this->_notify_user($action_item);
             return response('OK');
         }else{
             return response('Error', 500);
@@ -137,7 +143,7 @@ class CommentController extends Controller
 
             $item ='<div class="d-flex mb-1">
             <div class="badge px-2 bg-gradient-secondary max-width-300">
-              <div class="text-start text-capitalize mb-1 fw-light">'.$name.'</div>
+              <div class="text-start text-capitalize mb-1">'.$name.'</div>
               <div class="fw-light text-capitalize text-wrap text-start">'.
               $comment->message
               .'</div>
@@ -146,5 +152,46 @@ class CommentController extends Controller
           </div>';
         }
         return $item;
+    }
+
+    private function _notify_user(ActionItems $action_item){
+        $action_id = Hashids::decode($action_item->id)[0];
+        if(auth()->user()->current_role_id < 3) // Superadmin
+        {
+            $name = "Ka. BPSDM / Superadmin";
+            $targets = User::whereHas('pics', function ($query) use ($action_id) {
+                            $query->where('action_id', $action_id);
+                        })->get();
+        }
+        else if(auth()->user()->current_role_id == 3) // Ses
+        {
+            $name = "Ses. BPSDM / Superadmin";
+            $targets = User::whereHas('pics', function ($query) use ($action_id) {
+                $query->where('action_id', $action_id);
+            })->get();
+        }
+        else if(auth()->user()->current_role_id == 4) // Kapus
+        {
+            $name = "Kepala Pusat";
+            $targets = User::whereHas('pics', function ($query) use ($action_id) {
+                $query->where('action_id', $action_id);
+            })->get();
+        }
+        else if(auth()->user()->current_role_id == 7 || auth()->user()->current_role_id == 8) // Admin Satker & Bidang
+        {
+            $name = "Admin";
+            $targets = User::whereHas('pics', function ($query) use ($action_id) {
+                $query->where('action_id', $action_id);
+            })->get();
+        }
+        else {
+            $roles = [1,2,3,4,7,8];
+            $name = auth()->user()->name;
+            $targets = User::whereHas('roles', function ($query) use ($roles) {
+                $query->whereIn('id', $roles);
+            })->get();
+        }
+
+        Notification::send($targets, new NewCommentNotification($name, $action_item));
     }
 }
