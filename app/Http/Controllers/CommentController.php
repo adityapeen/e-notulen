@@ -15,6 +15,13 @@ use Vinkla\Hashids\Facades\Hashids;
 
 class CommentController extends Controller
 {
+    protected $WAController;
+
+    public function __construct(WAController $WAController)
+    {
+        $this->WAController = $WAController;
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -156,6 +163,7 @@ class CommentController extends Controller
 
     private function _notify_user(ActionItems $action_item){
         $action_id = Hashids::decode($action_item->id)[0];
+        $roles = [2,3,4,7,8]; // Admin Roles
         if(auth()->user()->current_role_id < 3) // Superadmin
         {
             $name = "Ka. BPSDM / Superadmin";
@@ -165,7 +173,7 @@ class CommentController extends Controller
         }
         else if(auth()->user()->current_role_id == 3) // Ses
         {
-            $name = "Ses. BPSDM / Superadmin";
+            $name = "Ses. BPSDM";
             $targets = User::whereHas('pics', function ($query) use ($action_id) {
                 $query->where('action_id', $action_id);
             })->get();
@@ -185,13 +193,27 @@ class CommentController extends Controller
             })->get();
         }
         else {
-            $roles = [1,2,3,4,7,8];
             $name = auth()->user()->name;
             $targets = User::whereHas('roles', function ($query) use ($roles) {
                 $query->whereIn('id', $roles);
             })->get();
         }
 
+        if(in_array(auth()->user()->current_role_id, $roles)){
+            $this->sendWANotif($targets, $name, $action_item);
+        }
         Notification::send($targets, new NewCommentNotification($name, $action_item));
+    }
+
+    private function sendWANotif($targets, String $name, ActionItems $action_item){
+        $data = [
+            "message" => $name." telah memberikan komentar pada eviden action item *".$action_item->note->name
+                            ."*.\n\nSilahkan cek pada link berikut :\n".route('user.notes.evidence', $action_item->id)
+                            ."\n\nTerimakasih 🙏"
+        ];
+        foreach($targets as $u){
+            $data['recipient'] = $u->id;
+            $this->WAController->send_message( (object) $data);
+        }
     }
 }

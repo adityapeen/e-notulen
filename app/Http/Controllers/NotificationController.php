@@ -22,7 +22,7 @@ class NotificationController extends Controller
             if(auth()->user()->current_role_id == 9){
                 $url = url('user/notes/action/'.$action_id.'/evidences');
             }
-            if(auth()->user()->current_role_id == 7 || auth()->user()->current_role_id == 8){
+            else if(auth()->user()->current_role_id == 7 || auth()->user()->current_role_id == 8){
                 $url = url('satker/notes/action/'.$action_id.'/evidences');
             }
             else $url = url('admin/notes/action/'.$action_id.'/evidences');
