@@ -62,6 +62,7 @@ class UserController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'satker_id' => $request->satker_id,
+            'level_id' => 9,
             'current_role_id' => 9,
             'status' => 1,
         ])){
