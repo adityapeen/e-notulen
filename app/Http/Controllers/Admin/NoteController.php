@@ -41,7 +41,8 @@ class NoteController extends Controller
         $title = "Daftar Notulensi";
         $satkers = MSatker::all();
         if($hashed_id == 'ALL'){
-            return redirect()->route("admin.notes.index");
+            // return redirect()->route("admin.notes.index");
+            $notes = Note::withCount(['action_items'])->orderBy('date','DESC');
         }
         else if($hashed_id == 'BPS'){
             $notes = Note::withCount(['action_items'])->where('team_id',NULL)->orderBy('date','DESC');
