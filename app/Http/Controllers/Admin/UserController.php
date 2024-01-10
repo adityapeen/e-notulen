@@ -53,7 +53,7 @@ class UserController extends Controller
             'email' => ['required', 'string', 'email', 'max:255'],
             'phone' => ['required'],
             'satker_id' => ['required'],
-            'level_id' => ['required'],
+            // 'level_id' => ['required'],
         ]);
         if(User::updateOrCreate([
             'name' => $request->name,
@@ -62,7 +62,7 @@ class UserController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'satker_id' => $request->satker_id,
-            'level_id' => $request->level_id,
+            'current_level_id' => 9,
             'status' => 1,
         ])){
             return redirect()->route("admin.users.index")->with('success','Data <strong>berhasil</strong> disimpan');
