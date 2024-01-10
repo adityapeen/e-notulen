@@ -62,7 +62,7 @@ class UserController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'satker_id' => $request->satker_id,
-            'current_level_id' => 9,
+            'current_role_id' => 9,
             'status' => 1,
         ])){
             return redirect()->route("admin.users.index")->with('success','Data <strong>berhasil</strong> disimpan');
