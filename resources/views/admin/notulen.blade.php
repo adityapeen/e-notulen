@@ -223,19 +223,20 @@
             });
       }).always(function(data) {
         // console.log(JSON.stringify(data));
-      });;
+      });
     });
     $('#checkApi').on('click', function() {
       $.ajax({
-        type: 'POST',
-        url: "{{ env('API_URL') == null ? 'http://localhost:8000' : env('API_URL') }}" + "/check",
-        context: document.body
+        type: 'GET',
+        url: "{{ route('check_api_wa') }}" ,
+        context: document.body,
+        dataType: 'json',
       }).done(function(data) {
-        alert(data.message)
-      }).always(function(data) {
-        console.log(JSON.stringify(data));
-      });;
-
-    })
+        alert(data.message);
+      }).fail(function( data, status, errorThrown ) {
+        alert(data.responseJSON.message);
+        console.error('Request failed with status:', status);
+      })
+    });
   </script>
 @endsection

@@ -11,6 +11,7 @@ use App\Models\Pic;
 use App\Models\UserGroup;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
+use Illuminate\Support\Facades\Http;
 
 class ApiController extends Controller
 {
@@ -139,5 +140,14 @@ class ApiController extends Controller
         }
 
         return compact(['action_item','pics']);
+    }
+
+    public function check_api_wa()
+    {
+        $url_api = env('API_URL') == null ? 'http://localhost:8000' : env('API_URL');
+        $url = $url_api."/check";
+
+        $response = Http::post($url);
+        return response($response);
     }
 }
