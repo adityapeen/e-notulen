@@ -103,9 +103,9 @@
                     <td>
                       <span class="badge badge-sm bg-gradient-{{ $item->status == "todo" ? "info" : "secondary" }}" >{{ $item->status}}</span>
                     </td>
-                    <td style="cursor: pointer" class="clickable-action" data-id="{{ $item->id}}">
-                      <?= $item->note->name ?>
-                      <p class="text-secondary mb-0 text-xs">{{ $item->note->date}}</p>
+                    <td style="cursor: pointer" class="clickable-action text-wrap" data-id="{{ $item->id}}">
+                      <?= $item->what ?>
+                      <p class="text-secondary mb-0 text-xs">{{ $item->note->date.' • '.$item->note->name}}</p>
                     </td>
                     <td class="align-middle">                      
                       {{ $item->due_date}}                     
