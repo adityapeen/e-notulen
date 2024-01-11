@@ -47,7 +47,8 @@ class HomeController extends Controller
             $undone = ActionItems::whereNot('status','done')
                                 ->whereHas('note', function ($query) {
                                     $query->where('team_id', NULL);
-                                })->paginate(10);
+                                })
+                                ->orderBy('due_date', 'ASC')->paginate(10);
             $todays = Note::where('date', date('Y-m-d'))->get();
             return view('admin.notulen', compact(['users','agendas','notes','actions','todays','title','wa_ready','notes_locked','actions_todo','actions_progress','undone','notes_satkers']));
         }
@@ -80,7 +81,7 @@ class HomeController extends Controller
                 $undone = ActionItems::where('status', '<>', 'done')
                         ->whereHas('note.team', function ($query) {
                             $query->where('satker_id', auth()->user()->satker_id);
-                        })->get();
+                        })->orderBy('due_date', 'ASC')->get();
                 $todays = Note::select('notes.*')
                         ->whereHas('team', function($query){
                             $query->where('satker_id', auth()->user()->satker_id);
@@ -90,7 +91,7 @@ class HomeController extends Controller
                 $undone = ActionItems::where('status', '<>', 'done')
                         ->whereHas('note.team', function ($query) {
                             $query->where('team_id', auth()->user()->team_id);
-                        })->get();
+                        })->orderBy('due_date', 'ASC')->get();
                 $todays = Note::select('notes.*')
                         ->where('team_id', auth()->user()->team_id)
                         ->where('date', date('Y-m-d'))->get();
@@ -102,7 +103,7 @@ class HomeController extends Controller
             $undone = ActionItems::with('pics')->whereNot('status','done')
                                     ->whereHas('pics', function($query){
                                         $query->where('user_id', auth()->user()->id);
-                                    })->get();
+                                    })->orderBy('due_date', 'ASC')->get();
             $todays = Note::select('notes.*','attendants.user_id')
             ->join('attendants', 'notes.id', '=', 'attendants.note_id')
             ->where('attendants.user_id',auth()->user()->id)
