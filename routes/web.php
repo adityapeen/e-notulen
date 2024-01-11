@@ -29,6 +29,7 @@ Route::get('/check-in/{id}', [App\Http\Controllers\MeetingController::class, 'ch
 Route::post('/join/{id}', [App\Http\Controllers\MeetingController::class, 'join_meeting'])->name('join_meeting');
 Route::get('/quick_register/{id}', [App\Http\Controllers\MeetingController::class, 'custom_register'])->name('quick_register');
 Route::get('/mom_status/{id}/{type}', [App\Http\Controllers\MoMController::class, 'update_mom_status'])->name('mom_status');
+Route::get('/check_api_wa', [App\Http\Controllers\ApiController::class, 'check_api_wa'])->name('check_api_wa');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/switch-role/{role}', [App\Http\Controllers\SwitchRoleController::class, '__invoke'])->name('switch.role');
