@@ -16,13 +16,17 @@ class ActionItemsListController extends Controller
     {
         $color = ['primary','info','success'];
         if($hashed_id == 'ALL'){
-            $actions = ActionItems::orderBy('id', 'DESC')->paginate(15);
+            $actions = ActionItems::
+            // where('due_date','>',now())->
+            orderBy('status','ASC')->orderBy('due_date', 'ASC')->paginate(15);
             $count = ActionItems::select('action_items.status', DB::raw('count(status) as total'))->groupBy('status')->get();
         }
         else if($hashed_id == 'BPS'){
             $actions = ActionItems::whereHas('note', function ($query){
                 $query->where('team_id', NULL);
-            })->orderBy('id', 'DESC')->paginate(15);
+            })
+            // ->where('due_date','>',now())
+            ->orderBy('status','ASC')->orderBy('due_date', 'ASC')->paginate(15);
             $count = ActionItems::select('action_items.status', DB::raw('count(status) as total'))->whereHas('note', function ($query){
                 $query->where('team_id', NULL);
             })->groupBy('status')->get();
@@ -33,7 +37,9 @@ class ActionItemsListController extends Controller
                 $query->whereHas('team', function ($query) use ($satker_id){
                     $query->where('satker_id', $satker_id);
                 });
-            })->orderBy('id', 'DESC')->paginate(15);
+            })
+            // ->where('due_date','>',now())
+            ->orderBy('status','ASC')->orderBy('due_date', 'ASC')->paginate(15);
             $count = ActionItems::select('action_items.status', DB::raw('count(status) as total'))->whereHas('note', function ($query) use ($satker_id){
                 $query->whereHas('team', function ($query) use ($satker_id){
                     $query->where('satker_id', $satker_id);
@@ -55,7 +61,8 @@ class ActionItemsListController extends Controller
             $actions = ActionItems::whereHas('note', function ($query){
                 $query->where('team_id', auth()->user()->team_id);
             })
-            ->orderBy('id', 'DESC')->paginate(15);
+            // ->where('due_date','>',now())
+            ->orderBy('status','ASC')->orderBy('due_date', 'ASC')->paginate(15);
             $count = ActionItems::select('action_items.status', DB::raw('count(status) as total'))->whereHas('note', function ($query){
                 $query->where('team_id', auth()->user()->team_id);
             })->groupBy('status')->get();
@@ -65,7 +72,9 @@ class ActionItemsListController extends Controller
                 $query->whereHas('team', function ($query){
                     $query->where('satker_id', auth()->user()->satker_id);
                 });
-            })->orderBy('id', 'DESC')->paginate(15);
+            })
+            // ->where('due_date','>',now())
+            ->orderBy('status','ASC')->orderBy('due_date', 'ASC')->paginate(15);
             $count = ActionItems::select('action_items.status', DB::raw('count(status) as total'))->whereHas('note', function ($query){
                 $query->whereHas('team', function ($query){
                     $query->where('satker_id', auth()->user()->satker_id);
@@ -79,13 +88,17 @@ class ActionItemsListController extends Controller
     {
         $color = ['primary','info','success'];
         if($hashed_id == 'ALL'){
-            $actions = ActionItems::orderBy('id', 'DESC')->paginate(15);
+            $actions = ActionItems::orderBy('status','ASC')
+            // where('due_date','>',now())->
+            ->orderBy('due_date', 'ASC')->paginate(15);
             $count = ActionItems::select('action_items.status', DB::raw('count(status) as total'))->groupBy('status')->get();
         }
         else if($hashed_id == 'BPS'){
             $actions = ActionItems::whereHas('note', function ($query){
                 $query->where('team_id', NULL);
-            })->orderBy('id', 'DESC')->paginate(15);
+            })
+            // ->where('due_date','>',now())
+            ->orderBy('status','ASC')->orderBy('due_date', 'ASC')->paginate(15);
             $count = ActionItems::select('action_items.status', DB::raw('count(status) as total'))->whereHas('note', function ($query){
                 $query->where('team_id', NULL);
             })->groupBy('status')->get();
@@ -96,7 +109,9 @@ class ActionItemsListController extends Controller
                 $query->whereHas('team', function ($query) use ($satker_id){
                     $query->where('satker_id', $satker_id);
                 });
-            })->orderBy('id', 'DESC')->paginate(15);
+            })
+            // ->where('due_date','>',now())
+            ->orderBy('status','ASC')->orderBy('due_date', 'ASC')->paginate(15);
             $count = ActionItems::select('action_items.status', DB::raw('count(status) as total'))->whereHas('note', function ($query) use ($satker_id){
                 $query->whereHas('team', function ($query) use ($satker_id){
                     $query->where('satker_id', $satker_id);
