@@ -16,13 +16,13 @@ class ActionItemsListController extends Controller
     {
         $color = ['primary','info','success'];
         if($hashed_id == 'ALL'){
-            $actions = ActionItems::
+            $actions = ActionItems::withCount('evidences')->
             // where('due_date','>',now())->
             orderBy('status','ASC')->orderBy('due_date', 'ASC')->paginate(15);
             $count = ActionItems::select('action_items.status', DB::raw('count(status) as total'))->groupBy('status')->get();
         }
         else if($hashed_id == 'BPS'){
-            $actions = ActionItems::whereHas('note', function ($query){
+            $actions = ActionItems::withCount('evidences')->whereHas('note', function ($query){
                 $query->where('team_id', NULL);
             })
             // ->where('due_date','>',now())
@@ -33,7 +33,7 @@ class ActionItemsListController extends Controller
         }
         else {
             $satker_id = Hashids::decode($hashed_id)[0]; //decode the hashed id
-            $actions = ActionItems::whereHas('note', function ($query) use ($satker_id){
+            $actions = ActionItems::withCount('evidences')->whereHas('note', function ($query) use ($satker_id){
                 $query->whereHas('team', function ($query) use ($satker_id){
                     $query->where('satker_id', $satker_id);
                 });
@@ -58,7 +58,7 @@ class ActionItemsListController extends Controller
         $title = "Action Items";
         $color = ['primary','info','success'];
         if(auth()->user()->level_id == 8){ // Admin Bidang
-            $actions = ActionItems::whereHas('note', function ($query){
+            $actions = ActionItems::withCount('evidences')->whereHas('note', function ($query){
                 $query->where('team_id', auth()->user()->team_id);
             })
             // ->where('due_date','>',now())
@@ -68,7 +68,7 @@ class ActionItemsListController extends Controller
             })->groupBy('status')->get();
         }
         else { // Admin Satker
-            $actions = ActionItems::whereHas('note', function ($query){
+            $actions = ActionItems::withCount('evidences')->whereHas('note', function ($query){
                 $query->whereHas('team', function ($query){
                     $query->where('satker_id', auth()->user()->satker_id);
                 });
@@ -88,13 +88,13 @@ class ActionItemsListController extends Controller
     {
         $color = ['primary','info','success'];
         if($hashed_id == 'ALL'){
-            $actions = ActionItems::orderBy('status','ASC')
+            $actions = ActionItems::withCount('evidences')->orderBy('status','ASC')
             // where('due_date','>',now())->
             ->orderBy('due_date', 'ASC')->paginate(15);
             $count = ActionItems::select('action_items.status', DB::raw('count(status) as total'))->groupBy('status')->get();
         }
         else if($hashed_id == 'BPS'){
-            $actions = ActionItems::whereHas('note', function ($query){
+            $actions = ActionItems::withCount('evidences')->whereHas('note', function ($query){
                 $query->where('team_id', NULL);
             })
             // ->where('due_date','>',now())
@@ -105,7 +105,7 @@ class ActionItemsListController extends Controller
         }
         else {
             $satker_id = Hashids::decode($hashed_id)[0]; //decode the hashed id
-            $actions = ActionItems::whereHas('note', function ($query) use ($satker_id){
+            $actions = ActionItems::withCount('evidences')->whereHas('note', function ($query) use ($satker_id){
                 $query->whereHas('team', function ($query) use ($satker_id){
                     $query->where('satker_id', $satker_id);
                 });

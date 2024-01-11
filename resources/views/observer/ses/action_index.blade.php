@@ -70,7 +70,8 @@
                   </td>
                   <td class="align-middle text-sm">
                     <a href="#" class="btn btn-sm bg-gradient-secondary mb-0" onclick="viewAction('{{ $item->id }}')">Detail</a>
-                    <a href="{{ route('ses.notes.evidence', $item->id)}}" class="btn btn-sm bg-gradient-info mb-0">Evidences</a>
+                    <a href="{{ route('ses.notes.evidence', $item->id)}}" class="btn btn-sm bg-gradient-info mb-0">Evidences
+                      <span class="badge bg-gradient-light text-dark ms-2">{{ $item->evidences_count }}</span></a>
                   </td>                  
                   <td class="align-middle text-sm">
                     <a href="#" onclick="handleView('{{$item->note->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Detail Notulensi">

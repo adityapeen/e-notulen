@@ -16,7 +16,7 @@ class UserActionItemsController extends Controller
     public function index()
     {
         $title = "Action Items";
-        $actions = ActionItems::whereHas('pics', function($query){
+        $actions = ActionItems::withCount('evidences')->whereHas('pics', function($query){
             $query->where('user_id', auth()->user()->id);
         })->orderBy('id', 'DESC')->paginate(15);
 
