@@ -232,11 +232,11 @@
         context: document.body,
         dataType: 'json',
       }).done(function(data) {
-        alert(data.message);
-      }).fail(function( data, status, errorThrown ) {
-        alert(data.responseJSON.message);
-        console.error('Request failed with status:', status);
-      })
-    });
+        alert(data.message)
+      }).always(function(data) {
+        console.log(JSON.stringify(data));
+      });;
+
+    })
   </script>
 @endsection
