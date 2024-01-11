@@ -57,9 +57,10 @@
               <tbody>
                 @foreach ($actions as $item)
                 <tr>
-                  <td class="text-sm">
-                    <h6 class="mb-0">{{ $item->note->name }}</h6>
-                    <span class="badge badge-sm bg-gradient-{{ $item->type == "public" ? "success":"info" }}" >{{ $item->note->date }}</span>
+                  <td class="text-sm text-wrap">
+                    <h6 class="mb-0">{!! $item->what !!}</h6>
+                    <span class="badge badge-sm bg-gradient-{{ $item->note->type == "public" ? "success":"info" }}" >{{ $item->note->date }}</span>
+                    <span class="badge badge-sm bg-gradient-light text-dark" >{{ $item->note->name }}</span>
                   </td>
                   <td class="align-middle text-sm">
                     {{ $item->due_date }}
