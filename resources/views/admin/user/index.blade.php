@@ -41,13 +41,13 @@
                     {{ $item->satker->name }}
                   </td>
                   <td class="align-middle text-sm text-wrap">
-                    @foreach($item->roles as $item)
-                        <span class="badge badge-sm bg-gradient-secondary mb-1">{{ $item->name }}</span>
+                    @foreach($item->roles as $r)
+                        <span class="badge badge-sm bg-gradient-secondary mb-1">{{ $r->name }}</span>
                     @endforeach
                   </td>
                   
                   <td class="align-middle">
-                    <a href="{{ route('admin.users.edit', [$item->id_hash()] ) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Edit user">
+                    <a href="{{ route('admin.users.edit', $item->id_hash()) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Edit user">
                       <button class="btn btn-sm btn-success"><i class="fa fa-edit"></i></button>
                     </a>
                     <a href="#" onclick="handleDestroy('{{$item->id_hash()}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Hapus user">
