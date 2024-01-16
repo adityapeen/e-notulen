@@ -36,8 +36,10 @@
                   <td class="align-middle text-sm">
                     {{ $item->email }}
                   </td>
-                  <td class="align-middle text-sm">
-                    {{ $item->level->name }}
+                  <td class="align-middle text-sm text-wrap">
+                    @foreach($item->roles as $item)
+                        <span class="badge badge-sm bg-gradient-secondary mb-1">{{ $item->name }}</span>
+                    @endforeach
                   </td>
                   <td class="align-middle text-sm">
                     {{ $item->team == null ? "" : $item->team->name }}
