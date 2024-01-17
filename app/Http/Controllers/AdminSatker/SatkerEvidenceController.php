@@ -76,8 +76,10 @@ class SatkerEvidenceController extends Controller
         ]);
         if($evidence){
             ActionItems::findOrFail($action_id)->update(['status'=>'onprogress']);
-            Pic::where([['action_id','=', $action_id],['user_id','=',auth()->user()->id]])->first()->update(['status'=>'onprogress']);
-            return redirect()->route("satker.notes.evidence",$request->action_id)->with('success','Data <strong>berhasil</strong> disimpan');
+            $pic = Pic::where([['action_id','=', $action_id],['user_id','=',auth()->user()->id]])->first();
+            if( $pic != NULL){
+                $pic->update(['status'=>'onprogress']);
+            }            return redirect()->route("satker.notes.evidence",$request->action_id)->with('success','Data <strong>berhasil</strong> disimpan');
         }else{
             return back()->withErrors(['Data <strong>gagal</strong> ditambahkan!']);
         }
