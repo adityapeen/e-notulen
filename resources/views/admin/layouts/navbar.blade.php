@@ -42,9 +42,11 @@
                     <h6 class="text-sm font-weight-normal my-auto">
                       {{ $item->data['name'].' '.$item->data['message'].' '.$item->data['meeting']}}
                     </h6>
+                    <small class="text-xxs position-relative">{{ substr($item->created_at,0,10 )}} </small>
                   </div>
                 </div>
               </a>
+              <hr class="horizontal dark m-0">
             </li>
             @endforeach     
             @if(count($notifications) > 0)
