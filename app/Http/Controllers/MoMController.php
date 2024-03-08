@@ -61,7 +61,7 @@ class MoMController extends Controller
             $date = date_create($notes->date);
             $file_location = 'notulensi/'.$notes->file_notulen;
             
-            if($notes->file_notulen == NULL && $attendance->user->level_id > 2 && $attendance->mom_sent == NULL && $attendance->user->phone !== '-'){
+            if($notes->file_notulen == NULL && $attendance->user->current_role_id > 2 && $attendance->mom_sent == NULL && $attendance->user->phone !== '-'){
                 $message = "Berikut ini kami sampaikan notulen *"
                     .$notes->name."* pada tanggal *".date_format($date,"d-m-Y").".* Silahkan akses notulen pada link berikut : \n"
                     .$notes->link_drive_notulen
@@ -73,7 +73,7 @@ class MoMController extends Controller
                     'id' => $type.';'.$attendance->id
                 ]);
             }
-            else if($attendance->user->level_id > 2 && $attendance->mom_sent == NULL && $attendance->user->phone !== '-'){
+            else if($attendance->user->current_role_id > 2 && $attendance->mom_sent == NULL && $attendance->user->phone !== '-'){
                 $message = "Berikut ini kami sampaikan notulen *"
                     .$notes->name."* pada tanggal *".date_format($date,"d-m-Y").".* \n"
                     ."\nTerimakasih 🙏🙏🙏";
