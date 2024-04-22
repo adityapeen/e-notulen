@@ -155,7 +155,7 @@
               <tbody>
                 @foreach ($todays as $item)
                   <tr>
-                    <td style="cursor: pointer" class="clickable-row" data-href="{{$item->status == 'lock'? route('admin.notes.show', $item->id) : $item->link_drive_notulen }}">
+                    <td style="cursor: pointer" class="clickable-row" data-href="{{$item->status == 'lock'? route('admin.notes.show', $item->hashed_id) : $item->link_drive_notulen }}">
                       <div class="d-flex px-2 py-1">
                         <div class="me-3">
                           <div
@@ -170,7 +170,7 @@
                       </div>
                     </td>
                     <td class="align-middle">
-                      <a href="{{ route('admin.notes.action', $item->id) }}" class="text-info font-weight-bold text-xs"
+                      <a href="{{ route('admin.notes.action', $item->hashed_id) }}" class="text-info font-weight-bold text-xs"
                         data-toggle="tooltip" data-original-title="Edit user">
                         Action Items
                       </a>

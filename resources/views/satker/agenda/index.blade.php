@@ -40,10 +40,10 @@
                     <h6 class="mb-0">{{ $item->notes_count }}</h6>
                   </td>
                   <td class="align-middle">
-                    <a href="{{ route('satker.agendas.edit', [$item->id] ) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Edit Agenda">
+                    <a href="{{ route('satker.agendas.edit', [$item->hashed_id] ) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Edit Agenda">
                       <button class="btn btn-sm btn-success"><i class="fa fa-edit"></i></button>
                     </a>
-                    <a href="#" onclick="handleDestroy('{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Hapus Agenda">
+                    <a href="#" onclick="handleDestroy('{{$item->hashed_id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Hapus Agenda">
                       <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
                     </a>
                   </td>

@@ -21,10 +21,10 @@
                 Agenda Rapat
               </div>
               <div class="col-md-8">
-                <select id="agenda_id" class="form-select border px-1 @error('agenda_id') is-invalid @enderror" value="{{ old('agenda_id') }}" name="agenda_id">
+                <select id="agendas" multiple="multiple" class="form-select border px-1 @error('agendas') is-invalid @enderror" value="{{ old('agendas') }}" name="agendas[]">
                   <option value=>Pilih Agenda Rapat</option>
                   @foreach ($agendas as $item)
-                      <option value="{{ $item->id }}">{{ $item->name }}</option>
+                      <option value="{{ $item->hashed_id }}">{{ $item->name }}</option>
                   @endforeach
               </select>
               </div>
@@ -147,16 +147,16 @@
 <script>
   var api = '{{ url('api/g_attendants') }}/';
   $(document).ready( function() {
-    $('#agenda_id').select2({
+    $('#agendas').select2({
       placeholder: 'Pilih Agenda Rapat'
     });
     autoDate();
     attendants();
     let searchParams = new URLSearchParams(window.location.search);
     if(searchParams.get('agenda') != null){
-      $('#agenda_id').val(searchParams.get('agenda')).trigger('change');
+      $('#agendas').val(searchParams.get('agenda')).trigger('change');
     }
-    getExisting($('#agenda_id').val());
+    getExisting($('#agendas').val());
   });
 
   function autoDate(){
@@ -189,8 +189,7 @@
     });
   }
 
-  $('#agenda_id').change(function(){
-    
+  $('#agendas').change(function(){
     getExisting($(this).val());
   })
 

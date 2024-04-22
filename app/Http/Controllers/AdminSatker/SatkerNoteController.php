@@ -84,7 +84,7 @@ class SatkerNoteController extends Controller
         }
      
         $notes = Note::updateOrCreate([
-                'agenda_id' => $request->agenda_id == NULL ? NULL : Hashids::decode($request->agenda_id)[0],
+                // 'agenda_id' => $request->agenda_id == NULL ? NULL : Hashids::decode($request->agenda_id)[0],
                 'type' => $request->type,
                 'name' => $request->name,
                 'date' => $request->date,
@@ -100,10 +100,20 @@ class SatkerNoteController extends Controller
                 'team_id' => auth()->user()->team_id
         ]);
         if($notes){
+            // Synch Agendas
+            if($request->agendas != null){            
+                $agendas = array();
+                foreach ($request->agendas as $a){
+                    $decoded_id = Hashids::decode($a)[0];
+                    array_push($agendas,$decoded_id);
+                }
+                $notes->agendas()->attach($agendas);
+            }
+            // Add Attendants & MoM Recipients
             if($request->attendants != null){
                 foreach( $request->attendants as $a){
                     Attendant::updateOrCreate([
-                        'note_id'=>Hashids::decode($notes->id)[0],
+                        'note_id'=> $notes->id,
                         'user_id'=> Hashids::decode($a)[0]
                     ]);
                 }
@@ -111,7 +121,7 @@ class SatkerNoteController extends Controller
             if($request->mom_recipients != null){
                 foreach( $request->mom_recipients as $r){
                     MomRecipients::updateOrCreate([
-                        'note_id'=>Hashids::decode($notes->id)[0],
+                        'note_id'=> $notes->id,
                         'user_id'=> Hashids::decode($r)[0]
                     ]);
                 }
@@ -216,7 +226,7 @@ class SatkerNoteController extends Controller
         }
 
         $notes->update([
-            'agenda_id' => $request->agenda_id == NULL ? NULL : Hashids::decode($request->agenda_id)[0],
+            // 'agenda_id' => $request->agenda_id == NULL ? NULL : Hashids::decode($request->agenda_id)[0],
             'type' => $request->type,
             'name' => $request->name,
             'date' => $request->date,
@@ -230,8 +240,19 @@ class SatkerNoteController extends Controller
             'updated_by' => auth()->user()->id,
         ]) ;
         if($notes){
+            // Synch Agendas
+            if($request->agendas != null){
+                $agendas = array();
+                foreach ($request->agendas as $a){
+                    $decoded_id = Hashids::decode($a)[0];
+                    array_push($agendas,$decoded_id);
+                }
+                $notes->agendas()->sync($agendas);
+            }
+            // Synch Attendants
             if($request->attendants != null){
-                $note_id = Hashids::decode($notes->id)[0];
+                // $note_id = Hashids::decode($notes->id)[0];
+                $note_id = $notes->id;
                 $attendants = Attendant::where('note_id', $note_id)->get();
 
                 $existing = array();
@@ -262,7 +283,8 @@ class SatkerNoteController extends Controller
                 }
             }
             if($request->mom_recipients != null){
-                $note_id = Hashids::decode($notes->id)[0];
+                // $note_id = Hashids::decode($notes->id)[0];
+                $note_id = $notes->id;
                 $recipients = MomRecipients::where('note_id', $note_id)->get();
 
                 $existing = array();

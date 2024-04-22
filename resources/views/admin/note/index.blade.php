@@ -44,63 +44,68 @@
                       @if ($item->agenda != null)
                         <span class="badge badge-sm bg-gradient-secondary">{{ $item->agenda->name }}</span>
                       @endif
+                      @if ($item->agendas != null)
+                        @foreach ($item->agendas as $a)
+                          <span class="badge badge-sm bg-gradient-secondary">{{ $a->name }}</span>
+                        @endforeach
+                      @endif
                     </td>
                     <td class="align-middle text-sm">
                       {{ $item->date }}
                     </td>
                     <td class="align-middle text-sm">
-                      <a href="{{ route('admin.notes.action', [$item->id]) }}" class="btn btn-sm bg-gradient-info">Action
+                      <a href="{{ route('admin.notes.action', [$item->hashed_id]) }}" class="btn btn-sm bg-gradient-info">Action
                         Items <span class="badge bg-gradient-light text-dark ms-2">{{ $item->action_items_count }}</span></a>
                     </td>
                     <td class="align-middle text-sm">
                       <span class="badge badge-sm bg-gradient-{{ $item->status == 'open' ? 'success' : 'danger' }} btn"
-                        onclick="handleView('admin','{{ $item->id }}')" data-toggle="tooltip"
+                        onclick="handleView('admin','{{ $item->hashed_id }}')" data-toggle="tooltip"
                         title="Lihat Notulensi">{{ $item->status }} <div class="fa fa-eye"></div></span>
                     </td>
 
                     <td class="align-middle">
                       @if ($item->status != 'lock')
-                        <a href="{{ route('admin.notes.edit', [$item->id]) }}"
+                        <a href="{{ route('admin.notes.edit', [$item->hashed_id]) }}"
                           class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Edit Notulensi">
                           <button class="btn btn-sm btn-success"><i class="fa fa-edit"></i></button>
                         </a>
                         @if ($item->link_drive_notulen == '-')
-                          <a href="{{ route('api.gdocs', [$item->id]) }}" class="text-secondary font-weight-bold text-xs"
+                          <a href="{{ route('api.gdocs', [$item->hashed_id]) }}" class="text-secondary font-weight-bold text-xs"
                             data-toggle="tooltip" title="Generate File Notulen">
                             <button class="btn btn-sm btn-secondary"><i class="fab fa-google-drive"></i></button>
                           </a>
                         @endif
-                        <a href="{{ route('admin.notes.qrcode', [$item->id]) }}" target="_blank"
+                        <a href="{{ route('admin.notes.qrcode', [$item->hashed_id]) }}" target="_blank"
                           class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="QR Join Meeting">
                           <button class="btn btn-sm btn-dark"><i class="fa fa-qrcode"></i></button>
                         </a>
                       @endif
-                      <a href="#" onclick="handleLock('admin','{{ $item->id }}')"
+                      <a href="#" onclick="handleLock('admin','{{ $item->hashed_id }}')"
                         class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
                         title="{{ $item->status == 'lock' ? 'Buka' : 'Kunci' }} Notulensi">
                         <button class="btn btn-sm btn-{{ $item->status == 'lock' ? 'primary' : 'warning' }}"><i
                             class="fa fa-lock"></i></button>
                       </a>
-                      {{-- <a href="#" onclick="handleMoM('{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Kirim MoM">
+                      {{-- <a href="#" onclick="handleMoM('{{$item->hashed_id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Kirim MoM">
                       <button class="btn btn-sm btn-info"><i class="fa fa-file"></i></button>
                     </a> --}}
                       @if ($item->status == 'lock')
                         @if($item->file_notulen == NULL)
-                          <a href="{{ route('admin.export.docs', [$item->id]) }}" target="_blank" class="text-secondary font-weight-bold text-xs"
+                          <a href="{{ route('admin.export.docs', [$item->hashed_id]) }}" target="_blank" class="text-secondary font-weight-bold text-xs"
                             data-toggle="tooltip" title="Generate PDF">
                             <button class="btn btn-sm btn-danger"><i class="fa fa-file-pdf"></i></button>
                           </a>
                         @endif
-                        <a href="#" onclick="handleSend('admin','{{ $item->id }}')"
+                        <a href="#" onclick="handleSend('admin','{{ $item->hashed_id }}')"
                           class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Kirim MoM">
                           <button class="btn btn-sm btn-info"><i class="fa fa-file"></i></button>
                         </a>
-                        <a href="{{ route('admin.notes.absensi', $item->id)}}" target="_blank"
+                        <a href="{{ route('admin.notes.absensi', $item->hashed_id)}}" target="_blank"
                           class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Daftar Hadir">
                           <button class="btn btn-sm btn-warning"><i class="fa fa-list"></i></button>
                         </a>
                         @else
-                        <a href="#" onclick="handleDestroy('admin','{{ $item->id }}')"
+                        <a href="#" onclick="handleDestroy('admin','{{ $item->hashed_id }}')"
                           class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Hapus Agenda">
                           <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
                         </a>

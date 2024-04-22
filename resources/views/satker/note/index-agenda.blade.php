@@ -41,7 +41,7 @@
                     {{ $item->date }}
                   </td>
                   <td class="align-middle text-sm">
-                    <a href="{{ route('satker.notes.action', [$item->id] ) }}" class="btn btn-sm bg-gradient-info mb-0">Action Items 
+                    <a href="{{ route('satker.notes.action', [$item->hashed_id] ) }}" class="btn btn-sm bg-gradient-info mb-0">Action Items 
                       <span class="badge bg-gradient-light text-dark ms-2">{{ $item->action_items_count }}</span></a>
                   </td>
                   <td class="align-middle text-sm">
@@ -49,30 +49,30 @@
                   </td>
                   
                   <td class="align-middle">
-                    <a href="#" onclick="handleView('satker','{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Lihat Notulensi">
+                    <a href="#" onclick="handleView('satker','{{$item->hashed_id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Lihat Notulensi">
                       <button class="btn btn-sm btn-info"><i class="fa fa-eye"></i></button>
                     </a>
                     @if($item->status != 'lock')
-                    <a href="{{ route('satker.notes.edit', [$item->id] ) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Edit Agenda">
+                    <a href="{{ route('satker.notes.edit', [$item->hashed_id] ) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Edit Agenda">
                       <button class="btn btn-sm btn-success"><i class="fa fa-edit"></i></button>
                     </a>
                     @endif
-                    <a href="#" onclick="handleLock('satker','{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="{{ $item->status == 'lock'? 'Buka':'Kunci' }} Notulensi">
+                    <a href="#" onclick="handleLock('satker','{{$item->hashed_id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="{{ $item->status == 'lock'? 'Buka':'Kunci' }} Notulensi">
                       <button class="btn btn-sm btn-{{ $item->status == 'lock'? 'primary':'warning' }}"><i class="fa fa-lock"></i></button>
                     </a>
-                    {{-- <a href="#" onclick="handleMoM('{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Kirim MoM">
+                    {{-- <a href="#" onclick="handleMoM('{{$item->hashed_id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Kirim MoM">
                       <button class="btn btn-sm btn-info"><i class="fa fa-file"></i></button>
                     </a> --}}
                     @if($item->status == 'lock')
-                    <a href="#" onclick="handleSend('satker','{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Kirim MoM">
+                    <a href="#" onclick="handleSend('satker','{{$item->hashed_id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Kirim MoM">
                       <button class="btn btn-sm btn-info"><i class="fa fa-file"></i></button>
                     </a>
-                    <a href="{{ route('satker.notes.absensi', $item->id)}}" target="_blank"
+                    <a href="{{ route('satker.notes.absensi', $item->hashed_id)}}" target="_blank"
                       class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Daftar Hadir">
                       <button class="btn btn-sm btn-warning"><i class="fa fa-list"></i></button>
                     </a>
                     @else
-                    <a href="#" onclick="handleDestroy('satker','{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Hapus Agenda">
+                    <a href="#" onclick="handleDestroy('satker','{{$item->hashed_id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Hapus Agenda">
                       <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
                     </a>
                     @endif

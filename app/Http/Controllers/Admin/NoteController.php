@@ -58,57 +58,66 @@ class NoteController extends Controller
             return DataTables::of($notes)
             ->addColumn('name_b', function($row){
                 $type = $row->type == 'public' ? 'success' : 'info';
+                $tag ="";
+                if($row->agendas != null)
+                foreach($row->agendas as $item){
+                    if($item->name != NULL)
+                    $tag = $tag.'<span class="badge badge-sm bg-gradient-secondary">'. $item->name .'</span> ';
+                }
+
                 $name = '<h6 class="mb-0">'. $row->name .'</h6>
                 <span class="badge badge-sm bg-gradient-'. $type .' px-1">&nbsp;</span>
                 '.($row->team != null? '<span class="badge badge-sm bg-gradient-light text-dark">'. $row->team->satker->code .'</span>':'')
-                 .($row->agenda != null ? '<span class="badge badge-sm bg-gradient-secondary">'. $row->agenda->name .'</span>' : '');
+                //  .($row->agenda != null ? '<span class="badge badge-sm bg-gradient-secondary">'. $row->agenda->name .'</span>' : '')
+                 .$tag;
+                 
                 return $name;
             })
             ->addColumn('action_item', function($row){
-                $actionItem = '<a href="'.route('admin.notes.action', [$row->id]).'" class="btn btn-sm bg-gradient-info mb-0">Action
+                $actionItem = '<a href="'.route('admin.notes.action', [$row->hashed_id]).'" class="btn btn-sm bg-gradient-info mb-0">Action
                 Items <span class="badge bg-gradient-light text-dark ms-2">'.$row->action_items_count.'</span></a>';
                 return $actionItem;
             })
             ->addColumn('status_b', function($row){
                 $type = $row->status == 'open' ? 'success' : 'danger';
                 $status = '<span class="badge badge-sm bg-gradient-'. $type .' btn mb-0"
-                onclick="handleView(`admin`,`'. $row->id .'`)" data-toggle="tooltip"
+                onclick="handleView(`admin`,`'. $row->hashed_id .'`)" data-toggle="tooltip"
                 title="Lihat Notulensi">'. $row->status .'<div class="fa fa-eye"></div></span>';
                 return $status;
             })
             ->addColumn('action', function($row){
-                $bt_edit = '<a href="'. route('admin.notes.edit', [$row->id]) .'"
+                $bt_edit = '<a href="'. route('admin.notes.edit', [$row->hashed_id]) .'"
                 class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Edit Notulensi">
                 <button class="btn btn-sm btn-success mb-0"><i class="fa fa-edit"></i></button>
               </a>';
-                $bt_docs = '<a href="'. route('api.gdocs', [$row->id]) .'" class="text-secondary font-weight-bold text-xs"
+                $bt_docs = '<a href="'. route('api.gdocs', [$row->hashed_id]) .'" class="text-secondary font-weight-bold text-xs"
               data-toggle="tooltip" title="Generate File Notulen">
               <button class="btn btn-sm btn-secondary mb-0"><i class="fab fa-google-drive"></i></button>
             </a>';
-                $bt_qr = '<a href="'. route('admin.notes.qrcode', [$row->id]) .'" target="_blank"
+                $bt_qr = '<a href="'. route('admin.notes.qrcode', [$row->hashed_id]) .'" target="_blank"
                 class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="QR Join Meeting">
                 <button class="btn btn-sm btn-dark mb-0"><i class="fa fa-qrcode"></i></button>
               </a>';
               $type = $row->status == 'lock' ? 'primary' : 'warning';
-              $bt_lock = '<a href="#" onclick="handleLock(`admin`,`'. $row->id .'`)"
+              $bt_lock = '<a href="#" onclick="handleLock(`admin`,`'. $row->hashed_id .'`)"
               class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
               title="'. ($row->status == 'lock' ? 'Buka' : 'Kunci' ).' Notulensi">
               <button class="btn btn-sm btn-'. $type .' mb-0"><i
                   class="fa fa-lock"></i></button>
             </a>';
-                $bt_pdf = '<a href="'. route('admin.export.docs', [$row->id]) .'" target="_blank" class="text-secondary font-weight-bold text-xs"
+                $bt_pdf = '<a href="'. route('admin.export.docs', [$row->hashed_id]) .'" target="_blank" class="text-secondary font-weight-bold text-xs"
                          data-toggle="tooltip" title="Generate PDF">
                          <button class="btn btn-sm btn-danger mb-0"><i class="fa fa-file-pdf"></i></button>
                       </a>';
-                $bt_send = '<a href="#" onclick="handleSend(`admin`,`'. $row->id .'`)"
+                $bt_send = '<a href="#" onclick="handleSend(`admin`,`'. $row->hashed_id .'`)"
                 class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Kirim MoM">
                 <button class="btn btn-sm btn-info mb-0"><i class="fa fa-file"></i></button>
               </a>';
-                $bt_absen = '<a href="'. route('admin.notes.absensi', $row->id).'" target="_blank"
+                $bt_absen = '<a href="'. route('admin.notes.absensi', $row->hashed_id).'" target="_blank"
                 class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Daftar Hadir">
                 <button class="btn btn-sm btn-warning mb-0"><i class="fa fa-list"></i></button>
               </a>';
-                $bt_delete = '<a href="#" onclick="handleDestroy(`admin`,`'. $row->id .'`)"
+                $bt_delete = '<a href="#" onclick="handleDestroy(`admin`,`'. $row->hashed_id .'`)"
                 class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Hapus Agenda">
                 <button class="btn btn-sm btn-danger mb-0"><i class="fa fa-trash"></i></button>
               </a>';
@@ -186,7 +195,7 @@ class NoteController extends Controller
         }
      
         $notes = Note::updateOrCreate([
-                'agenda_id' => $request->agenda_id == NULL ? NULL : Hashids::decode($request->agenda_id)[0],
+                // 'agenda_id' => $request->agenda_id == NULL ? NULL : Hashids::decode($request->agenda_id)[0],
                 'type' => $request->type,
                 'name' => $request->name,
                 'date' => $request->date,
@@ -201,10 +210,20 @@ class NoteController extends Controller
                 'created_by' => auth()->user()->id,
         ]);
         if($notes){
+            // Synch Agendas
+            if($request->agendas != null){            
+                $agendas = array();
+                foreach ($request->agendas as $a){
+                    $decoded_id = Hashids::decode($a)[0];
+                    array_push($agendas,$decoded_id);
+                }
+                $notes->agendas()->attach($agendas);
+            }
+            // Add Attendants & MoM Recipients
             if($request->attendants != null){
                 foreach( $request->attendants as $a){
                     Attendant::updateOrCreate([
-                        'note_id'=>Hashids::decode($notes->id)[0],
+                        'note_id'=>$notes->id,
                         'user_id'=> Hashids::decode($a)[0]
                     ]);
                 }
@@ -212,7 +231,7 @@ class NoteController extends Controller
             if($request->mom_recipients != null){
                 foreach( $request->mom_recipients as $r){
                     MomRecipients::updateOrCreate([
-                        'note_id'=>Hashids::decode($notes->id)[0],
+                        'note_id'=> $notes->id,
                         'user_id'=> Hashids::decode($r)[0]
                     ]);
                 }
@@ -317,7 +336,7 @@ class NoteController extends Controller
         }
 
         $notes->update([
-            'agenda_id' => $request->agenda_id == NULL ? NULL : Hashids::decode($request->agenda_id)[0],
+            // 'agenda_id' => $request->agenda_id == NULL ? NULL : Hashids::decode($request->agenda_id)[0],
             'type' => $request->type,
             'name' => $request->name,
             'date' => $request->date,
@@ -329,10 +348,21 @@ class NoteController extends Controller
             'file_notulen' => $nama_file,
             'status' => 'open',
             'updated_by' => auth()->user()->id,
-        ]) ;
+        ]) ;        
         if($notes){
+            // Synch Agendas
+            if($request->agendas != null){
+                $agendas = array();
+                foreach ($request->agendas as $a){
+                    $decoded_id = Hashids::decode($a)[0];
+                    array_push($agendas,$decoded_id);
+                }
+                $notes->agendas()->sync($agendas);
+            }
+            // Synch Attendants
             if($request->attendants != null){
-                $note_id = Hashids::decode($notes->id)[0];
+                // $note_id = Hashids::decode($notes->id)[0];
+                $note_id = $notes->id;
                 $attendants = Attendant::where('note_id', $note_id)->get();
 
                 $existing = array();
@@ -363,7 +393,8 @@ class NoteController extends Controller
                 }
             }
             if($request->mom_recipients != null){
-                $note_id = Hashids::decode($notes->id)[0];
+                // $note_id = Hashids::decode($notes->id)[0];
+                $note_id = $notes->id;
                 $recipients = MomRecipients::where('note_id', $note_id)->get();
 
                 $existing = array();

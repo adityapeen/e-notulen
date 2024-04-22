@@ -25,8 +25,10 @@ class ApiController extends Controller
         $note_id = Hashids::decode($hashed_id)[0]; //decode the hashed id
         $attendants = Attendant::where(['note_id'=>$note_id])->get();
         $recipients = MomRecipients::where(['note_id'=>$note_id])->get();
+        $agendas = Note::find($note_id)->agendas;
         $res = array();
         $rec = array();
+        $agds = array();
         foreach($attendants as $a)
         {
             $item = array(
@@ -43,7 +45,17 @@ class ApiController extends Controller
             );
             array_push($rec,$item);
         }
+        foreach($agendas as $a)
+        {
+            $item = array(
+                'id'    =>$a->hashed_id,
+                'text'  => $a->name
+            );
+            array_push($agds,$item);
+        }
+        
         return json_encode(["results"=>[
+            "agendas" => $agds,
             "attendants" => $res,
             "mom_recipients" => $rec
         ]]);
@@ -51,17 +63,27 @@ class ApiController extends Controller
     
     function group_attendants (String $hashed_id)
     {
-        $agenda_id = Hashids::decode($hashed_id)[0]; //decode the hashed id
-        $attendants = UserGroup::where(['agenda_id'=>$agenda_id])->get();
-        $res = array();
-        foreach($attendants as $a)
-        {
-            $item = array(
-                'id'    =>$a->user->id_hash(),
-                'text'  => $a->user->name
-            );
-            array_push($res,$item);
+        $agendas = explode(',',$hashed_id);
+        $agenda_list = array();
+        foreach($agendas as $a){
+            $item = Hashids::decode($a)[0];
+            array_push($agenda_list, $item);
         }
+        $res = array();
+        foreach ($agenda_list as $a){
+            $attendants = UserGroup::where(['agenda_id'=>$a])->get();
+            foreach($attendants as $a)
+            {
+                $item = array(
+                    'id'    =>$a->user->id_hash(),
+                    'text'  => $a->user->name
+                );
+                // Need filter to make sure the value is unique
+                // please put here
+                // 
+                array_push($res,$item);
+            }
+        }        
         return json_encode(["results"=>$res]);
     }
 

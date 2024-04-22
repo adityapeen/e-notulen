@@ -7,7 +7,7 @@
     <?php $i=0; ?>
     @foreach($agendas as $item)
     <div class="col-xl-3 col-sm-6 mb-xl-4 mb-4">
-      <a class="card" href="{{ route('admin.notes.agenda', $item->id) }}">
+      <a class="card" href="{{ route('admin.notes.agenda', $item->hashed_id) }}">
         <div class="card-header p-3 pt-2 pb-1">
           <div
             class="icon icon-lg icon-shape bg-gradient-{{$color[$i]}} shadow-dark border-radius-xl mt-n4 position-absolute text-center">

@@ -13,7 +13,7 @@
         </div>
         <div class="card-body pb-2">
           
-          <form action={{ route('satker.agendas.update', $agenda->id)}} method="POST">
+          <form action={{ route('satker.agendas.update', $agenda->hashed_id)}} method="POST">
             @csrf
             @method('put')
             <div class="row mb-1 align-items-center">
@@ -91,7 +91,7 @@
 
 @section('script')
 <script>
-  var api = '{{ route('api.group_attendants', $agenda->id) }}';
+  var api = '{{ route('api.group_attendants', $agenda->hashed_id) }}';
   $(document).ready(function(){
     $('#attendants').select2({
       placeholder: 'Pilih Peserta Rapat'

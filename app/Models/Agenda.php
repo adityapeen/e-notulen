@@ -42,9 +42,14 @@ class Agenda extends Model
         return $this->belongsTo(User::class);
     }
 
+    // public function notes()
+    // {
+    //     return $this->hasMany(Note::class, 'agenda_id');
+    // }
+
     public function notes()
     {
-        return $this->hasMany(Note::class, 'agenda_id');
+        return $this->belongsToMany(Note::class, 'note_agenda', 'agenda_id', 'note_id')->withTimestamps();
     }
 
     public function group_id_hash()
@@ -57,10 +62,15 @@ class Agenda extends Model
      *
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
-    protected function id(): Attribute
+    // protected function id(): Attribute
+    // {
+    //     return  Attribute::make(
+    //         get: fn ($value) => Hashids::encode($value)
+    //     );
+    // }
+
+    public function getHashedIdAttribute()
     {
-        return  Attribute::make(
-            get: fn ($value) => Hashids::encode($value)
-        );
+        return Hashids::encode($this->id);
     }
 }

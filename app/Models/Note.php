@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Vinkla\Hashids\Facades\Hashids;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Note extends Model
 {
     use HasFactory;
+    protected $hashed_id;
     protected $fillable = [
         'agenda_id',
         'team_id',
@@ -28,9 +30,14 @@ class Note extends Model
         'updated_by'
     ];
 
-    public function agenda()
+    // public function agenda()
+    // {
+    //     return $this->belongsTo(Agenda::class);
+    // }
+    
+    public function agendas() : BelongsToMany
     {
-        return $this->belongsTo(Agenda::class);
+        return $this->BelongsToMany(Agenda::class,'note_agenda');
     }
     public function creator()
     {
@@ -56,15 +63,21 @@ class Note extends Model
      *
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
-    protected function id(): Attribute
-    {
-        return  Attribute::make(
-            get: fn ($value) => Hashids::encode($value)
-        );
-    }
-    public function agenda_hash()
+    // protected function id(): Attribute
+    // {
+    //     return  Attribute::make(
+    //         get: fn ($value) => Hashids::encode($value)
+    //     );
+    // }
+    public function getAgendaHashAttribute()
     {
         return  Hashids::encode($this->agenda_id);
     }
+
+    public function getHashedIdAttribute()
+    {
+        return Hashids::encode($this->id);
+    }
+
 
 }

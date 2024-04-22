@@ -13,7 +13,7 @@
         </div>
         <div class="card-body pb-2">
           
-          <form action={{ route('satker.notes.update', $note->id )}} method="POST" enctype="multipart/form-data">
+          <form action={{ route('satker.notes.update', $note->hashed_id )}} method="POST" enctype="multipart/form-data">
             @csrf
             @method('put')
             <div class="row mb-1 align-items-center">
@@ -21,10 +21,10 @@
                 Agenda Rapat
               </div>
               <div class="col-md-8">
-                <select id="agenda_id" class="form-select border px-1 @error('agenda_id') is-invalid @enderror" value="{{ $note->agenda_id }}" name="agenda_id">
+                <select id="agendas" class="form-select border px-1 @error('agendas') is-invalid @enderror" value="{{ $note->agendas }}" name="agendas">
                   <option value=>Pilih Agenda Rapat</option>
                   @foreach ($agendas as $item)
-                      <option value="{{ $item->id }}" {{ $item->id == $note->agenda_hash() ? 'selected' : ''}}>{{ $item->name }}</option>
+                      <option value="{{ $item->hashed_id }}" {{ $item->hashed_id == $note->agenda_hash() ? 'selected' : ''}}>{{ $item->name }}</option>
                   @endforeach
               </select>
               </div>
@@ -146,13 +146,13 @@
 @section('script')
 <script>
   $(document).ready( function() {
-    $('#agenda_id').select2({
+    $('#agendas').select2({
       placeholder: 'Pilih Agenda Rapat'
     });
     attendants();
     getExisting();
   });
-  var api = '{{ route('api.attendants', $note->id) }}';
+  var api = '{{ route('api.attendants', $note->hashed_id) }}';
 
   function attendants(){
     $('#attendants').select2({
@@ -171,10 +171,13 @@
       var list = JSON.parse(data);
       var idselected = [];
       var idselected_r = [];
+      var idselected_a = [];
       list.results.attendants.forEach(item =>idselected.push(item.id));
       $('#attendants').val(idselected).trigger('change')
       list.results.mom_recipients.forEach(item =>idselected_r.push(item.id));
-      $('#mom_recipients').val(idselected_r).trigger('change')
+      $('#mom_recipients').val(idselected_r).trigger('change');
+      list.results.agendas.forEach(item =>idselected_a.push(item.id))
+      $('#agendas').val(idselected_a).trigger('change')
     });
   }
 </script>
