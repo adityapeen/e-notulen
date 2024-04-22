@@ -369,7 +369,9 @@ class SatkerNoteController extends Controller
         $agenda_id = Hashids::decode($hashed_id)[0];
         $agenda = Agenda::findOrFail($agenda_id);
         $title = "Daftar Notulensi - ".$agenda->name;
-        $notes = Note::withCount(['action_items'])->where('agenda_id', $agenda_id)->orderBy('date', 'DESC')->paginate(15);
+        $notes = Note::withCount(['action_items'])->whereHas('agendas', function ($query) use ($agenda_id){
+            $query->where('agenda_id', $agenda_id);
+        })->orderBy('date', 'DESC')->paginate(15);
 
         return view('satker.note.index-agenda', compact(['title','notes','agenda_id','agenda']));
     }
@@ -403,7 +405,7 @@ class SatkerNoteController extends Controller
         $title = "Daftar Rapat";
         $agendas = Agenda::
         select('agendas.*', DB::raw('(SELECT MAX(date) FROM notes WHERE notes.agenda_id = agendas.id) AS last_note_date'),
-        DB::raw('(SELECT COUNT(*) FROM notes WHERE notes.agenda_id = agendas.id) as notes_count'))
+        DB::raw('(SELECT COUNT(*) FROM note_agenda WHERE note_agenda.agenda_id = agendas.id) as notes_count'))
         ->orderBy('priority_id', 'asc')
         ->orderBy('agendas.name', 'asc')
         ->where('satker_id', auth()->user()->satker_id)

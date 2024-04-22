@@ -236,7 +236,7 @@ class NoteController extends Controller
                     ]);
                 }
             }
-            return redirect()->route("admin.notes.index")->with('success','Data <strong>berhasil</strong> disimpan');
+            return redirect()->route("admin.notes.satker","BPS")->with('success','Data <strong>berhasil</strong> disimpan');
         }else{
             return back()->withErrors(['Data <strong>gagal</strong> ditambahkan!']);
         }
@@ -482,7 +482,9 @@ class NoteController extends Controller
         $pending_actions = ActionItems::whereHas('note', function ($query) use ($agenda_id) {
             $query->where('agenda_id', $agenda_id);
         })->whereNot('status','done')->get();
-        $notes = Note::withCount(['action_items'])->where('agenda_id', $agenda_id)->orderBy('date', 'DESC')->paginate(15);
+        $notes = Note::withCount(['action_items'])->whereHas('agendas', function ($query) use ($agenda_id){
+            $query->where('agenda_id', $agenda_id);
+        })->orderBy('date', 'DESC')->paginate(15);
 
         return view('admin.note.index-agenda', compact(['title','notes','agenda_id','agenda','pending_actions']));
     }
@@ -516,7 +518,7 @@ class NoteController extends Controller
         $title = "Daftar Rapat";
         $agendas = Agenda::
         select('agendas.*', DB::raw('(SELECT MAX(date) FROM notes WHERE notes.agenda_id = agendas.id) AS last_note_date'),
-        DB::raw('(SELECT COUNT(*) FROM notes WHERE notes.agenda_id = agendas.id) as notes_count'))
+        DB::raw('(SELECT COUNT(*) FROM note_agenda WHERE note_agenda.agenda_id = agendas.id) as notes_count'))
         ->orderBy('priority_id', 'asc')
         ->orderBy('agendas.name', 'asc')
         ->where('satker_id', NULL)
