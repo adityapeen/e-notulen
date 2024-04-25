@@ -18,7 +18,7 @@ class GDocsController extends Controller
         $notes = Note::where('id', $note_id)->first();
 
         $filename = str_replace('-', '.', $notes->date) . ' ' . $notes->name;
-        $template_id = $notes->agenda == NULL ? NULL : $notes->agenda->docs_template_id;
+        $template_id = sizeof($notes->agendas) == 0 ? NULL : $notes->agenda->docs_template_id;
 
         $doc_id = $this->createDocumentFromTemplate($filename, $template_id);
 
