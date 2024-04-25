@@ -69,7 +69,7 @@
           </div>
         </div>
         <div class="action-items">
-          <form method="post" id="item-list" action="{{ route('api.actions.update', $note->id ) }}">
+          <form method="post" id="item-list" action="{{ route('api.actions.update', $note->hashed_id ) }}">
             @csrf
             @method('put')
             <input type="hidden" id="note_id" name="note_id" value="{{ $note->id }}">

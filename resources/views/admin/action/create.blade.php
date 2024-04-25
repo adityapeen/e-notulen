@@ -71,7 +71,7 @@
           <form method="post" id="item-list" action="{{ route('api.actions.store') }}">
             @csrf
             @method('post')
-            <input type="hidden" id="note_id" name="note_id" value="{{ $note->id }}">
+            <input type="hidden" id="note_id" name="note_id" value="{{ $note->hashed_id }}">
 		        <div class="row" id="dynamic_form">
               <div class="input-group baru-data mb-1">
                 <div class="col-md-4 me-1">
