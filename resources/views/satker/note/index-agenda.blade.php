@@ -9,7 +9,7 @@
         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
           <div class="bg-gradient-info shadow-info border-radius-lg pt-2 pb-2 d-flex align-items-center">
             <h6 class="text-white text-capitalize ps-3">{{$title}}</h6>
-            <a href="{{ route('satker.notes.create', 'agenda='.$agenda->id)}}" class="btn btn-success shadow-dark mb-0 ms-auto me-3">Tambah</a>
+            <a href="{{ route('satker.notes.create', 'agenda='.$agenda->hashed_id)}}" class="btn btn-success shadow-dark mb-0 ms-auto me-3">Tambah</a>
           </div>
         </div>
         <div class="card-body pb-2">

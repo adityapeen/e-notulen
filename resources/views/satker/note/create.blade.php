@@ -21,7 +21,7 @@
                 Agenda Rapat
               </div>
               <div class="col-md-8">
-                <select id="agendas" class="form-select border px-1 @error('agendas') is-invalid @enderror" value="{{ old('agendas') }}" name="agendas">
+                <select id="agendas" multiple="multiple" class="form-select border px-1 @error('agendas') is-invalid @enderror" value="{{ old('agendas') }}" name="agendas[]">
                   <option value=>Pilih Agenda Rapat</option>
                   @foreach ($agendas as $item)
                       <option value="{{ $item->hashed_id }}">{{ $item->name }}</option>

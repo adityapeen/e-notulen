@@ -21,10 +21,10 @@
                 Agenda Rapat
               </div>
               <div class="col-md-8">
-                <select id="agendas" class="form-select border px-1 @error('agendas') is-invalid @enderror" value="{{ $note->agendas }}" name="agendas">
+                <select id="agendas" multiple="multiple" class="form-select border px-1 @error('agendas') is-invalid @enderror" value="{{ $note->agendas }}" name="agendas">
                   <option value=>Pilih Agenda Rapat</option>
                   @foreach ($agendas as $item)
-                      <option value="{{ $item->hashed_id }}" {{ $item->hashed_id == $note->agenda_hash() ? 'selected' : ''}}>{{ $item->name }}</option>
+                      <option value="{{ $item->hashed_id }}" {{ $item->hashed_id == $note->hashed_id ? 'selected' : ''}}>{{ $item->name }}</option>
                   @endforeach
               </select>
               </div>
@@ -176,6 +176,8 @@
       $('#attendants').val(idselected).trigger('change')
       list.results.mom_recipients.forEach(item =>idselected_r.push(item.id));
       $('#mom_recipients').val(idselected_r).trigger('change');
+      list.results.agendas.forEach(item =>idselected_a.push(item.id))
+      $('#agendas').val(idselected_a).trigger('change')
       list.results.agendas.forEach(item =>idselected_a.push(item.id))
       $('#agendas').val(idselected_a).trigger('change')
     });
