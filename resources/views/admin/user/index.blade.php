@@ -47,10 +47,10 @@
                   </td>
                   
                   <td class="align-middle">
-                    <a href="{{ route('admin.users.edit', $item->id_hash()) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Edit user">
+                    <a href="{{ route('admin.users.edit', $item->hashed_id) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Edit user">
                       <button class="btn btn-sm btn-success"><i class="fa fa-edit"></i></button>
                     </a>
-                    <a href="#" onclick="handleDestroy('{{$item->id_hash()}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Hapus user">
+                    <a href="#" onclick="handleDestroy('{{$item->hashed_id }}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Hapus user">
                       <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
                     </a>
                   </td>

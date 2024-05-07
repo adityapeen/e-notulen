@@ -13,7 +13,7 @@
         </div>
         <div class="card-body pb-2">
           
-          <form action={{ route('satker.users.update', $user->id_hash())}} method="POST">
+          <form action={{ route('satker.users.update', $user->hashed_id)}} method="POST">
             {{method_field('put')}}
             @csrf
             <div class="row mb-1 align-items-center">
@@ -79,7 +79,7 @@
               <div class="col-md-8">
                 <select id="team_id" class="form-select border px-1 @error('team_id') is-invalid @enderror" value="{{ $user->team_id }}" name="team_id" required>
                   @foreach ($teams as $item)
-                      <option value="{{ $item->id }}" {{ $item->id == $user->team_id_hash() ? 'selected' : ''}}>{{ $item->name }}</option>
+                      <option value="{{ $item->id }}" {{ $item->id == $user->hashed_team_id ? 'selected' : ''}}>{{ $item->name }}</option>
                   @endforeach
               </select>
               </div>

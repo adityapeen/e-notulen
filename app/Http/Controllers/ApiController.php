@@ -32,7 +32,7 @@ class ApiController extends Controller
         foreach($attendants as $a)
         {
             $item = array(
-                'id'    =>$a->user->id_hash(),
+                'id'    =>$a->user->hashed_id,
                 'text'  => $a->user->name
             );
             array_push($res,$item);
@@ -40,7 +40,7 @@ class ApiController extends Controller
         foreach($recipients as $a)
         {
             $item = array(
-                'id'    =>$a->user->id_hash(),
+                'id'    =>$a->user->hashed_id,
                 'text'  => $a->user->name
             );
             array_push($rec,$item);
@@ -75,7 +75,7 @@ class ApiController extends Controller
             foreach($attendants as $a)
             {
                 $item = array(
-                    'id'    =>$a->user->id_hash(),
+                    'id'    =>$a->user->hashed_id,
                     'text'  => $a->user->name
                 );
                 // Need filter to make sure the value is unique
@@ -96,7 +96,7 @@ class ApiController extends Controller
         foreach($pics as $a)
         {
             $item = array(
-                'id'    =>$a->user->id_hash(),
+                'id'    =>$a->user->hashed_id,
                 'text'  => $a->user->name
             );
             array_push($res,$item);
@@ -112,7 +112,7 @@ class ApiController extends Controller
         foreach($pics as $a)
         {
             $item = array(
-                'id'    =>$a->user->id_hash(),
+                'id'    =>$a->user->hashed_id,
                 'text'  => $a->user->name
             );
             array_push($res,$item);

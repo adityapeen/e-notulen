@@ -69,22 +69,17 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class, 'current_role_id');
     }
 
-    /**
-     * Hash the ids
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
-    function id_hash()
+    public function getHashedIdAttribute()
     {
-        return   Hashids::encode($this->id);
+        return Hashids::encode($this->id);
     }
 
-    public function team_id_hash()
+    public function getHashedTeamIdAttribute()
     {
         return   Hashids::encode($this->team_id);
     }
 
-    public function role_hash()
+    public function getHashedRoleAttribute()
     {
         return   Hashids::encode($this->current_role_id);
     }

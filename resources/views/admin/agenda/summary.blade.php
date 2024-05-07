@@ -13,7 +13,7 @@
         </div>
         <div class="card-body pb-2">
           
-          <form action={{ route('admin.agenda.summary.save', $agenda->id)}} method="POST">
+          <form action={{ route('admin.agenda.summary.save', $agenda->hashed_id)}} method="POST">
             @csrf
             @method('post')
             <div class="row mb-1 align-items-center">
