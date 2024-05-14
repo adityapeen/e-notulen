@@ -40,18 +40,18 @@
                     {{ $item->date }}
                   </td>
                   <td class="align-middle text-sm">
-                    <a href="{{ route('ses.notes.action', [$item->id] ) }}" class="btn btn-sm bg-gradient-info">Action Items</a>
+                    <a href="{{ route('ses.notes.action', [$item->hashed_id] ) }}" class="btn btn-sm bg-gradient-info">Action Items</a>
                   </td>
                   <td class="align-middle text-sm">
                     <span class="badge badge-sm bg-gradient-{{ $item->status == "open" ? "success":"danger" }}">{{ $item->status }}</span>
                   </td>
                   
                   <td class="align-middle">
-                    <a href="#" onclick="handleView('ses','{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Lihat Notulensi">
+                    <a href="#" onclick="handleView('ses','{{$item->hashed_id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Lihat Notulensi">
                       <button class="btn btn-sm btn-info"><i class="fa fa-eye"></i></button>
                     </a>
                     @if($item->status == 'lock')
-                    <a href="{{ route('ses.notes.absensi', $item->id)}}" target="_blank"
+                    <a href="{{ route('ses.notes.absensi', $item->hashed_id)}}" target="_blank"
                       class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Daftar Hadir">
                       <button class="btn btn-sm btn-warning"><i class="fa fa-list"></i></button>
                     </a>

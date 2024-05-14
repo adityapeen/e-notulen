@@ -13,7 +13,7 @@
               <option value="ALL">ALL</option>
               <option value="BPS">BPS</option>
                 @foreach($satkers as $item)
-                <option value="{{ $item->id_hash() }}">{{ $item->code}}</option>
+                <option value="{{ $item->hashed_id }}">{{ $item->code}}</option>
                 @endforeach
             </select>
             <button class="btn btn-sm btn-light shadow-dark ms-3 mb-0" onclick="filterNote()">Filter</button>

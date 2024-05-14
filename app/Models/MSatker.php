@@ -15,9 +15,9 @@ class MSatker extends Model
     ];
     public $timestamps = false;
 
-    function id_hash()
+    public function getHashedIdAttribute()
     {
-        return   Hashids::encode($this->id);
+        return Hashids::encode($this->id);
     }
 
     function team()

@@ -13,7 +13,7 @@
               <option value="ALL">ALL</option>
               <option value="BPS">BPS</option>
                 @foreach($satkers as $item)
-                <option value="{{ $item->id_hash() }}">{{ $item->code}}</option>
+                <option value="{{ $item->hashed_id }}">{{ $item->code}}</option>
                 @endforeach
             </select>
             <button class="btn btn-sm btn-light shadow-dark ms-3 mb-0" onclick="filterNote()">Filter</button>
@@ -49,26 +49,26 @@
                       {{ $item->date }}
                     </td>
                     <td class="align-middle text-sm">
-                      <a href="{{ route('ses.notes.action', [$item->id]) }}" class="btn btn-sm bg-gradient-info">Action
+                      <a href="{{ route('ses.notes.action', [$item->hashed_id]) }}" class="btn btn-sm bg-gradient-info">Action
                         Items <span class="badge bg-gradient-light text-dark ms-2">{{ $item->action_items_count }}</span></a>
                     </td>
                     <td class="align-middle text-sm">
                       <span class="badge badge-sm bg-gradient-{{ $item->status == 'open' ? 'success' : 'danger' }} btn"
-                        onclick="handleView('ses','{{ $item->id }}')" data-toggle="tooltip"
+                        onclick="handleView('ses','{{ $item->hashed_id }}')" data-toggle="tooltip"
                         title="Lihat Notulensi">{{ $item->status }} <div class="fa fa-eye"></div></span>
                     </td>
 
                     <td class="align-middle">
                       @if ($item->status == 'lock')
-                        <a href="#" onclick="handleSend('ses','{{ $item->id }}')"
+                        <a href="#" onclick="handleSend('ses','{{ $item->hashed_id }}')"
                           class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Kirim MoM">
                           <button class="btn btn-sm btn-info"><i class="fa fa-file"></i></button>
                         </a>
-                        <a href="{{ route('ses.notes.absensi', $item->id)}}" target="_blank"
+                        <a href="{{ route('ses.notes.absensi', $item->hashed_id)}}" target="_blank"
                           class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Daftar Hadir">
                           <button class="btn btn-sm btn-warning"><i class="fa fa-list"></i></button>
                         </a>
-                        <a href="{{ route('ses.notes.show', $item->id)}}" target="_blank"
+                        <a href="{{ route('ses.notes.show', $item->hashed_id)}}" target="_blank"
                           class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Lihat Notulen">
                           <button class="btn btn-sm btn-success">Lihat Notulen</button>
                         </a>
