@@ -40,14 +40,14 @@
                     <span class="badge badge-sm bg-gradient-{{ $item->status == "open" ? "success":"danger" }}">{{ $item->status }}</span>
                   </td>
                   <td class="align-middle text-sm">
-                    <a href="{{ route('user.notes.action', $item->id)}}" class="btn badge badge-sm bg-gradient-info">Action Items</a>
+                    <a href="{{ route('user.notes.action', $item->hashed_id)}}" class="btn badge badge-sm bg-gradient-info">Action Items</a>
                   </td>                  
                   <td class="align-middle text-sm">
-                    <a href="#" onclick="handleView('{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Detail Notulensi">
+                    <a href="#" onclick="handleView('{{$item->hashed_id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Detail Notulensi">
                       <button class="btn btn-sm btn-info"><i class="fa fa-eye"></i></button>
                     </a>
                     @if($item->status == 'lock')
-                    <a href="{{ route('user.notes.show', $item->id) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Lihat Notulensi">
+                    <a href="{{ route('user.notes.show', $item->hashed_id) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Lihat Notulensi">
                       <button class="btn btn-sm btn-success">Lihat Notulen</button>
                     </a>
                     @endif

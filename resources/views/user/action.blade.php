@@ -47,7 +47,7 @@
                       <button class="btn btn-sm btn-info mb-0"><i class="fa fa-eye"></i></button>
                     </a>
                     @if($item->note->status == 'lock')
-                    <a href="{{ route('user.notes.show', $item->note->id) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Lihat Notulensi">
+                    <a href="{{ route('user.notes.show', $item->note->hashed_id) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Lihat Notulensi">
                       <button class="btn btn-sm btn-success mb-0">Lihat Notulen</button>
                     </a>
                     @endif

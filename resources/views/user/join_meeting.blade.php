@@ -16,7 +16,7 @@
           <div class="row mb-3">
             <div class="col font-weight-bold text-center">{{ $note->date }}</div>
           </div>
-          <form action={{ route('join_meeting', $note->id)}} method="POST" enctype="multipart/form-data">
+          <form action={{ route('join_meeting', $note->hashed_id)}} method="POST" enctype="multipart/form-data">
             @csrf
             @method('post')
           <div class="row mb-3 justify-content-center p-1">
@@ -33,7 +33,7 @@
           </form>
           <div class="row justify-content-center mb-3">
             <div class="text-center">
-              <small class="text-disabled">Belum Punya Akun? silahkan <a href="{{ route('quick_register', $note->id) }}" class="">Register</a></small>
+              <small class="text-disabled">Belum Punya Akun? silahkan <a href="{{ route('quick_register', $note->hashed_id) }}" class="">Register</a></small>
             </div>
           </div>
         </div>
