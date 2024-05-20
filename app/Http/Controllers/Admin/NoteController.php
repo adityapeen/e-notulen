@@ -359,6 +359,9 @@ class NoteController extends Controller
                 }
                 $notes->agendas()->sync($agendas);
             }
+            else{
+                $notes->agendas()->sync([]);
+            }
             // Synch Attendants
             if($request->attendants != null){
                 // $note_id = Hashids::decode($notes->id)[0];
