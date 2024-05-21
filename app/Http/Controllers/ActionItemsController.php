@@ -54,7 +54,7 @@ class ActionItemsController extends Controller
             if($request->who != null){
                 foreach($request->who[$i] as $pic){
                     Pic::updateOrCreate([
-                        'action_id' => Hashids::decode($act->id)[0],
+                        'action_id' => $act->id,
                         'user_id' => Hashids::decode($pic)[0]
                     ]);
                 }
@@ -147,7 +147,7 @@ class ActionItemsController extends Controller
                 if($request->who != null){
                     foreach($request->who[$i] as $pic){
                         Pic::updateOrCreate([
-                            'action_id' => Hashids::decode($act->id)[0],
+                            'action_id' => $act->id,
                             'user_id' => Hashids::decode($pic)[0]
                         ]);
                     }

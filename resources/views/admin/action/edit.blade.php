@@ -27,7 +27,7 @@
     <div class="col-md-3 me-1">
       <select class="form-control selection" multiple="multiple" name="who[][]">
         @foreach($attendants as $a)
-        <option value="{{ $a->user->id_hash() }}">{{ $a->user->name.' - '.$a->user->satker->code }}</option>
+        <option value="{{ $a->user->hashed_id }}">{{ $a->user->name.' - '.$a->user->satker->code }}</option>
         @endforeach
       </select>
       <span class="btn btn-outline-secondary btn-sm mt-1" onclick="picAll(event)">All Satker</span>
@@ -77,7 +77,7 @@
               <?php $idx = 0; ?>
               @foreach ($actions as $item)
               <div class="input-group baru-data mb-1">
-                <input type="hidden" name="action_id[]" value="{{ $item->id }}">
+                <input type="hidden" name="action_id[]" value="{{ $item->hashed_id }}">
                 <div class="col-md-4 me-1">
                   <textarea class="textarea" name="what[]" rows="7" placeholder="How" spellcheck="false" required>{{ $item->what}}</textarea>
                 </div>
@@ -85,9 +85,9 @@
                   <textarea class="textarea" name="how[]" rows="7" placeholder="How" spellcheck="false" required>{{ $item->how}}</textarea>
                 </div>
                 <div class="col-md-3 me-1">
-                  <select class="form-control existing selection" id="{{ $item->id }}" data-id="{{ $item->id }}" name="who[{{ $idx++ }}][]" multiple="multiple">
+                  <select class="form-control existing selection" id="{{ $item->hashed_id }}" data-id="{{ $item->hashed_id }}" name="who[{{ $idx++ }}][]" multiple="multiple">
                     @foreach($attendants as $a)
-                    <option value="{{ $a->user->id_hash() }}">{{ $a->user->name.' - '.$a->user->satker->code }}</option>
+                    <option value="{{ $a->user->hashed_id }}">{{ $a->user->name.' - '.$a->user->satker->code }}</option>
                     @endforeach
                   </select>
                   <span class="btn btn-outline-secondary btn-sm mt-1" onclick="picAll(event)">All Satker</span>
