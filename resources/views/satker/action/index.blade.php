@@ -61,16 +61,16 @@
                     <span class="badge badge-sm bg-gradient-{{ $item->status == "done" ? "success":( $item->status == "onprogress" ? "info" : "danger") }}">{{ $item->status }}</span>
                   </td>
                   <td class="align-middle text-sm">
-                    <a href="#" class="btn btn-sm bg-gradient-secondary mb-0" onclick="viewAction('{{ $item->id }}')">Detail</a>
-                    <a href="{{ route('satker.notes.evidence', $item->id)}}" class="btn btn-sm bg-gradient-info mb-0">Evidences
+                    <a href="#" class="btn btn-sm bg-gradient-secondary mb-0" onclick="viewAction('{{ $item->hashed_id }}')">Detail</a>
+                    <a href="{{ route('satker.notes.evidence', $item->hashed_id)}}" class="btn btn-sm bg-gradient-info mb-0">Evidences
                       <span class="badge bg-gradient-light text-dark ms-2">{{ $item->evidences_count }}</span></a>
                   </td>                  
                   <td class="align-middle text-sm">
-                    <a href="#" onclick="handleView('{{$item->note->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Detail Notulensi">
+                    <a href="#" onclick="handleView('{{$item->note->hashed_id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Detail Notulensi">
                       <button class="btn btn-sm btn-info mb-0"><i class="fa fa-eye"></i></button>
                     </a>
                     @if($item->note->status == 'lock' && $item->note->file_notulen !== NULL)
-                    <a href="{{ route('satker.notes.show', $item->note->id) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Lihat Notulensi">
+                    <a href="{{ route('satker.notes.show', $item->note->hashed_id) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Lihat Notulensi">
                       <button class="btn btn-sm btn-success mb-0">Lihat Notulen</button>
                     </a>
                     @endif

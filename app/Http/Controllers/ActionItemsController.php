@@ -95,12 +95,18 @@ class ActionItemsController extends Controller
     public function update(Request $request, String $hashed_id)
     {
         $note_id = Hashids::decode($hashed_id)[0];
-        $edited_item = array_filter($request->action_id); //remove null element
+        $temp_edited_item = array_filter($request->action_id); //remove null element
         $existing_action = ActionItems::select('id')->where('note_id', $note_id)->get()->toArray();
         $existing_item = array();
+        $edited_item = array();
         foreach($existing_action as $item){ array_push($existing_item, $item['id']);}
+        foreach($temp_edited_item as $item){array_push($edited_item, Hashids::decode($item)[0]);}
 
         $to_delete = array_diff($existing_item, $edited_item);
+        $arr = [
+            'existing_item' => $existing_item,
+            'edited_item' => $edited_item
+        ];
         $rows = sizeof($request->action_id);
         for($i=0; $i<$rows; $i++){
             if($request->action_id[$i] !== null){ // Update Existing Action Item
@@ -154,19 +160,13 @@ class ActionItemsController extends Controller
                 }
             }
         }
-
+        //Disini Errornya
         foreach($to_delete as $action_id){
-            ActionItems::where(['id'=> Hashids::decode($action_id)[0]])->first()->delete();
+            ActionItems::where(['id'=>$action_id])->first()->delete();
         }
         return back()->with('success','Data <strong>berhasil</strong> diubah!');
 
-        // dd(array(
-        //     'request'=>$request,
-        //     'existing'=>$existing_item,
-        //     'new_item'=>$edited_item,
-        //     'to_delete'=>$to_delete,
-        //     'existing_pic'=>$existing_pic,
-        // ));
+        
     }
 
     /**

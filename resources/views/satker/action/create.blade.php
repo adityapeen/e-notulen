@@ -26,7 +26,7 @@
     <div class="col-md-3 me-1">
       <select class="form-control selection" multiple="multiple" name="who[][]">
         @foreach($attendants as $a)
-        <option value="{{ $a->user->id_hash() }}">{{ $a->user->name.' - '.$a->user->satker->code }}</option>
+        <option value="{{ $a->user->hashed_id }}">{{ $a->user->name.' - '.$a->user->satker->code }}</option>
         @endforeach
       </select>
       <span class="btn btn-outline-secondary btn-sm mt-1" onclick="picAll(event)">All Satker</span>
@@ -83,7 +83,7 @@
                 <div class="col-md-3 me-1">
                   <select id="select-pic" class="form-control selection" name="who[0][]" multiple="multiple">
                     @foreach($attendants as $a)
-                    <option value="{{ $a->user->id_hash() }}">{{ $a->user->name.' - '.$a->user->satker->code }}</option>
+                    <option value="{{ $a->user->hashed_id }}">{{ $a->user->name.' - '.$a->user->satker->code }}</option>
                     @endforeach
                   </select>
                   <span class="btn btn-outline-secondary btn-sm mt-1" onclick="picAll(event)">All Satker</span>

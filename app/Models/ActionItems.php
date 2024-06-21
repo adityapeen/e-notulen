@@ -37,17 +37,25 @@ class ActionItems extends Model
     {
         return $this->belongsTo(User::class);
     }
+
     public function evidences()
     {
         return $this->hasMany(Evidence::class, 'action_id');
     }
+
     public function pics()
     {
         return $this->hasMany(Pic::class, 'action_id');
     }
+    
     public function team(): HasManyThrough
     {
         return $this->hasManyThrough(Note::class, Team::class, 'action_id', 'team_id');
+    }
+
+    public function getHashedIdAttribute()
+    {
+        return Hashids::encode($this->id);
     }
 
     /**
@@ -55,10 +63,10 @@ class ActionItems extends Model
      *
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
-    protected function id(): Attribute
-    {
-        return  Attribute::make(
-            get: fn ($value) => Hashids::encode($value)
-        );
-    }
+    // protected function id(): Attribute
+    // {
+    //     return  Attribute::make(
+    //         get: fn ($value) => Hashids::encode($value)
+    //     );
+    // }
 }
