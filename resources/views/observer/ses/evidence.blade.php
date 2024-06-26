@@ -20,7 +20,7 @@
           @if($action->status != "done")
           <button class="btn badge badge-sm bg-gradient-{{ $action->status == "todo" ? "info" : "success"}}" onclick="handleStatus()">Mark as {{ $action->status == "todo" ? "on progress" : "done"}}</button>
           @endif
-          <button data-url="{{route('ses.notes.action', $action->note->id)}}" class="btn badge badge-sm bg-gradient-primary"onclick="handleBack(event)" >Back to Action Items</button>
+          <button data-url="{{route('ses.notes.action', $action->note->hashed_id)}}" class="btn badge badge-sm bg-gradient-primary"onclick="handleBack(event)" >Back to Action Items</button>
         </div></div>
       </div>
     </div>

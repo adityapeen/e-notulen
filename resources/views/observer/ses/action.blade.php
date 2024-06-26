@@ -57,9 +57,9 @@
                   </div>
                 </div>
                 <div class="col-md-3 me-1">
-                  <select class="form-control existing" id="{{ $item->id }}" data-id="{{ $item->id }}" name="who[{{ $idx++ }}][]" multiple="multiple" disabled>
+                  <select class="form-control existing" id="{{ $item->hashed_id }}" data-id="{{ $item->hashed_id }}" name="who[{{ $idx++ }}][]" multiple="multiple" disabled>
                     @foreach($attendants as $a)
-                    <option value="{{ $a->user->id_hash() }}">{{ $a->user->name.' - '.$a->user->satker->code }}</option>
+                    <option value="{{ $a->user->hashed_id }}">{{ $a->user->name.' - '.$a->user->satker->code }}</option>
                     @endforeach
                   </select>
                 </div>
@@ -70,7 +70,7 @@
                   <span class="badge badge-sm bg-gradient-{{ $item->status == "done" ? "success" : "secondary" }}" >{{ $item->status}}</span>
                 </div>
                 <div class="col me-1">
-                  <a href="{{ route('ses.notes.evidence', [$item->id] ) }}" class="btn btn-info btn-sm" title="Evidences"><i class="fa fa-tasks"></i><span class="badge text-bg-light ms-2">{{ $item->evidences_count }}</span></a>
+                  <a href="{{ route('ses.notes.evidence', [$item->hashed_id] ) }}" class="btn btn-info btn-sm" title="Evidences"><i class="fa fa-tasks"></i><span class="badge text-bg-light ms-2">{{ $item->evidences_count }}</span></a>
                 </div>
               </div>
               <hr class="border border-bottom border-info">
