@@ -15,7 +15,7 @@
         <div class="row"><div class="col-md-4 font-weight-bold">Status</div><div class="col-md-8 font-weight-bold">
           <span class="badge badge-sm bg-gradient-secondary" >{{ $action->status}}</span>
           <button type="button" class="btn badge badge-sm bg-gradient-info" data-bs-toggle="collapse" data-bs-target="#pic-list" aria-expanded="false" aria-controls="pic-list">PIC</button>
-          <button data-url="{{route('user.notes.action', $action->note->id)}}" class="btn badge badge-sm bg-gradient-primary"onclick="handleBack(event)" >Back to Action Items</button>
+          <button data-url="{{route('user.notes.action', $action->note->hashed_id)}}" class="btn badge badge-sm bg-gradient-primary"onclick="handleBack(event)" >Back to Action Items</button>
         </div></div>
       </div>
     </div>
@@ -38,7 +38,7 @@
         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
           <div class="bg-gradient-info shadow-info border-radius-lg pt-2 pb-2 d-flex align-items-center">
             <h6 class="text-white text-capitalize ps-3">{{$title}}</h6>
-            <a href="{{ route('user.notes.evidence.add', [$action->id])}}" class="btn btn-success shadow-dark mb-0 ms-auto me-3">Tambah</a>
+            <a href="{{ route('user.notes.evidence.add', [$action->hashed_id])}}" class="btn btn-success shadow-dark mb-0 ms-auto me-3">Tambah</a>
           </div>
         </div>
         <div class="card-body pb-2">
@@ -72,10 +72,10 @@
                   
                   <td class="align-middle">
                     @if($item->uploaded_by == auth()->user()->id)
-                    <a href="{{ route('user.evidences.edit', [$item->id] ) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Edit Evidence">
+                    <a href="{{ route('user.evidences.edit', [$item->hashed_id] ) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Edit Evidence">
                       <button class="btn btn-sm btn-success mb-0"><i class="fa fa-edit"></i></button>
                     </a>
-                    <a href="#" onclick="handleDestroy('{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Hapus Evidence">
+                    <a href="#" onclick="handleDestroy('{{$item->hashed_id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Hapus Evidence">
                       <button class="btn btn-sm btn-danger mb-0"><i class="fa fa-trash"></i></button>
                     </a>
                     @endif
@@ -126,7 +126,7 @@
             </form>
           </div>
           <div class="col-2 justify-content-center">
-            <button class="btn btn-sm btn-success mb-0" onclick="sendComment('{{ $action->id}}')"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+            <button class="btn btn-sm btn-success mb-0" onclick="sendComment('{{ $action->hashed_id}}')"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
           </div>
         </div>
       </div>

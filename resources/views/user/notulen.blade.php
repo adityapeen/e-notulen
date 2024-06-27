@@ -40,7 +40,7 @@
                     <td>
                       <span class="badge badge-sm bg-gradient-{{ $item->status == "todo" ? "info" : "secondary" }}" >{{ $item->status}}</span>
                     </td>
-                    <td style="cursor: pointer" class="clickable-action" data-id="{{ $item->id}}">
+                    <td style="cursor: pointer" class="clickable-action" data-id="{{ $item->hashed_id}}">
                       <?= $item->note->name ?>
                       <p class="text-secondary mb-0 text-xs">{{ $item->note->date}}</p>
                     </td>
@@ -48,7 +48,7 @@
                       {{ $item->due_date}}                     
                     </td>
                     <td class="align-middle">                                        
-                      <a href="{{ route('user.notes.evidence', $item->id)}}" class="badge btn-success badge-sm bg-gradient-success" >Eviden</a>                  
+                      <a href="{{ route('user.notes.evidence', $item->hashed_id)}}" class="badge btn-success badge-sm bg-gradient-success" >Eviden</a>                  
                     </td>
                   </tr>
                 @endforeach

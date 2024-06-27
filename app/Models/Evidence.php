@@ -28,17 +28,22 @@ class Evidence extends Model
         return $this->belongsTo(User::class,'uploaded_by');
     }
 
+    public function getHashedIdAttribute()
+    {
+        return Hashids::encode($this->id);
+    }
+
     /**
      * Hash the ids
      *
      * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
-    protected function id(): Attribute
-    {
-        return  Attribute::make(
-            get: fn ($value) => Hashids::encode($value)
-        );
-    }
+    // protected function id(): Attribute
+    // {
+    //     return  Attribute::make(
+    //         get: fn ($value) => Hashids::encode($value)
+    //     );
+    // }
 
 
 
