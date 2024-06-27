@@ -161,7 +161,7 @@ class UserEvidenceController extends Controller
         if($evidence){
             $action_item = ActionItems::find($evidence->action_id);
             $this->_notify_admin_update($action_item);
-            return redirect()->route("user.notes.evidence",$evidence->action->id)->with('success','Data <strong>berhasil</strong> disimpan');
+            return redirect()->route("user.notes.evidence",$evidence->action->hashed_id)->with('success','Data <strong>berhasil</strong> disimpan');
         }else{
             return back()->withErrors(['Data <strong>gagal</strong> ditambahkan!']);
         }
