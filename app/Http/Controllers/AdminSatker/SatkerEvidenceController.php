@@ -154,7 +154,7 @@ class SatkerEvidenceController extends Controller
             'updated_by' => auth()->user()->id,
         ]) ;
         if($evidence){
-            return redirect()->route("satker.notes.evidence",$evidence->action->id)->with('success','Data <strong>berhasil</strong> disimpan');
+            return redirect()->route("satker.notes.evidence",$evidence->action->hashed_id)->with('success','Data <strong>berhasil</strong> disimpan');
         }else{
             return back()->withErrors(['Data <strong>gagal</strong> ditambahkan!']);
         }

@@ -13,7 +13,7 @@
         </div>
         <div class="card-body pb-2">
           
-          <form action={{ route('admin.evidences.update', $evidence->id)}} method="POST" enctype="multipart/form-data">
+          <form action={{ route('admin.evidences.update', $evidence->hashed_id)}} method="POST" enctype="multipart/form-data">
             @csrf
             @method('put')
             {{-- <input type="hidden" name="action_id" value="{{ $hashed_id }}" > --}}

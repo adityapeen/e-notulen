@@ -108,7 +108,7 @@
                     <td>
                       <span class="badge badge-sm bg-gradient-{{ $item->status == "todo" ? "info" : "secondary" }}" >{{ $item->status}}</span>
                     </td>
-                    <td style="cursor: pointer" class="clickable-action text-wrap" data-id="{{ $item->id}}">
+                    <td style="cursor: pointer" class="clickable-action text-wrap" data-id="{{ $item->hashed_id}}">
                       <?= $item->what ?>
                       <p class="text-secondary mb-0 text-xs fw-bold">{{ $item->note->date.' • '.$item->note->name}}</p>
                     </td>
@@ -117,7 +117,7 @@
                     </td>
                     <td class="align-middle">   
                       @if($item->status == 'onprogress')                   
-                        <a href="{{ route('admin.notes.evidence', $item->id)}}" class="badge btn-success badge-sm bg-gradient-success" >Eviden</a>                  
+                        <a href="{{ route('admin.notes.evidence', $item->hashed_id)}}" class="badge btn-success badge-sm bg-gradient-success" >Eviden</a>                  
                       @endif
                     </td>
                   </tr>

@@ -22,7 +22,7 @@
           @if($action->status != "done")
           <button class="btn badge badge-sm bg-gradient-{{ $action->status == "todo" ? "info" : "success"}}" onclick="handleStatus()">Mark as {{ $action->status == "todo" ? "on progress" : "done"}}</button>
           @endif
-          <button data-url="{{route('satker.notes.action', $action->note->id)}}" class="btn badge badge-sm bg-gradient-primary"onclick="handleBack(event)" >Back to Action Items</button>
+          <button data-url="{{route('satker.notes.action', $action->note->hashed_id)}}" class="btn badge badge-sm bg-gradient-primary"onclick="handleBack(event)" >Back to Action Items</button>
         </div></div>
       </div>
     </div>
@@ -35,7 +35,7 @@
         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
           <div class="bg-gradient-info shadow-info border-radius-lg pt-2 pb-2 d-flex align-items-center">
             <h6 class="text-white text-capitalize ps-3">{{$title}}</h6>
-            <a href="{{ route('satker.notes.evidence.add', [$action->id])}}" class="btn btn-success shadow-dark mb-0 ms-auto me-3">Tambah</a>
+            <a href="{{ route('satker.notes.evidence.add', [$action->hashed_id])}}" class="btn btn-success shadow-dark mb-0 ms-auto me-3">Tambah</a>
           </div>
         </div>
         <div class="card-body pb-2">
@@ -68,7 +68,7 @@
                   </td>
                   
                   <td class="align-middle">
-                    <a href="{{ route('admin.evidences.edit', [$item->id] ) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Edit Agenda">
+                    <a href="{{ route('admin.evidences.edit', [$item->hashed_id] ) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Edit Agenda">
                       <button class="btn btn-sm btn-success mb-0"><i class="fa fa-edit"></i></button>
                     </a>
                     <a href="#" onclick="handleDestroy('{{$item->id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Hapus Agenda">
@@ -121,7 +121,7 @@
           </form>
         </div>
         <div class="col-2 justify-content-center">
-          <button class="btn btn-sm btn-success mb-0" onclick="sendComment('{{ $action->id}}')"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+          <button class="btn btn-sm btn-success mb-0" onclick="sendComment('{{ $action->hashed_id}}')"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
         </div>
       </div>
     </div>
