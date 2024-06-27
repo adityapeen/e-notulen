@@ -162,7 +162,8 @@ class CommentController extends Controller
     }
 
     private function _notify_user(ActionItems $action_item){
-        $action_id = Hashids::decode($action_item->id)[0];
+        // $action_id = Hashids::decode($action_item->id)[0];
+        $action_id = $action_item->id;
         $roles = [2,3,4,7,8]; // Admin Roles
         if(auth()->user()->current_role_id < 3) // Superadmin
         {
@@ -208,7 +209,7 @@ class CommentController extends Controller
     private function sendWANotif($targets, String $name, ActionItems $action_item){
         $data = [
             "message" => $name." telah memberikan komentar pada eviden action item *".$action_item->note->name
-                            ."*.\n\nSilahkan cek pada link berikut :\n".route('user.notes.evidence', $action_item->id)
+                            ."*.\n\nSilahkan cek pada link berikut :\n".route('user.notes.evidence', $action_item->hashed_id)
                             ."\n\nTerimakasih 🙏"
         ];
         foreach($targets as $u){
