@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\DatabaseNotification;
+use Vinkla\Hashids\Facades\Hashids;
 
 class NotificationController extends Controller
 {
@@ -18,7 +19,7 @@ class NotificationController extends Controller
             ->markAsRead();
 
         if($request->id != NULL){            
-            $action_id = DatabaseNotification::find($request->id)->data['action_id'];
+            $action_id = Hashids::encode(DatabaseNotification::find($request->id)->data['action_id']);
             if(auth()->user()->current_role_id == 9){
                 $url = url('user/notes/action/'.$action_id.'/evidences');
             }
