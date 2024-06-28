@@ -520,7 +520,7 @@ class NoteController extends Controller
     public function groupByAgenda(){
         $title = "Daftar Rapat";
         $agendas = Agenda::
-        select('agendas.*', DB::raw('(SELECT MAX(date) FROM notes WHERE notes.agenda_id = agendas.id) AS last_note_date'),
+        select('agendas.*', DB::raw('(SELECT MAX(date) FROM notes JOIN note_agenda a ON notes.id = a.note_id WHERE a.agenda_id = agendas.id) AS last_note_date'),
         DB::raw('(SELECT COUNT(*) FROM note_agenda WHERE note_agenda.agenda_id = agendas.id) as notes_count'))
         ->orderBy('priority_id', 'asc')
         ->orderBy('agendas.name', 'asc')
