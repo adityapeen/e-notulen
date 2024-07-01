@@ -206,7 +206,8 @@ class ActionItemsController extends Controller
         $pics = Pic::where('action_id', $action_id)->get();
 
         foreach($pics as $pic){
-            $pic_id = Hashids::decode($pic->id)[0];
+            // $pic_id = Hashids::decode($pic->id)[0];
+            $pic_id = $pic->id;
             $pic->update(['performance' => $this->_calculate_performance($pic_id)]);
         }
     }
