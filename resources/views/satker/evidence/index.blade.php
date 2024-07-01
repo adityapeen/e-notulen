@@ -167,7 +167,7 @@
       })
       .then(willChange => {
           if (willChange) {
-            var link = "{{route('satker.notes.action.status', $action->id)}}";
+            var link = "{{route('satker.notes.action.status', $action->hashed_id)}}";
               $("#status-form").attr("action", link);
               $("#status-form").submit();
           }

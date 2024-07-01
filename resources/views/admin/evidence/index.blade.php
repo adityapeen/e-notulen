@@ -177,7 +177,7 @@
       })
       .then(willChange => {
           if (willChange) {
-            var link = "{{route('admin.notes.action.status', $action->id)}}";
+            var link = "{{route('admin.notes.action.status', $action->hashed_id)}}";
               $("#status-form").attr("action", link);
               $("#status-form").submit();
           }
