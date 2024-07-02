@@ -59,16 +59,16 @@
                     </td>
                     <td class="align-middle text-sm">
                       <span class="badge badge-sm bg-gradient-{{ $item->status == 'open' ? 'success' : 'danger' }} btn"
-                        onclick="handleView('ses','{{ $item->hashed_id }}')" data-toggle="tooltip"
+                        onclick="handleView('spv','{{ $item->hashed_id }}')" data-toggle="tooltip"
                         title="Lihat Notulensi">{{ $item->status }} <div class="fa fa-eye"></div></span>
                     </td>
 
                     <td class="align-middle">
                       @if ($item->status == 'lock')
-                        <a href="#" onclick="handleSend('ses','{{ $item->hashed_id }}')"
+                        {{-- <a href="#" onclick="handleSend('ses','{{ $item->hashed_id }}')"
                           class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Kirim MoM">
                           <button class="btn btn-sm btn-info"><i class="fa fa-file"></i></button>
-                        </a>
+                        </a> --}}
                         <a href="{{ route('ses.notes.absensi', $item->hashed_id)}}" target="_blank"
                           class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Daftar Hadir">
                           <button class="btn btn-sm btn-warning"><i class="fa fa-list"></i></button>

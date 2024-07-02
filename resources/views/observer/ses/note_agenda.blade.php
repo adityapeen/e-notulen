@@ -47,7 +47,7 @@
                   </td>
                   
                   <td class="align-middle">
-                    <a href="#" onclick="handleView('ses','{{$item->hashed_id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Lihat Notulensi">
+                    <a href="#" onclick="handleView('spv','{{$item->hashed_id}}')" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Lihat Notulensi">
                       <button class="btn btn-sm btn-info"><i class="fa fa-eye"></i></button>
                     </a>
                     @if($item->status == 'lock')
