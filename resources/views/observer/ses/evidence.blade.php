@@ -17,9 +17,9 @@
         </div></div>
         <div class="row"><div class="col-md-4 font-weight-bold">Status</div><div class="col-md-8 font-weight-bold">
           <span class="badge badge-sm bg-gradient-secondary" >{{ $action->status}}</span>
-          @if($action->status != "done")
+          {{-- @if($action->status != "done")
           <button class="btn badge badge-sm bg-gradient-{{ $action->status == "todo" ? "info" : "success"}}" onclick="handleStatus()">Mark as {{ $action->status == "todo" ? "on progress" : "done"}}</button>
-          @endif
+          @endif --}}
           <button data-url="{{route('ses.notes.action', $action->note->hashed_id)}}" class="btn badge badge-sm bg-gradient-primary"onclick="handleBack(event)" >Back to Action Items</button>
         </div></div>
       </div>

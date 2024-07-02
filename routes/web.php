@@ -73,7 +73,7 @@ Route::group(['middleware' => 'admin', "prefix" => "admin", "as" => "admin."], f
     Route::get('/notes/pic/{id}/done', [App\Http\Controllers\Admin\EvidenceController::class, 'change_pic_status'])->name('notes.pic.done');
 });
 
-Route::group(['middleware' => 'ses', "prefix" => "ses", "as" => "ses."], function () {
+Route::group(['middleware' => 'ses', "prefix" => "spv", "as" => "ses."], function () {
     Route::get('/dashboard', [App\Http\Controllers\Observer\SesController::class, 'index'])->name('dashboard');
     Route::get('/agenda', [App\Http\Controllers\Observer\SesController::class, 'agenda'])->name('agenda');
     // Route::get('/notes', [App\Http\Controllers\Observer\SesController::class, 'notes'])->name('notes');
