@@ -33,7 +33,7 @@
               <div class="col-md-8">
                 <select id="recipients" multiple="multiple"  class="form-select border px-1 @error('recipients') is-invalid @enderror" value="{{ old('recipients') }}" name="recipients">
                   @foreach ($recipients as $item)
-                      <option value="{{ $item->id_hash() }}">{{ $item->name.' - '.$item->satker->code }}</option>
+                      <option value="{{ $item->hashed_id }}">{{ $item->name.' - '.$item->satker->code }}</option>
                   @endforeach
               </select>
               </div>

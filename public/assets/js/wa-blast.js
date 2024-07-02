@@ -75,6 +75,14 @@ const sendWA = (prefix = 'admin', csrfToken) => {
                             html: receiver,
                             });
                         console.log(error);
+                        if(status == 500){
+                            Swal.update({
+                                title: 'Server Error',
+                                html: receiver,
+                                });
+                                
+                            console.log(status);
+                        }
                     }
                 });
             }, index * interval);
