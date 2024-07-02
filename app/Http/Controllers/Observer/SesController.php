@@ -45,14 +45,13 @@ class SesController extends Controller
     {
         $title = "Daftar Rapat";
         $agendas = Agenda::
-        select('agendas.*', DB::raw('(SELECT MAX(date) FROM notes WHERE notes.agenda_id = agendas.id) AS last_note_date'),
-        DB::raw('(SELECT COUNT(*) FROM notes WHERE notes.agenda_id = agendas.id) as notes_count'))
+        select('agendas.*', DB::raw('(SELECT MAX(date) FROM notes JOIN note_agenda a ON notes.id = a.note_id WHERE a.agenda_id = agendas.id) AS last_note_date'),
+        DB::raw('(SELECT COUNT(*) FROM note_agenda WHERE note_agenda.agenda_id = agendas.id) as notes_count'))
         ->orderBy('priority_id', 'asc')
         ->orderBy('agendas.name', 'asc')
         ->where('satker_id', NULL)
         ->get();
         $color = ['primary','dark','info','warning','success','light'];
-        // dd($agendas);
         return view('observer.ses.note_group', compact(['agendas','title','color']));
     }
 
