@@ -10,7 +10,7 @@
   <div class="collapse navbar-collapse  w-auto h-75" id="sidenav-collapse-main">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link text-white {{ Request::is('ses/dashboard*') ? 'active bg-gradient-primary' : '' }}" href="{{ route('home') }}">
+        <a class="nav-link text-white {{ Request::is('spv/dashboard*') ? 'active bg-gradient-primary' : '' }}" href="{{ route('home') }}">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">dashboard</i>
           </div>
@@ -18,7 +18,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-white {{ Request::is('ses/agenda') ? 'active bg-gradient-primary' : '' }}" href="{{ route('ses.agenda') }}">
+        <a class="nav-link text-white {{ Request::is('spv/agenda') ? 'active bg-gradient-primary' : '' }}" href="{{ route('ses.agenda') }}">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">question_answer</i>
           </div>
@@ -26,7 +26,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-white {{ Request::is('ses/notes*') ? 'active bg-gradient-primary' : '' }}" href="{{ route('ses.notes', 'ALL') }}">
+        <a class="nav-link text-white {{ Request::is('spv/notes*') ? 'active bg-gradient-primary' : '' }}" href="{{ route('ses.notes', 'ALL') }}">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">table_view</i>
           </div>
@@ -34,7 +34,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-white {{ Request::is('ses/action-items*') ? 'active bg-gradient-primary' : '' }}" href="{{ route('ses.action_items','BPS') }}">
+        <a class="nav-link text-white {{ Request::is('spv/action-items*') ? 'active bg-gradient-primary' : '' }}" href="{{ route('ses.action_items','BPS') }}">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="material-icons opacity-10">engineering</i>
           </div>
