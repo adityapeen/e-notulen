@@ -7,6 +7,7 @@ use App\Models\ActionItems;
 use App\Models\Attendant;
 use App\Models\MomRecipients;
 use App\Models\Note;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Vinkla\Hashids\Facades\Hashids;
@@ -279,6 +280,34 @@ class MoMController extends Controller
             return response()->json(['status'=>'OK']);
         else
             return response()->json(['status'=>false], 500);
+    }
+
+    public function get_user_profile(Request $request, String $number){
+        //The $number is sent using base64 format
+        if(!$this->checkAuthHeader($request->header('Authorization')))
+        {
+            return response('Unauthorized', 401);
+        }
+
+        $status = 'OK';
+        $message = "";
+        $phone = base64_decode($number);
+        $user = User::where("phone", $phone)->first();
+
+        if($user == null)  {
+            $status = "Not Found";
+            $message = "Nomor Anda tidak terdaftar pada database kami";
+        }
+        else {
+            $message = "Halo ".$user->name.", anda terdaftar dengan email : ".$user->email
+            ."\nSilahkan login menggunakan email tersebut pada ".url('/')
+            ."\nPassword default anda adalah 12345"
+            ."\n\n_With ❤  Bot_BPSDM_";
+        }
+
+        return response()->json([
+            'status'=>$status,
+            'message' => $message]);        
     }
 
     private function checkAuthHeader($token){
