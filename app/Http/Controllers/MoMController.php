@@ -9,7 +9,6 @@ use App\Models\MomRecipients;
 use App\Models\Note;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Vinkla\Hashids\Facades\Hashids;
 use Illuminate\Support\Facades\Http;
 
@@ -26,12 +25,25 @@ class MoMController extends Controller
         $status = true;
         if(is_array($arr_id)){
             $note_id = $arr_id[0];
-            $attendants = Attendant::join('users', 'attendants.user_id', '=', 'users.id')
-            ->select('attendants.id', 'users.name', DB::raw('"a" as type'))
-            ->where(['note_id'=>$note_id])->get()->toArray();
-            $receivers = MomRecipients::join('users', 'mom_recipients.user_id', '=', 'users.id')
-            ->select('mom_recipients.id', 'users.name', DB::raw('"r" as type'))
-            ->where(['note_id'=>$note_id])->get()->toArray();
+            $att = Attendant::where(['note_id'=>$note_id])->get();
+            $rec = MomRecipients::where(['note_id'=>$note_id])->get();
+            
+            $attendants = $att->map(function($a) {
+                return [
+                    'id' => $a->hashed_id,
+                    'name' => $a->user->name,
+                    'type' => 'a',
+                ];
+            })->toArray();
+
+            $receivers = $rec->map(function($r) {
+                return [
+                    'id' => $r->hashed_id,
+                    'name' => $r->user->name,
+                    'type' => 'r',
+                ];
+            })->toArray();
+
             $recipients = array_merge($attendants, $receivers);
         }
         else{
@@ -62,7 +74,7 @@ class MoMController extends Controller
             $date = date_create($notes->date);
             $file_location = 'notulensi/'.$notes->file_notulen;
             
-            if($notes->file_notulen == NULL && $attendance->user->current_role_id > 2 && $attendance->mom_sent == NULL && $attendance->user->phone !== '-'){
+            if($notes->file_notulen == NULL && $attendance->user->current_role_id > 1 && $attendance->mom_sent == NULL && $attendance->user->phone !== '-'){
                 $message = "Berikut ini kami sampaikan notulen *"
                     .$notes->name."* pada tanggal *".date_format($date,"d-m-Y").".* Silahkan akses notulen pada link berikut : \n"
                     .$notes->link_drive_notulen
@@ -74,7 +86,7 @@ class MoMController extends Controller
                     'id' => $type.';'.$attendance->id
                 ]);
             }
-            else if($attendance->user->current_role_id > 2 && $attendance->mom_sent == NULL && $attendance->user->phone !== '-'){
+            else if($attendance->user->current_role_id > 1 && $attendance->mom_sent == NULL && $attendance->user->phone !== '-'){
                 $message = "Berikut ini kami sampaikan notulen *"
                     .$notes->name."* pada tanggal *".date_format($date,"d-m-Y").".* \n"
                     ."\nTerimakasih 🙏🙏🙏";
@@ -95,7 +107,9 @@ class MoMController extends Controller
             $res = json_decode($response);
             if($res->status){
                 $results = $attendance->user->name." - OK";
-                $attendance->update(['mom_sent'=>date('Y-m-d h:i:s')]);
+                $attendance->update([
+                    'mom_sent' => date('Y-m-d h:i:s'),
+                    'message_id' => $res->response->id->_serialized ]);
             }
             else{
                 $results = $attendance->user->name." - FAIL";
@@ -280,6 +294,39 @@ class MoMController extends Controller
             return response()->json(['status'=>'OK']);
         else
             return response()->json(['status'=>false], 500);
+    }
+
+    public function delete_message(String $id, String $type){
+        $attendance_id = Hashids::decode($id)[0];
+
+        if($type == "a"){
+            $attendance = Attendant::find($attendance_id);
+        }
+        else if($type == "r"){
+            $attendance = MomRecipients::find($attendance_id);
+        }
+        else{
+            $status = false;
+            $results = null;
+            return response()->json(['status'=>$status,'results'=>$results,'messages'=>NULL], 404);
+        }
+        
+        $number = $attendance->user->phone;
+        $message_id = $attendance->message_id;
+
+        $response = Http::withBasicAuth(env('API_USER'), env('API_PASSWORD'))->post($this->url.'/delete-message', [
+            'number' => $number,
+            'messageId' => $message_id,
+        ]);
+
+        $res = json_decode($response);
+
+        if($attendance != null && $attendance->update(['mom_sent' => null]))
+            return response()->json([
+                                'status' => true,
+                                'messages' => ['Status telah direset', $res->message]]);
+        else
+            return response()->json(['status' => false, 'message' => "Not Found"], 404);
     }
 
     public function get_user_profile(Request $request, String $number){

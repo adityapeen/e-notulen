@@ -261,7 +261,8 @@ class NoteController extends Controller
             $date->setTimezone(new DateTimeZone('Asia/Jakarta'));
             $item = array(
                 'name' => $l->user->name,
-                'mom_sent' => $l->mom_sent == NULL? NULL : $date->format('Y-m-d H:i:s')
+                'mom_sent' => $l->mom_sent == NULL? NULL : $date->format('Y-m-d H:i:s'),
+                'id' => $l->hashed_id
             );
             array_push($attendants,$item);
         }
@@ -270,7 +271,8 @@ class NoteController extends Controller
             $date->setTimezone(new DateTimeZone('Asia/Jakarta'));
             $item = array(
                 'name' => $l->user->name,
-                'mom_sent' => $l->mom_sent == NULL? NULL : $date->format('Y-m-d H:i:s')
+                'mom_sent' => $l->mom_sent == NULL? NULL : $date->format('Y-m-d H:i:s'),
+                'id' => $l->hashed_id
             );
             array_push($recipients,$item);
         }

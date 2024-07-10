@@ -139,4 +139,5 @@ Route::group(['middleware' => 'auth', "prefix" => "api", "as" => "api."], functi
     Route::get('/action_detail/{id}', [App\Http\Controllers\ApiController::class, 'action_item_detail'])->name('action_detail');
     Route::get('/comments/{id}', [App\Http\Controllers\CommentController::class, 'get_comments'])->name('get_comments');
     Route::post('/comments', [App\Http\Controllers\CommentController::class, 'store'])->name('comment.store');
+    Route::get('/delete_message/{id}/{type}', [App\Http\Controllers\MoMController::class, 'delete_message'])->name('delete.message');
 });

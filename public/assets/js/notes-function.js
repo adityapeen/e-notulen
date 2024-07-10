@@ -121,13 +121,13 @@ const handleView = (prefix,id) => {
     $("#mom-recipients").empty();
     res.attendants.forEach((item) => {
       var list;
-      if(item.mom_sent !== null) list = "<li>" + item.name + "   <span class='text-success font-weight-bold' title='"+item.mom_sent+"'>&#10003;</span></li>";
+      if(item.mom_sent !== null) list = "<li>" + item.name + "   <span class='text-success font-weight-bold cursor-pointer' title='"+item.mom_sent+"' onclick='handleDeleteChat(`"+item.id+"`,`a`)' >&#10003;</span></li>";
       else list = "<li>" + item.name + "</li>";
       $("#note-attendant").append(list);
     });
     res.recipients.forEach((item) => {
       var list;
-      if(item.mom_sent !== null) list = "<li>" + item.name + "   <span class='text-success font-weight-bold' title='"+item.mom_sent+"'>&#10003;</span></li>";
+      if(item.mom_sent !== null) list = "<li>" + item.name + "   <span class='text-success font-weight-bold cursor-pointer' title='"+item.mom_sent+"' onclick='handleDeleteChat(`"+item.id+"`,`r`)' >&#10003;</span></li>";
       else list = "<li>" + item.name + "</li>";
       $("#mom-recipients").append(list);
     });

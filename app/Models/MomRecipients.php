@@ -14,7 +14,8 @@ class MomRecipients extends Model
     protected $fillable = [
         'note_id',
         'user_id',
-        'mom_sent'
+        'mom_sent',
+        'message_id'
     ];
 
     public function note()
@@ -27,25 +28,30 @@ class MomRecipients extends Model
         return $this->belongsTo(User::class);
     }
 
-    function note_id_hash()
+    function getHashedNoteIdAttribute()
     {
         return   Hashids::encode($this->note_id);
     }
 
-    function user_id_hash()
+    function getHashedUserIdAttribute()
     {
         return   Hashids::encode($this->user_id);
     }
 
-    /**
-     * Hash the ids
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
-    protected function id(): Attribute
+    public function getHashedIdAttribute()
     {
-        return  Attribute::make(
-            get: fn ($value) => Hashids::encode($value)
-        );
+        return Hashids::encode($this->id);
     }
+
+    // /**
+    //  * Hash the ids
+    //  *
+    //  * @return \Illuminate\Database\Eloquent\Casts\Attribute
+    //  */
+    // protected function id(): Attribute
+    // {
+    //     return  Attribute::make(
+    //         get: fn ($value) => Hashids::encode($value)
+    //     );
+    // }
 }

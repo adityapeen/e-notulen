@@ -36,3 +36,42 @@ const filterAction = () => {
   var link = `/${role}/action-items/${id}`;
   window.location.href = link;  
 };
+
+const handleDeleteChat = (id,type) => {
+  Swal.fire({
+    title: "Apakah anda yakin menghapus pesan ini ?",
+    // text: "Once deleted, you will not be able to recover this item!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Ya",
+    allowOutsideClick: false,
+  }).then((willDelete) => {
+    if (willDelete.isConfirmed) {
+      var link = `/api/delete_message/${id}/${type}`;
+      return fetch(link)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(response.statusText);
+          }
+          return response.json();
+        })
+        .catch((error) => {
+          Swal.fire(`Request failed: ${error}`);
+        })
+        .then((result) => {
+          console.log(result)
+          if (result.status) {
+            var txt = "";
+            result.messages.forEach(el => {
+                txt += `<li>${el}</li>`
+            })
+            Swal.fire({
+              title: `Hapus Pesan`,
+              html: txt,
+              allowOutsideClick: false,
+            });
+          };
+        });
+    }
+  });
+}
