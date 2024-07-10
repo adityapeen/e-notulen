@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Vinkla\Hashids\Facades\Hashids;
 
 class UserGroup extends Model
 {
@@ -17,8 +18,14 @@ class UserGroup extends Model
     {
         return $this->belongsTo(Agenda::class);
     }
+
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getHashedIdAttribute()
+    {
+        return Hashids::encode($this->id);
     }
 }

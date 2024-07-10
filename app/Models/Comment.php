@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Vinkla\Hashids\Facades\Hashids;
 
 class Comment extends Model
 {
@@ -23,5 +24,10 @@ class Comment extends Model
     public function action()
     {
         return $this->belongsTo(ActionItems::class,'action_id');
+    }
+
+    public function getHashedIdAttribute()
+    {
+        return Hashids::encode($this->id);
     }
 }

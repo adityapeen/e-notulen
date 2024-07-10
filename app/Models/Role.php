@@ -11,9 +11,9 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 class Role extends SpatieRole
 {
   
-    public function id_hash()
+    public function getHashedIdAttribute()
     {
-        return  Hashids::encode($this->id);
+        return Hashids::encode($this->id);
     }
     /**
      * Hash the ids
