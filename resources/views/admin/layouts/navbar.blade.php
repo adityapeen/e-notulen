@@ -21,6 +21,9 @@
         </li>
 
         <?php  $notifications = auth()->user()->unreadNotifications; ?>
+        <li class="nav-item dropdown pe-3 d-flex align-items-center d-none " id="api_status">
+          <i class="fa fa-check-circle me-sm-1 cursor-pointer text-success" data-bs-toggle="tooltip" data-bs-placement="bottom" title="API is Online" data-container="body" data-animation="true">
+        </i>
 
         <li class="nav-item dropdown pe-3 d-flex align-items-center">
           <a href="javascript:;" class="nav-link text-body p-0 position-relative" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
@@ -78,7 +81,7 @@
               @if(auth()->user()->roles->count() > 1)
                   @foreach(auth()->user()->roles->where('id', '!=', auth()->user()->current_role_id) as $role)
                   <li class="mb-1 text-center">
-                    <a href="{{ route('switch.role', $role->id_hash())}}" class="dropdown-item border-radius-md font-size-sm d-flex align-items-center">
+                    <a href="{{ route('switch.role', $role->hashed_id)}}" class="dropdown-item border-radius-md font-size-sm d-flex align-items-center">
                       <i class="material-icons opacity-10">synch</i>
                           {{ __('Switch to :name', ['name' => $role->name]) }}
                     </a>

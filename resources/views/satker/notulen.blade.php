@@ -219,18 +219,11 @@
         // console.log(JSON.stringify(data));
       });;
     });
-    $('#checkApi').on('click', function() {
-      $.ajax({
-        type: 'GET',
-        url: "{{ route('check_api_wa') }}" ,
-        context: document.body,
-        dataType: 'json',
-      }).done(function(data) {
+    $('#checkApi').on('click', async function() {
+      var data = await getAPIStatus();
+      if(data.status){
         alert(data.message);
-      }).fail(function( data, status, errorThrown ) {
-        alert(data.responseJSON.message);
-        console.error('Request failed with status:', status);
-      })
-    });
+      }
+    })
   </script>
 @endsection

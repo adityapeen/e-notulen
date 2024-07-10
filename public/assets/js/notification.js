@@ -42,3 +42,21 @@ const sendMarkRequest = (type, id = null) => {
         }
     });
 }
+
+const getAPIStatus = async () => {
+    const response = await $.ajax({
+        type: 'GET',
+        url: "/check_api_wa" ,
+        context: document.body,
+        dataType: 'json',
+      }).always(function(data) {
+        console.log(JSON.stringify(data));
+      });
+
+    if(response.status)
+        $('#api_status').removeClass('d-none');
+    else
+        $('#api_status').addClass('d-none');
+    
+    return response;
+}  

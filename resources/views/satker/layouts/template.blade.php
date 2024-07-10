@@ -103,6 +103,7 @@
     }
     $(document).ready( function () {
       $('#myTable').DataTable();
+      getAPIStatus();
     } );
   </script>
   

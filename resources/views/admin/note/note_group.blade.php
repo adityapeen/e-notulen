@@ -28,28 +28,8 @@
     @endforeach
     
   </div>
-  
-  <div class="row mt-3">
-    <div class="col-12">
-      <button id="checkApi" class="btn btn-outline-primary">API Status</button>
-    </div>
-  </div>
 
 @endsection
 
 @section('script')
-  <script>
-    $('#checkApi').on('click', function() {
-      $.ajax({
-        type: 'POST',
-        url: "{{ env('API_URL') == null ? 'http://localhost:8000' : env('API_URL') }}" + "/check",
-        context: document.body
-      }).done(function(data) {
-        alert(data.message)
-      }).always(function(data) {
-        console.log(JSON.stringify(data));
-      });;
-
-    })
-  </script>
 @endsection
