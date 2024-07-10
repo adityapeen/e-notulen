@@ -15,7 +15,14 @@
           </div>
           <div class="pt-1 ps-6 text-end">
             <p class="text-capitalize mb-0 font-weight-bold">{{ $item->name}}</p>
-            <h4 class="mb-0">{{ $item->notes_count}}</h4>
+            <div class="row mb-0">
+              <div class="col-md-6 h4 mb-0">{{ $item->note_year}}</div>
+              <div class="col-md-6 border-left h4 mb-0">{{ $item->notes_count}}</div>
+            </div>
+            <div class="row mb-0">
+              <small class="col-md-6">{{ date('Y')}}</small>
+              <small class="col-md-6 border-left">Total</small>
+            </div>
           </div>
         </div>
         <hr class="horizontal dark my-0">
