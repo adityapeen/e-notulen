@@ -83,7 +83,7 @@ class MoMController extends Controller
                 $response = Http::withBasicAuth(env('API_USER'), env('API_PASSWORD'))->post($this->url.'/send-message', [
                     'number' => $attendance->user->phone,
                     'message' => $message,
-                    'id' => $type.';'.$attendance->id
+                    'id' => $type.';'.$attendance->hashed_id
                 ]);
             }
             else if($attendance->user->current_role_id > 1 && $attendance->mom_sent == NULL && $attendance->user->phone !== '-'){
@@ -95,7 +95,7 @@ class MoMController extends Controller
                                 ->attach('file', file_get_contents($file_location),$notes->file_notulen)->post($this->url.'/send-message', [
                     'number' => $attendance->user->phone,
                     'message' => $message,
-                    'id' => $type.';'.$attendance->id
+                    'id' => $type.';'.$attendance->hashed_id
                 ]);
             }
             else{
