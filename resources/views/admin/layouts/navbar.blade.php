@@ -22,7 +22,7 @@
 
         <?php  $notifications = auth()->user()->unreadNotifications; ?>
         <li class="nav-item dropdown pe-3 d-flex align-items-center d-none " id="api_status">
-          <i class="fa fa-check-circle me-sm-1 cursor-pointer text-success" data-bs-toggle="tooltip" data-bs-placement="bottom" title="API is Online" data-container="body" data-animation="true">
+          <i class="fa me-sm-1 cursor-pointer" id="api_icon" data-bs-toggle="tooltip" data-bs-placement="bottom" title="API is" data-container="body" data-animation="true">
         </i>
 
         <li class="nav-item dropdown pe-3 d-flex align-items-center">

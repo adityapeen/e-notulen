@@ -44,19 +44,23 @@ const sendMarkRequest = (type, id = null) => {
 }
 
 const getAPIStatus = async () => {
+    const online = "fa-check-circle text-success";
+    const offline = "fa-exclamation-circle text-danger";
     const response = await $.ajax({
         type: 'GET',
         url: "/check_api_wa" ,
         context: document.body,
         dataType: 'json',
-      }).always(function(data) {
-        console.log(JSON.stringify(data));
-      });
-
-    if(response.status)
-        $('#api_status').removeClass('d-none');
-    else
-        $('#api_status').addClass('d-none');
-    
+      }).done(function() {
+            $('#api_icon').addClass(online);
+            $('#api_icon').removeClass(offline);
+            $("#api_icon").attr("data-bs-original-title", "API is Online")
+        }).fail(function() {
+            $('#api_icon').addClass(offline);
+            $('#api_icon').removeClass(online);
+            $("#api_icon").attr("data-bs-original-title", "API is Offline")
+        }).always(function() {            
+            $('#api_status').removeClass('d-none');
+        });    
     return response;
 }  
