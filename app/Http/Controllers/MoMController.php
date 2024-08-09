@@ -74,20 +74,20 @@ class MoMController extends Controller
             $date = date_create($notes->date);
             $file_location = 'notulensi/'.$notes->file_notulen;
             
-            // For New Broadcast
-            $msg_broadcast =    "Halo... dikarenakan adanya beberapa penyesuaian kini nomor Bot WA BPSDM diganti menjadi nomor ini ya...\n\n"
-                                ."Pada update kali ini bot sudah diintegrasikan dengan Generative AI sehingga dapat memberikan respon terhadap pertanyaannmu. Awali pesan dengan `.ask` untuk mendapatkan respon dari AI.\n\n"
-                                ."contoh :\n"
-                                ."> .ask jelaskan secara singkat potensi EBT di Indonesia\n\n"
-                                ."Terimakasih 🙏🙏🙏";
+            if($notes->file_notulen == NULL && $attendance->user->current_role_id > 1 && $attendance->mom_sent == NULL && $attendance->user->phone !== '-'){
+                // For New Broadcast
+                $msg_broadcast =    "Halo... dikarenakan adanya beberapa penyesuaian kini nomor Bot WA BPSDM diganti menjadi nomor ini ya...\n\n"
+                ."Pada update kali ini bot sudah diintegrasikan dengan Generative AI sehingga dapat memberikan respon terhadap pertanyaannmu. Awali pesan dengan `.ask` untuk mendapatkan respon dari AI.\n\n"
+                ."contoh :\n"
+                ."> .ask jelaskan secara singkat potensi EBT di Indonesia\n\n"
+                ."Terimakasih 🙏🙏🙏";
 
-            $broadcast = Http::withBasicAuth(env('API_USER'), env('API_PASSWORD'))->post($this->url.'/send-message', [
+                $broadcast = Http::withBasicAuth(env('API_USER'), env('API_PASSWORD'))->post($this->url.'/send-message', [
                 'number' => $attendance->user->phone,
                 'message' => $msg_broadcast,
                 'id' => $type.';'.$attendance->hashed_id
-            ]);
-            
-            if($notes->file_notulen == NULL && $attendance->user->current_role_id > 1 && $attendance->mom_sent == NULL && $attendance->user->phone !== '-'){
+                ]);
+
                 $message = "Berikut ini kami sampaikan notulen *"
                     .$notes->name."* pada tanggal ".date_format($date,"d-m-Y").". Silahkan akses notulen pada link berikut : \n"
                     .$notes->link_drive_notulen
@@ -100,6 +100,20 @@ class MoMController extends Controller
                 ]);
             }
             else if($attendance->user->current_role_id > 1 && $attendance->mom_sent == NULL && $attendance->user->phone !== '-'){
+                
+                // For New Broadcast
+                $msg_broadcast =    "Halo... dikarenakan adanya beberapa penyesuaian kini nomor Bot WA BPSDM diganti menjadi nomor ini ya...\n\n"
+                ."Pada update kali ini bot sudah diintegrasikan dengan Generative AI sehingga dapat memberikan respon terhadap pertanyaannmu. Awali pesan dengan `.ask` untuk mendapatkan respon dari AI.\n\n"
+                ."contoh :\n"
+                ."> .ask jelaskan secara singkat potensi EBT di Indonesia\n\n"
+                ."Terimakasih 🙏🙏🙏";
+
+                $broadcast = Http::withBasicAuth(env('API_USER'), env('API_PASSWORD'))->post($this->url.'/send-message', [
+                'number' => $attendance->user->phone,
+                'message' => $msg_broadcast,
+                'id' => $type.';'.$attendance->hashed_id
+                ]);
+
                 $message = "Berikut ini kami sampaikan notulen *"
                     .$notes->name."* pada tanggal ".date_format($date,"d-m-Y").". \n"
                     ."\nTerimakasih 🙏🙏🙏";
