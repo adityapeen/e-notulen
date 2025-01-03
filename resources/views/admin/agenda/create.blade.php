@@ -72,7 +72,7 @@
               <div class="col-md-8">
                 <select id="attendants" multiple="multiple"  class="form-select border px-1 @error('attendants') is-invalid @enderror" value="{{ old('attendants[]') }}" name="attendants[]">
                   @foreach ($users as $item)
-                      <option value="{{ $item->hashed_id() }}">{{ $item->name.' - '.$item->satker->code }}</option>
+                      <option value="{{ $item->hashed_id }}">{{ $item->name.' - '.$item->satker->code }}</option>
                   @endforeach
                 </select>
               </div>
