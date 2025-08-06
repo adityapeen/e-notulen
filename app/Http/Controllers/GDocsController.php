@@ -45,7 +45,7 @@ class GDocsController extends Controller
         $meta = [
             'filename' => $filename,
             'name' => $notes->name,
-            'date' => $this->formatDateIndo($notes->date),
+            'date' => tgl_indo($notes->date, true),
             'time' => date('H.i', strtotime($notes->start_time)).' - '.date('H.i', strtotime($notes->end_time)),
             'place' => $notes->place 
         ];
@@ -238,41 +238,5 @@ class GDocsController extends Controller
         $this->driveService->permissions->create($docs_id, $permission);
 
         return "OK";
-    }
-
-    function formatDateIndo($date)
-    {
-        $hari = [
-            'Sunday'    => 'Minggu',
-            'Monday'    => 'Senin',
-            'Tuesday'   => 'Selasa',
-            'Wednesday' => 'Rabu',
-            'Thursday'  => 'Kamis',
-            'Friday'    => 'Jumat',
-            'Saturday'  => 'Sabtu'
-        ];
-
-        $bulan = [
-            1  => 'Januari',
-            2  => 'Februari',
-            3  => 'Maret',
-            4  => 'April',
-            5  => 'Mei',
-            6  => 'Juni',
-            7  => 'Juli',
-            8  => 'Agustus',
-            9  => 'September',
-            10 => 'Oktober',
-            11 => 'November',
-            12 => 'Desember'
-        ];
-
-        $timestamp = strtotime($date);
-        $namaHari = $hari[date('l', $timestamp)];
-        $tgl = date('d', $timestamp);
-        $bln = $bulan[(int)date('m', $timestamp)];
-        $thn = date('Y', $timestamp);
-
-        return "$namaHari, $tgl $bln $thn";
     }
 }
