@@ -46,7 +46,7 @@ class GDocsController extends Controller
             'filename' => $filename,
             'name' => $notes->name,
             'date' => $this->formatDateIndo($notes->date),
-            'time' => date('H:i', strtotime($notes->start_time)).' - '.date('H:i', strtotime($notes->end_time)),
+            'time' => date('H.i', strtotime($notes->start_time)).' - '.date('H.i', strtotime($notes->end_time)),
             'place' => $notes->place 
         ];
         $metadata = (object) $meta;
