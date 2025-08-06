@@ -6,11 +6,34 @@ use App\Http\Controllers\Controller;
 use App\Models\Note;
 use Vinkla\Hashids\Facades\Hashids;
 use Google_Client;
+use Google_Service_Docs;
+use Google_Service_Docs_Request;
+use Google_Service_Docs_BatchUpdateDocumentRequest;
 use Google_Service_Drive;
 use Google_Service_Drive_DriveFile;
 
 class GDocsController extends Controller
 {
+    protected $client;
+    protected $docsService;
+    protected $driveService;
+
+    public function __construct()
+    {
+        $this->initializeGoogleClient();
+    }
+
+    protected function initializeGoogleClient()
+    {
+        // Set up the API client
+        $this->client = new Google_Client();
+        $this->client->setAuthConfig(config('services.google.service_account_credentials_json'));
+        $this->client->setScopes(config('services.google.scopes'));
+        $this->client->setAccessType('offline');
+
+        $this->docsService = new Google_Service_Docs($this->client);
+        $this->driveService = new Google_Service_Drive($this->client);
+    }
 
     public function createNoteDocs(String $hashed_id)
     {
@@ -19,8 +42,16 @@ class GDocsController extends Controller
 
         $filename = str_replace('-', '.', $notes->date) . ' ' . $notes->name;
         $template_id = sizeof($notes->agendas) == 0 ? NULL : $notes->agendas[0]->docs_template_id;
+        $meta = [
+            'filename' => $filename,
+            'name' => $notes->name,
+            'date' => $this->formatDateIndo($notes->date),
+            'time' => date('H:i', strtotime($notes->start_time)).' - '.date('H:i', strtotime($notes->end_time)),
+            'place' => $notes->place 
+        ];
+        $metadata = (object) $meta;
 
-        $doc_id = $this->createDocumentFromTemplate($filename, $template_id);
+        $doc_id = $this->createDocumentFromTemplate($filename, $template_id, $metadata);
 
         $link_drive = "https://docs.google.com/document/d/" . $doc_id;
         $notes->update([
@@ -30,16 +61,9 @@ class GDocsController extends Controller
 
         return redirect()->route("home")->with('success', 'Data <strong>berhasil</strong> disimpan');
     }
-    public function createDocumentFromTemplate($copyTitle = "Copy Title", $template_id = NULL)
-    {
-        // Set up the API client
-        $client = new Google_Client();
-        $client->setApplicationName('My App');
-        $client->setAuthConfig(config('services.google.service_account_credentials_json'));
-        $client->setScopes(config('services.google.scopes'));
-        // $docs_service = new Google_Service_Docs($client);
-        $driveService = new Google_Service_Drive($client);
 
+    public function createDocumentFromTemplate($copyTitle = "Copy Title", $template_id = NULL, $metadata = NULL)
+    {
         // Get the ID of the template document
         if($template_id == NULL)
         $template_id = env('DOCS_TEMPLATE_ID');
@@ -49,8 +73,10 @@ class GDocsController extends Controller
         $copy = new Google_Service_Drive_DriveFile(array(
             'name' => $copyTitle
         ));
-        $driveResponse = $driveService->files->copy($template_id, $copy);
+        $driveResponse = $this->driveService->files->copy($template_id, $copy);
         $documentCopyId = $driveResponse->id;
+
+        $this->replaceDocsDetail($documentCopyId, $metadata);
 
         // printf("Created document with id: %s\n", $documentCopyId);
         $folderId = env('DOCS_FOLDER_ID');
@@ -59,19 +85,75 @@ class GDocsController extends Controller
         return $documentCopyId;
     }
 
+    public function replaceDocsDetail($docs_id, $metadata)
+    {
+        if($metadata == NULL)
+        {
+            $metadata->name = 'Rapat';
+            $metadata->date = 'Senin, 01 Januari 2025';
+            $metadata->time = '09.00 - 12.00';
+            $metadata->place = 'R. Rapat Kepala Badan Lt. 2 Gedung BPSDM';
+
+        }
+
+        // Create replace requests
+        $requests = [
+            new Google_Service_Docs_Request([
+                'replaceAllText' => [
+                    'containsText' => [
+                        'text' => '{{name}}',
+                        'matchCase' => true
+                    ],
+                    'replaceText' => $metadata->name
+                ]
+            ]),
+            new Google_Service_Docs_Request([
+                'replaceAllText' => [
+                    'containsText' => [
+                        'text' => '{{date}}',
+                        'matchCase' => true
+                    ],
+                    'replaceText' => $metadata->date
+                ]
+            ]),
+            new Google_Service_Docs_Request([
+                'replaceAllText' => [
+                    'containsText' => [
+                        'text' => '{{time}}',
+                        'matchCase' => true
+                    ],
+                    'replaceText' => $metadata->time
+                ]
+            ]),
+            new Google_Service_Docs_Request([
+                'replaceAllText' => [
+                    'containsText' => [
+                        'text' => '{{place}}',
+                        'matchCase' => true
+                    ],
+                    'replaceText' => $metadata->place
+                ]
+            ])
+        ];
+
+        // Run batchUpdate
+        $batchUpdateRequest = new Google_Service_Docs_BatchUpdateDocumentRequest([
+            'requests' => $requests
+        ]);
+
+        $this->docsService->documents->batchUpdate($docs_id, $batchUpdateRequest);
+
+    }
+
     function moveFileToFolder($fileId, $folderId)
     {
         try {
-            $client = new Google_Client();
-            $client->setAuthConfig(config('services.google.service_account_credentials_json'));
-            $client->addScope(config('services.google.scopes'));
-            $driveService = new Google_Service_Drive($client);
             $emptyFileMetadata = new Google_Service_Drive_DriveFile();
             // Retrieve the existing parents to remove
-            $file = $driveService->files->get($fileId, array('fields' => 'parents'));
+            $file = $this->driveService->files->get($fileId, array('fields' => 'parents'));
             $previousParents = join(',', $file->parents);
             // Move the file to the new folder
-            $file = $driveService->files->update($fileId, $emptyFileMetadata, array(
+            $file = $this->driveService->files->update($fileId, $emptyFileMetadata, array(
                 'addParents' => $folderId,
                 'removeParents' => $previousParents,
                 'fields' => 'id, parents'
@@ -140,10 +222,6 @@ class GDocsController extends Controller
 
     function changeFilePremission($docs_id, $type = "lock")
     {
-        $client = new Google_Client();
-        $client->setAuthConfig(config('services.google.service_account_credentials_json'));
-        $client->addScope(Google_Service_Drive::DRIVE);
-        $service = new Google_Service_Drive($client);
 
         if($type == "lock"){
             $role = "reader";
@@ -157,8 +235,44 @@ class GDocsController extends Controller
             'withLink' => false, // set to false to make sure it's not public
         ]);
 
-        $service->permissions->create($docs_id, $permission);
+        $this->driveService->permissions->create($docs_id, $permission);
 
         return "OK";
+    }
+
+    function formatDateIndo($date)
+    {
+    $hari = [
+        'Sunday'    => 'Minggu',
+        'Monday'    => 'Senin',
+        'Tuesday'   => 'Selasa',
+        'Wednesday' => 'Rabu',
+        'Thursday'  => 'Kamis',
+        'Friday'    => 'Jumat',
+        'Saturday'  => 'Sabtu'
+    ];
+
+    $bulan = [
+        1  => 'Januari',
+        2  => 'Februari',
+        3  => 'Maret',
+        4  => 'April',
+        5  => 'Mei',
+        6  => 'Juni',
+        7  => 'Juli',
+        8  => 'Agustus',
+        9  => 'September',
+        10 => 'Oktober',
+        11 => 'November',
+        12 => 'Desember'
+    ];
+
+    $timestamp = strtotime($date);
+    $namaHari = $hari[date('l', $timestamp)];
+    $tgl = date('d', $timestamp);
+    $bln = $bulan[(int)date('m', $timestamp)];
+    $thn = date('Y', $timestamp);
+
+    return "$namaHari, $tgl $bln $thn";
     }
 }
