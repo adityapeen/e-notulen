@@ -11,6 +11,7 @@ use Google_Service_Docs_Request;
 use Google_Service_Docs_BatchUpdateDocumentRequest;
 use Google_Service_Drive;
 use Google_Service_Drive_DriveFile;
+use Illuminate\Http\Request;
 
 class GDocsController extends Controller
 {
@@ -18,9 +19,19 @@ class GDocsController extends Controller
     protected $docsService;
     protected $driveService;
 
-    public function __construct()
+
+    protected function checkOngoingDocs($notes)
     {
-        $this->initializeGoogleClient();
+        // Check if Note Docs is being created by API
+        if($notes->link_drive_notulen == "#on-progress"){
+            return true;
+        }
+        else {
+            $notes->update([
+                'link_drive_notulen' => '#on-progress'
+            ]);
+            return false;
+        } 
     }
 
     protected function initializeGoogleClient()
@@ -40,6 +51,18 @@ class GDocsController extends Controller
         $note_id = Hashids::decode($hashed_id)[0];
         $notes = Note::where('id', $note_id)->first();
 
+        $claimed = Note::where('id', $note_id)
+            ->where('link_drive_notulen', '-')
+            ->update([
+                'link_drive_notulen' => '#on-progress'
+        ]);
+
+        if ($claimed === 0) {
+            return back()->withErrors([
+                'msg' => 'File Docs <strong>sedang dibuat atau sudah tersedia</strong>'
+            ]);
+        }
+        
         $filename = str_replace('-', '.', $notes->date) . ' ' . $notes->name;
         $template_id = sizeof($notes->agendas) == 0 ? NULL : $notes->agendas[0]->docs_template_id;
         $meta = [
@@ -64,6 +87,7 @@ class GDocsController extends Controller
 
     public function createDocumentFromTemplate($copyTitle = "Copy Title", $template_id = NULL, $metadata = NULL)
     {
+        $this->initializeGoogleClient();
         // Get the ID of the template document
         if($template_id == NULL)
         $template_id = env('DOCS_TEMPLATE_ID');
