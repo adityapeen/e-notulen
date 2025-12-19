@@ -246,7 +246,7 @@ class GDocsController extends Controller
 
     function changeFilePremission($docs_id, $type = "lock")
     {
-
+        $this->initializeGoogleClient();
         if($type == "lock"){
             $role = "reader";
         }
