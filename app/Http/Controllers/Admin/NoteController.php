@@ -109,7 +109,7 @@ class NoteController extends Controller
                          data-toggle="tooltip" title="Generate PDF">
                          <button class="btn btn-sm btn-danger mb-0"><i class="fa fa-file-pdf"></i></button>
                       </a>';
-                $bt_send = '<a href="#" onclick="handleSend(`admin`,`'. $row->hashed_id .'`)"
+                $bt_send = '<a href="#" onclick="handleSend(`admin`,`'. $row->hashed_id .'`, '. (($row->file_notulen == NULL) ? 0 : 1) .')"
                 class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" title="Kirim MoM">
                 <button class="btn btn-sm btn-info mb-0"><i class="fa fa-file"></i></button>
               </a>';

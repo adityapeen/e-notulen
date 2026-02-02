@@ -29,10 +29,13 @@ const handleLock = (prefix,id) => {
   });
 };
 
-const handleSend = (prefix,id) => {
+const handleSend = (prefix,id,isFile=0) => {
+  var notif = "";
+  if(!isFile) notif = "Notulen akan dikirim dalam bentuk link Docs";
   Swal.fire({
     title: "Apakah anda akan mengirimkan notulensi ini ?",
     icon: "info",
+    text: notif,
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
