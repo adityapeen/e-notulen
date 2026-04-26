@@ -23,7 +23,8 @@ class UserSeeder extends Seeder
             "password" => $default_pass,
             "satker_id" => 1,
             "level_id" => 2,
-            "phone" => NULL
+            "current_role_id" => 1,
+            "phone" => 08123456789,
         ]);        
     }
 }

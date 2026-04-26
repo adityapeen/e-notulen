@@ -22,7 +22,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->foreignId('satker_id')->references('id')->on('m_satkers');
             $table->foreignId('level_id')->references('id')->on('m_levels');
-            $table->string('phone');
+            $table->string('phone')->nullable();
             $table->boolean('status')->default(1);
             $table->timestamps();
         });
