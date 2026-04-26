@@ -28,7 +28,9 @@ class DatabaseSeeder extends Seeder
             MLevelSeeder::class,
             AgendaSeeder::class,
             UserSeeder::class,
-            MPrioritySeeder::class
+            MPrioritySeeder::class,
+            RoleSeeder::class,
+            RoleSynchSeeder::class
         ]);
 
     }
