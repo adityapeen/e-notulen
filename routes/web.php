@@ -86,7 +86,7 @@ Route::group(['middleware' => 'ses', "prefix" => "spv", "as" => "ses."], functio
     Route::get('/notes/action/{id}', [App\Http\Controllers\Observer\SesController::class, 'action_item'])->name('notes.action');
     Route::get('/notes/absensi/{id}', [App\Http\Controllers\PDFController::class, 'generateAttendanceList'])->name('notes.absensi');
     Route::get('/notes/show/{id}', [App\Http\Controllers\Observer\SesController::class, 'showNote'])->name('notes.show');
-    Route::get('/action-items/{id}', [App\Http\Controllers\ActionItemsListController::class, 'index_ses'])->name('action_items');
+    // Route::get('/action-items/{id}', [App\Http\Controllers\ActionItemsListController::class, 'index_ses'])->name('action_items');
 
 });
 
