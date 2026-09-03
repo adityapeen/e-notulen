@@ -172,4 +172,11 @@ class ApiController extends Controller
         $response = Http::post($url);
         return response($response);
     }
+
+    public function monthly_notulen()
+    {
+        return response()->json(
+            Note::getMonthlyStatistics()
+        );
+    }
 }

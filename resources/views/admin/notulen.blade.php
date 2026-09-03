@@ -84,7 +84,19 @@
     </div>
   </div>
   <div class="row mt-3">
-    <div class="col-12">
+    <div class="col-6">
+      <div class="card my-4">
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+          <div class="bg-gradient-light shadow-dark border-radius-lg pt-2 pb-2 d-flex align-items-center">
+            <h6 class="text-dark text-capitalize ps-3">Statistik</h6>
+          </div>
+        </div>
+        <div class="card-body px-0 pb-2">
+          <canvas id="notulenChart" style="height: 40vh;"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
       <div class="card my-4">
         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
           <div class="bg-gradient-info shadow-info border-radius-lg pt-2 pb-2 d-flex align-items-center">
@@ -199,6 +211,14 @@
 
 @section('script')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.0/chart.umd.min.js"></script>
+<script src="{{ asset('assets/js/notulenChart.js') }}"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        NotulenChart.init();
+    });
+</script>
 
   <script>
     $(".clickable-row").click(function() {

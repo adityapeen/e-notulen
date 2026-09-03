@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Vinkla\Hashids\Facades\Hashids;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class Note extends Model
 {
@@ -56,6 +58,52 @@ class Note extends Model
     public function action_items()
     {
         return $this->hasMany(ActionItems::class);
+    }
+
+    public static function getMonthlyStatistics()
+    {
+        $currentYear = now()->year;
+        $previousYear = $currentYear - 1;
+
+        $data = self::query()
+            ->selectRaw('
+                YEAR(date) as year,
+                MONTH(date) as month,
+                COUNT(*) as total
+            ')
+            ->whereIn(DB::raw('YEAR(date)'), [$currentYear, $previousYear])
+            ->groupBy(DB::raw('YEAR(date)'), DB::raw('MONTH(date)'))
+            ->orderBy('year')
+            ->orderBy('month')
+            ->get();
+
+        // Buat struktur 12 bulan dengan nilai awal 0
+        $statistics = [];
+
+        for ($month = 1; $month <= 12; $month++) {
+            $statistics[$month] = [
+                'month' => $month,
+                'month_name' => Carbon::create()
+                    ->month($month)
+                    ->translatedFormat('M'),
+
+                $previousYear => 0,
+                $currentYear => 0,
+            ];
+        }
+
+        // Masukkan hasil query
+        foreach ($data as $row) {
+            $statistics[$row->month][$row->year] = (int) $row->total;
+        }
+
+        return [
+            'years' => [
+                'current' => $currentYear,
+                'previous' => $previousYear,
+            ],
+            'data' => array_values($statistics),
+        ];
     }
 
     /**
