@@ -44,8 +44,8 @@ const sendMarkRequest = (type, id = null) => {
 }
 
 const getAPIStatus = async () => {
-    const online = "fa-check-circle text-success";
-    const offline = "fa-exclamation-circle text-danger";
+    const online = "fa-circle-check text-success";
+    const offline = "fa-circle-exclamation text-danger";
     const response = await $.ajax({
         type: 'GET',
         url: "/check_api_wa" ,
