@@ -89,6 +89,7 @@
         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
           <div class="bg-gradient-light shadow-dark border-radius-lg pt-2 pb-2 d-flex align-items-center">
             <h6 class="text-dark text-capitalize ps-3">Statistik</h6>
+            <a href="{{ route('admin.notes.create') }}" class="btn btn-sm btn-success shadow-dark ms-auto me-3 mb-0">Buat Notulen</a>
           </div>
         </div>
         <div class="card-body px-0 pb-2">
@@ -99,8 +100,8 @@
     <div class="col-6">
       <div class="card my-4">
         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-          <div class="bg-gradient-info shadow-info border-radius-lg pt-2 pb-2 d-flex align-items-center">
-            <h6 class="text-white text-capitalize ps-3">Action Items</h6>
+          <div class="bg-gradient-light shadow-dark border-radius-lg pt-2 pb-2 d-flex align-items-center">
+            <h6 class="text-dark text-capitalize ps-3">Action Items</h6>
           </div>
         </div>
         <div class="card-body px-0 pb-2">
