@@ -104,7 +104,7 @@
           </div>
         </div>
         <div class="card-body px-0 pb-2">
-          <div class="table-responsive px-3">
+          <div class="table-responsive px-3" style="height: 40vh; overflow-y: auto;">
             <table class="align-items-center mb-0 table">
               <thead>
                 <tr>
