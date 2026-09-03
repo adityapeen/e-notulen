@@ -56,7 +56,12 @@ const handleSend = (prefix,id,isFile=0) => {
           Swal.showValidationMessage(`Request failed: ${error}`);
         })
         .then((result) => {
-          if (result.status) {
+          if(result.status &&result.results.length == 0) {
+            Swal.fire({
+              title: "Tidak ada penerima notulen",
+              icon: "warning",
+            });
+          } else if (result.status) {
             var head = `Sedang mengirim notulen`;
             Swal.fire({
               title: head,
