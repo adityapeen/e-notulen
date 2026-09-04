@@ -84,7 +84,7 @@
     </div>
   </div>
   <div class="row mt-3">
-    <div class="col-6">
+    <div class="col-xl-6">
       <div class="card my-4">
         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
           <div class="bg-gradient-light shadow-dark border-radius-lg pt-2 pb-2 d-flex align-items-center">
@@ -97,7 +97,7 @@
         </div>
       </div>
     </div>
-    <div class="col-6">
+    <div class="col-xl-6">
       <div class="card my-4">
         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
           <div class="bg-gradient-light shadow-dark border-radius-lg pt-2 pb-2 d-flex align-items-center">
