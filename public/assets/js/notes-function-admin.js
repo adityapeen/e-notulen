@@ -63,7 +63,10 @@ const handleDeleteChat = (id,type) => {
           if (result.status) {
             var txt = "";
             result.messages.forEach(el => {
+              if(typeof el === 'string' || el instanceof String)
                 txt += `<li>${el}</li>`
+              else
+                txt += `<li>${JSON.stringify(el)}</li>`
             })
             Swal.fire({
               title: `Hapus Pesan`,
