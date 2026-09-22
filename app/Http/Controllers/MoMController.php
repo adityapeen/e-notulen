@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Vinkla\Hashids\Facades\Hashids;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class MoMController extends Controller
 {
@@ -54,101 +55,352 @@ class MoMController extends Controller
 
     }
 
-    public function send_individual_mom(String $hashed_id, String $type){
+    public function send_individual_mom(String $hashed_id, String $type)
+    {
+        // Initial
         $arr_id = Hashids::decode($hashed_id);
-        $status = true;
-        if(is_array($arr_id)){ //Valid ID
-            $attendance_id = $arr_id[0];
-            if($type == "a"){
-                $attendance = Attendant::find($attendance_id);
-            }
-            else if($type == "r"){
-                $attendance = MomRecipients::find($attendance_id);
-            }
-            else{
-                $status = false;
-                $results = null;
-                return response()->json(['status'=>$status,'results'=>$results,'messages'=>NULL]);
-            }
-            $notes = Note::where('id',$attendance->note_id)->first();
-            $date = date_create($notes->date);
-            $file_location = 'notulensi/'.$notes->file_notulen;
+
+        $status = false;
+        $results = null;
+        $res = null;
+
+        // Validate Hashed ID
+        if (!is_array($arr_id) || !isset($arr_id[0])) {
+            Log::channel('daily')->error('MOM SEND FAILED', [
+                'hashed_id' => $hashed_id,
+                'type'      => $type,
+                'response'  => 'Invalid hashed ID'
+            ]);
+
+            return response()->json([
+                'status'   => $status,
+                'results'  => null,
+                'messages' => 'Invalid hashed ID'
+            ]);
+        }
+
+        $attendance_id = $arr_id[0];
+        
+        // Get Attendance / Recipient        
+        if ($type == "a") {
+            $attendance = Attendant::find($attendance_id);
+        } elseif ($type == "r") {
+            $attendance = MomRecipients::find($attendance_id);
+        } else {
+            Log::channel('daily')->error('MOM SEND FAILED', [
+                'attendance_id' => $attendance_id,
+                'type'          => $type,
+                'response'      => 'Invalid type'
+            ]);
             
-            if($notes->file_notulen == NULL && $attendance->user->current_role_id > 1 && $attendance->mom_sent == NULL && $attendance->user->phone !== '-'){
-                // For New Broadcast
-                // $msg_broadcast =    "Halo... dikarenakan adanya beberapa penyesuaian kini nomor Bot WA BPSDM diganti menjadi nomor ini ya...\n\n"
-                // ."Pada update kali ini bot sudah diintegrasikan dengan Generative AI sehingga dapat memberikan respon terhadap pertanyaannmu. Awali pesan dengan `.ask` untuk mendapatkan respon dari AI.\n\n"
-                // ."contoh :\n"
-                // ."> .ask jelaskan secara singkat potensi EBT di Indonesia\n\n"
-                // ."Terimakasih 🙏🙏🙏";
+            return response()->json([
+                'status'   => $status,
+                'results'  => null,
+                'messages' => 'Invalid type'
+            ]);
+        }
 
-                // $broadcast = Http::withBasicAuth(env('API_USER'), env('API_PASSWORD'))->post($this->url.'/send-message', [
-                // 'number' => $attendance->user->phone,
-                // 'message' => $msg_broadcast,
-                // 'id' => $type.';'.$attendance->hashed_id
-                // ]);
+        
+        // Validate Attendance
+        if (!$attendance) {
+            Log::channel('daily')->error('MOM SEND FAILED', [
+                'attendance_id' => $attendance_id,
+                'type'          => $type,
+                'response'      => 'Attendance / recipient not found'
+            ]);
+
+            return response()->json([
+                'status'   => $status,
+                'results'  => null,
+                'messages' => 'Attendance / recipient not found'
+            ]);
+        }
+
+        
+        // | Validate User
+        if (!$attendance->user) {
+            Log::channel('daily')->error('MOM SEND FAILED', [
+                'attendance_id' => $attendance_id,
+                'type'          => $type,
+                'response'      => 'User not found'
+            ]);
+
+            return response()->json([
+                'status'   => $status,
+                'results'  => null,
+                'messages' => 'User not found'
+            ]);
+        }
+
+        
+        // Get Note
+        $notes = Note::where('id', $attendance->note_id)->first();
+
+        if (!$notes) {
+            Log::channel('daily')->error('MOM SEND FAILED', [
+                'attendance_id' => $attendance_id,
+                'type'          => $type,
+                'note_id'       => $attendance->note_id,
+                'response'      => 'Note not found'
+            ]);
+
+            return response()->json([
+                'status'   => $status,
+                'results'  => null,
+                'messages' => 'Note not found'
+            ]);
+        }
+
+        
+        // | Basic Data        
+        $date = date_create($notes->date);
+        $file_location = 'notulensi/' . $notes->file_notulen;
+        $phone = $attendance->user->phone;
+        $api_id = $type . ';' . $attendance->hashed_id;
+
+        
+        // Check Eligibility
+        if (
+            $attendance->user->current_role_id <= 1 ||
+            $attendance->mom_sent !== null ||
+            $phone === '-'
+        ) {
+
+            $results = $attendance->user->name . " - SKIP";
+
+            Log::channel('daily')->info('MOM SEND SKIP', [
+                'attendance_id' => $attendance_id,
+                'type'          => $type,
+                'user'          => $attendance->user->name,
+                'phone'         => $phone,
+                'reason'        => 'Not eligible for sending'
+            ]);
+
+            return response()->json([
+                'status'   => $status,
+                'results'  => $results,
+                'messages' => $results
+            ]);
+        }
+
+
+        // START LOG
+        Log::channel('daily')->info('MOM SEND START', [
+            'attendance_id' => $attendance_id,
+            'type'          => $type,
+            'user'          => $attendance->user->name,
+            'phone'         => $phone,
+            'note_id'       => $notes->id,
+            'note_name'     => $notes->name,
+            'api_id'        => $api_id,
+            'has_file'      => !empty($notes->file_notulen)
+        ]);
+
+
+        // Send Message
+        try {
+
+            // Without File
+            if ($notes->file_notulen == null) {
 
                 $message = "Berikut ini kami sampaikan notulen *"
-                    .$notes->name."* pada tanggal ".date_format($date,"d-m-Y").". Silahkan akses notulen pada link berikut : \n"
-                    .$notes->link_drive_notulen
-                    ."\nTerimakasih 🙏🙏🙏";
+                    . $notes->name
+                    . "* pada tanggal "
+                    . date_format($date, "d-m-Y")
+                    . ". Silahkan akses notulen pada link berikut : \n"
+                    . $notes->link_drive_notulen
+                    . "\nTerimakasih 🙏🙏🙏";
 
-                $response = Http::withBasicAuth(env('API_USER'), env('API_PASSWORD'))->post($this->url.'/send-message', [
-                    'number' => $attendance->user->phone,
-                    'message' => $message,
-                    'id' => $type.';'.$attendance->hashed_id
+                Log::channel('daily')->info('MOM SEND REQUEST', [
+                    'attendance_id' => $attendance_id,
+                    'type'          => $type,
+                    'api_id'        => $api_id,
+                    'mode'          => 'message'
                 ]);
-            }
-            else if($attendance->user->current_role_id > 1 && $attendance->mom_sent == NULL && $attendance->user->phone !== '-'){
-                
-                // For New Broadcast
-                // $msg_broadcast =    "Halo... dikarenakan adanya beberapa penyesuaian kini nomor Bot WA BPSDM diganti menjadi nomor ini ya...\n\n"
-                // ."Pada update kali ini bot sudah diintegrasikan dengan Generative AI sehingga dapat memberikan respon terhadap pertanyaannmu. Awali pesan dengan `.ask` untuk mendapatkan respon dari AI.\n\n"
-                // ."contoh :\n"
-                // ."> .ask jelaskan secara singkat potensi EBT di Indonesia\n\n"
-                // ."Terimakasih 🙏🙏🙏";
 
-                // $broadcast = Http::withBasicAuth(env('API_USER'), env('API_PASSWORD'))->post($this->url.'/send-message', [
-                // 'number' => $attendance->user->phone,
-                // 'message' => $msg_broadcast,
-                // 'id' => $type.';'.$attendance->hashed_id
-                // ]);
+                $response = Http::timeout(240)
+                    ->withBasicAuth(
+                        env('API_USER'),
+                        env('API_PASSWORD')
+                    )
+                    ->post(
+                        $this->url . '/send-message',
+                        [
+                            'number'  => $phone,
+                            'message' => $message,
+                            'id'      => $api_id
+                        ]
+                    );
+            }
+
+            // With File
+            else {
+
+                // Check File
+                if (!file_exists($file_location)) {
+
+                    $results = $attendance->user->name . " - FAIL";
+
+                    Log::channel('daily')->error('MOM SEND FAILED', [
+                        'attendance_id' => $attendance_id,
+                        'type'          => $type,
+                        'user'          => $attendance->user->name,
+                        'file'          => $file_location,
+                        'response'      => 'File not found'
+                    ]);
+
+                    return response()->json([
+                        'status'   => $status,
+                        'results'  => $results,
+                        'messages' => 'File not found'
+                    ]);
+                }
 
                 $message = "Berikut ini kami sampaikan notulen *"
-                    .$notes->name."* pada tanggal ".date_format($date,"d-m-Y").". \n"
-                    ."\nTerimakasih 🙏🙏🙏";
+                    . $notes->name
+                    . "* pada tanggal "
+                    . date_format($date, "d-m-Y")
+                    . ". \n"
+                    . "\nTerimakasih 🙏🙏🙏";
 
-                $response = Http::timeout(240)->withBasicAuth(env('API_USER'), env('API_PASSWORD'))
-                                ->attach('file', file_get_contents($file_location),$notes->file_notulen)->post($this->url.'/send-message', [
-                    'number' => $attendance->user->phone,
-                    'message' => $message,
-                    'id' => $type.';'.$attendance->hashed_id
+                Log::channel('daily')->info('MOM SEND REQUEST', [
+                    'attendance_id' => $attendance_id,
+                    'type'          => $type,
+                    'api_id'        => $api_id,
+                    'mode'          => 'file',
+                    'file'          => $file_location
+                ]);
+
+                $response = Http::timeout(240)
+                    ->withBasicAuth(
+                        env('API_USER'),
+                        env('API_PASSWORD')
+                    )
+                    ->attach(
+                        'file',
+                        file_get_contents($file_location),
+                        $notes->file_notulen
+                    )
+                    ->post(
+                        $this->url . '/send-message',
+                        [
+                            'number'  => $phone,
+                            'message' => $message,
+                            'id'      => $api_id
+                        ]
+                    );
+            }
+
+            // Get Raw Response
+            $raw_response = $response->body();
+
+            // Decode Response
+            $res = json_decode($raw_response);
+
+            // JSON Decode Validation
+            if (json_last_error() !== JSON_ERROR_NONE) {
+
+                $results = $attendance->user->name . " - FAIL";
+
+                Log::channel('daily')->error('MOM SEND FAILED', [
+                    'attendance_id' => $attendance_id,
+                    'type'          => $type,
+                    'user'          => $attendance->user->name,
+                    'http_status'   => $response->status(),
+                    'response'      => $raw_response,
+                    'json_error'    => json_last_error_msg()
+                ]);
+
+                return response()->json([
+                    'status'   => $status,
+                    'results'  => $results,
+                    'messages' => $raw_response
                 ]);
             }
-            else{
-                $results = $attendance->user->name." - SKIP";
-                $status = false;
-                return response()->json(['status'=>$status,'results'=>$results,'messages'=>$results]);
-            }
 
-            $res = json_decode($response);
-            if($res->status){
-                $results = $attendance->user->name." - OK";
+            // API SUCCESS
+            
+            // API sekarang hanya mengembalikan:
+            // {
+            //      "status": true
+            // }
+            
+            if (
+                isset($res->status) &&
+                $res->status === true
+            ) {
+
+                $results = $attendance->user->name . " - OK";
+
+                // Update Database
+                // message_id dihapus karena API sudah tidak mengembalikannya.
+            
                 $attendance->update([
-                    'mom_sent' => date('Y-m-d h:i:s'),
-                    'message_id' => $res->response->id->_serialized ]);
+                    'mom_sent' => now()
+                ]);
+
+                // SUCCESS LOG
+                Log::channel('daily')->info('MOM SEND', [
+                    'attendance_id' => $attendance_id,
+                    'type'          => $type,
+                    'user'          => $attendance->user->name,
+                    'result'        => 'SUCCESS'
+                ]);
+
+                return response()->json([
+                    'status'   => true,
+                    'results'  => $results,
+                    'messages' => $res
+                ]);
             }
-            else{
-                $results = $attendance->user->name." - FAIL";
-                $status = false;
-            }
-        }
-        else{
+
+            // API FAILED
+            $results = $attendance->user->name . " - FAIL";
+
+            // Convert decoded response to string
+            $decoded_response = json_encode(
+                $res,
+                JSON_UNESCAPED_UNICODE |
+                JSON_UNESCAPED_SLASHES
+            );
+
+            // FAILED LOG
+            // Menyimpan seluruh response API
+            Log::channel('daily')->error('MOM SEND', [
+                'attendance_id' => $attendance_id,
+                'type'          => $type,
+                'user'          => $attendance->user->name,
+                'result'        => $decoded_response
+            ]);
+
+            return response()->json([
+                'status'   => $status,
+                'results'  => $results,
+                'messages' => $res
+            ]);
+
+        } catch (\Throwable $e) {
+
+            // Exception / Timeout / Connection Error
             $status = false;
-            $results = null;
+
+            $results = $attendance->user->name . " - FAIL";
+
+            Log::channel('daily')->error('MOM SEND', [
+                'attendance_id' => $attendance_id,
+                'type'          => $type,
+                'user'          => $attendance->user->name,
+                'result'        => $e->getMessage()
+            ]);
+
+            return response()->json([
+                'status'   => $status,
+                'results'  => $results,
+                'messages' => $e->getMessage()
+            ]);
         }
-        return response()->json(['status'=>$status,'results'=>$results,'messages'=>$res]);
     }
+
     public function send_mom(String $hashed_note_id)
     {
         $note_id = Hashids::decode($hashed_note_id)[0];
